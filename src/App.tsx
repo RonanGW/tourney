@@ -1,5 +1,5 @@
 import './App.css'
-import CharCard from './charCard'
+import CharCard from './CharCard'
 
 function App() {
   return (
