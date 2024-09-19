@@ -1,7 +1,18 @@
 .card {
     background-color: rgb(141, 223, 223);
+    color: black;
     border-style: solid;
     border-color: blue;
     border-width: thick;
     border-radius: 5%;
+    width: 256px;
+    height: 256px;
+    display: flex;
+    flex-direction: column;
+    align-content: flexstart;
+}
+
+.cardImg {
+    width: 200px;
+    height: 200px;
 }
