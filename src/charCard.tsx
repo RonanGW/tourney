@@ -13,7 +13,7 @@ const CharCard = ({trainer, state}: CharCard) => {
   return (
     <div className='card'>
       <img src={imgURL} className={cardDisplay}></img>
-      {trainer.name}
+      {trainer.state == "Unlocked" ? trainer.name : "???"}
     </div>
   );
 }
