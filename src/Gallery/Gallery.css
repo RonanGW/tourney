@@ -1,3 +1,13 @@
+button {
+  background-color: rgb(158, 189, 189);
+  color: black;
+  border-style: solid;
+  border-color: blue;
+  border-width: thin;
+  margin: 8px;
+  padding: 8px;
+}
+
 .Gallery {
   text-align: center;
   background-color: #282c34;
