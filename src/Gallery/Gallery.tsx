@@ -1,19 +1,34 @@
 import React, { useState, useEffect } from 'react'
 import './Gallery.css'
-import TrainerPage from './TrainerPage/TrainerPage'
 import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
 import tdata from '../trainers.json'
 
 interface mon {
-    "state": string,
+  state: string;
+  lvl: number;
+  xp: number;
+  hp: number;
+  atk: number;
+  cost: number;
 }
+
+interface trainer {
+      state: string;
+      region: string;
+      class: string;
+      w: number;
+      l: number;
+      BP: number;
+      mons: object
+};
 
 function Gallery() {
     const [menu, setMenu] = useState("Gallery")
-    const [filters, setFilters] = useState(["Unlocked","Locked"]);
-    const [currTrainer, setCurrTrainer] = useState(tdata["red"]);
+    const [filters, setFilters] = useState(["Unlocked","Available","Locked"]);
     const [cards, setCards] = useState(filterTrainerCards());
+    const [currTrainer, setCurrTrainer] = useState(tdata["red"]);
+    const [selectedMon, setSelectedMon] = useState({state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
 
   function filterTrainerCards(): JSX.Element[] {
     let newCards: JSX.Element[] = []; 
@@ -37,7 +52,7 @@ function Gallery() {
 
     for (let [tkey,value] of mons) {
         filters.includes(value.state) ? newCards.push(
-          <div>
+          <div onClick={() => {setSelectedMon(value)}}>
               <MonCard mon={value}></MonCard>
           </div>
         ) : <></>
@@ -47,6 +62,7 @@ function Gallery() {
 
   function switchToMainScreen() {
     setMenu("Gallery");
+    setSelectedMon({state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
     setCards(filterTrainerCards());
   }
 
@@ -56,8 +72,59 @@ function Gallery() {
     setCards(filterMonCards(trainer));
   }
 
-  function switchToMonScreen(mon: any) {
+  function switchToMonScreen(mon: mon) {
     setMenu("Mon");
+  }
+
+  function purchaseMon(trainer: trainer, mon: mon): void {
+      if (trainer.BP >= mon.cost) {
+        mon.state="Unlocked"
+        trainer.BP = trainer.BP - mon.cost
+        setCards(filterMonCards(trainer))
+      }
+  }
+
+  function TrainerPage(trainer: trainer): JSX.Element {
+
+    return <div className="Gallery-content">
+            <div className="Gallery-vertical-panel">
+                <CharCard trainer={trainer}></CharCard>
+                <div className="Gallery-info-panel">
+                    {trainer.state == "Unlocked" ? 
+                        <div>
+                            <p>Region: {trainer.region}</p>
+                            <p>Trainer Class: {trainer.class}</p>
+                            <p>Wins: {trainer.w}</p>
+                            <p>Losses: {trainer.l}</p>
+                            <p>BP: {trainer.BP}</p>
+                        </div> :
+                        <p>Play a round to unlock the next trainer!</p>
+                    }
+                </div>
+            </div>
+            <div className="Gallery-vertical-panel">
+                {selectedMon.state == "blank" ? "" : 
+                    <div className="Gallery-vertical-panel">
+                        <MonCard mon={selectedMon}></MonCard>
+                        <div className="Gallery-info-panel">
+                            { selectedMon.state == "Unlocked" ?
+                            <div>
+                                <p>Level: {selectedMon.lvl}</p>
+                                <p>XP: {selectedMon.xp}</p>
+                                <p>HP: {selectedMon.hp}</p>
+                                <p>Atk: {selectedMon.atk}</p>
+                            </div> :
+                            selectedMon.state == "Available" ?
+                                <button onClick={() => {purchaseMon(trainer, selectedMon)}}>Purchase for {selectedMon.cost}BP</button> :
+                                <p>Continue Raising your current mons to unlock this Mon for purchase.</p>
+                            }
+                        </div>
+                    </div>}
+            </div>
+            <div className="Card-block">
+                {cards}
+            </div>
+        </div>
   }
 
   return (
@@ -70,7 +137,7 @@ function Gallery() {
               {cards}
             </div> : 
          menu == "Trainer" ? 
-            <TrainerPage trainer={currTrainer}></TrainerPage> : 
+            TrainerPage(currTrainer) : 
          menu == "Mon" ? 
             <div className="TrainerCardList"> 
             </div> :
