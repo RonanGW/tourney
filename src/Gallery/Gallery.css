@@ -1,0 +1,52 @@
+.Gallery {
+  text-align: center;
+  background-color: #282c34;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  min-height: 100vh;
+}
+
+.Gallery-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 10vh;
+  padding: 5px;
+
+}
+
+.Card-block {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.char-card {
+  background-color: rgb(141, 223, 223);
+  color: black;
+  border-style: solid;
+  border-color: blue;
+  border-width: thick;
+  border-radius: 5%;
+  width: 256px;
+  height: 256px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.cardImg {
+  width: 200px;
+  height: 200px;
+}
+
+.Unlocked {
+
+}
+
+.Locked {
+  filter: contrast(0%) brightness(50%);
+}

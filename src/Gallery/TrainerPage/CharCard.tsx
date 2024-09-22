@@ -1,17 +1,16 @@
-import './CharCard.css'
+import '../Gallery.css'
 
 interface CharCard {
   trainer: any;
-  state: string;
 }
 
-const CharCard = ({trainer, state}: CharCard) => {
+const CharCard = ({trainer}: CharCard) => {
 
   let imgURL='./chars/ppl/'+ trainer.name.toLowerCase()+'.png'
-  let cardDisplay = "cardImg"+state
+  let cardDisplay = "cardImg "+trainer.state
 
   return (
-    <div className='card'>
+    <div className='char-card'>
       <img src={imgURL} className={cardDisplay}></img>
       {trainer.state == "Unlocked" ? trainer.name : "???"}
     </div>
