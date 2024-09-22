@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './Gallery.css'
+import TrainerPage from './TrainerPage/TrainerPage'
 import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
 import tdata from '../trainers.json'
@@ -69,10 +70,7 @@ function Gallery() {
               {cards}
             </div> : 
          menu == "Trainer" ? 
-            <div className="Card-block">
-              <CharCard trainer={currTrainer}></CharCard>
-              {cards}
-            </div> : 
+            <TrainerPage trainer={currTrainer}></TrainerPage> : 
          menu == "Mon" ? 
             <div className="TrainerCardList"> 
             </div> :

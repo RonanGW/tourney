@@ -15,6 +15,20 @@
 
 }
 
+.Gallery-content {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  min-height: 80vh;
+}
+
+.Gallery-vertical-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  min-width: 10vw;
+}
+
 .Card-block {
   display: flex;
   flex-direction: row;
@@ -43,10 +57,30 @@
   height: 200px;
 }
 
+.Gallery-info-panel {
+  background-color: rgb(141, 223, 223);
+  color: black;
+  border-style: solid;
+  border-color: blue;
+  border-width: thick;
+  border-radius: 5%;
+  width: 256px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  margin: 10px;
+}
+
 .Unlocked {
 
 }
 
 .Locked {
+  filter: contrast(0%) brightness(50%);
+}
+
+.Availabe {
   filter: contrast(0%) brightness(50%);
 }
