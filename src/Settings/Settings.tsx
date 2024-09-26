@@ -5,8 +5,8 @@ interface Settings {
   menu: any[]
 }
 
-function localDownload() {
-  const blob = new Blob([JSON.stringify(resetSave())], { type: 'application/json' });
+function localDownload(data: any) {
+  const blob = new Blob([JSON.stringify(resetSave(JSON.parse(data)))], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
 
   const link = document.createElement('a');
@@ -18,33 +18,11 @@ function localDownload() {
   document.body.removeChild(link);
 }
 
-function resetSave() {
+function resetSave(data: any) {
 
   let trainersSaveData: any = {}
 
-
-  //["Kanto","Johto","Hoenn","Sinnoh","Unova","Kalos","Alola","Galar","Paldea","Hisui","Ransei"]
-  //["Hero","Champion","Rival","Professor","Boss","Elite Four","Admin","Gym Leader"]
-  let trainers = [["Red","charmander","Kanto","Hero"],
-                  ["Blue","squirtle","Kanto","Rival"],
-                  ["Leaf","bulbasaur","Kanto","Hero"],
-                  ["Lance","dratini","Kanto","Champion"],
-                  ["Steven","beldum","Hoenn","Champion"],
-                  ["Wallace","feebas","Hoenn","Champion"],
-                  ["Cynthia","gible","Sinnoh","Champion"],
-                  ["Alder","larvesta","Unova","Champion"],
-                  ["Iris","deino","Unova","Champion"],
-                  ["Diantha","ralts","Kalos","Champion"],
-                  ["Kukui","rockruff","Alola","Professor"],
-                  ["Leon","charmander","Galar","Champion"],
-                  ["Geeta","glimmet","Paldea","Champion"]
-                 ]
-
-  let mons = [{name: "Bulbasaur", cost: 2},
-              {name: "Charmander", cost: 2}
-             ]
-
-  trainers.forEach(trainer => {
+  data.trainers.forEach((trainer: any) => {
     trainersSaveData[trainer[0].toLowerCase()] = {
         name: trainer[0],
         state: "Locked",
@@ -56,7 +34,7 @@ function resetSave() {
         mons: {}
     }
 
-    mons.forEach(mon => {
+    data.mons.forEach((mon: any) => {
         trainersSaveData[trainer[0].toLowerCase()].mons[mon.name.toLowerCase()] = {
             name: mon.name,
             state: "Locked",
@@ -68,20 +46,19 @@ function resetSave() {
         }
     })
   });
-  //const file = writeFileSync('./trainers.json',trainersSaveData);
-  //let data = fs.writeFileSync('./trainers.json',trainersSaveData)
 
   return trainersSaveData
 }
 
 function Settings({menu}: Settings) {
     
-  const [tmp,setTmp] = useState("N/A")
+  const [data,setData] = useState("N/A")
+  
+  fetch('/defaults.json').then(response => {return response.json()}).then(tmp => setData(JSON.stringify(tmp)))
 
     return (
     <div className="Settings">
-        <button onClick={() => {localDownload()}}>Reset Save data</button>
-        <p>{tmp}</p>
+        <button onClick={() => {localDownload(data)}}>Reset Save data</button>
     </div>
   );
 }
