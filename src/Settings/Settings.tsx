@@ -5,20 +5,23 @@ interface Settings {
   menu: any[]
 }
 
+function localDownload() {
+  const blob = new Blob([JSON.stringify(resetSave())], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
 
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'trainers.json'); // Set the desired file name
 
-
-
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
 function resetSave() {
 
   let trainersSaveData: any = {}
 
-  fetch('./trainers.json')
-     .then(res => res.json())
-     .then((trainersSaveData) => {
-        console.log(trainersSaveData)
-     });
 
   //["Kanto","Johto","Hoenn","Sinnoh","Unova","Kalos","Alola","Galar","Paldea","Hisui","Ransei"]
   //["Hero","Champion","Rival","Professor","Boss","Elite Four","Admin","Gym Leader"]
@@ -77,24 +80,7 @@ function Settings({menu}: Settings) {
 
     return (
     <div className="Settings">
-        <button onClick={() => {
-
-
-  const blob = new Blob([JSON.stringify(resetSave())], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement('a');
-  link.href = url;
-  link.setAttribute('download', 'trainers.json'); // Set the desired file name
-
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-
-
-
-        }}>Reset Save data</button>
+        <button onClick={() => {localDownload()}}>Reset Save data</button>
         <p>{tmp}</p>
     </div>
   );
