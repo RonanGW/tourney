@@ -129,19 +129,31 @@ function Gallery({menu}: Gallery) {
             </div>
         </div>
   }
-
+  
   return (
     <div className="Gallery">
-        <div className="Gallery-header">
-          <button onClick={switchToMainScreen}>Back to Gallery Main Screen</button>
-        </div>
         {menu[0] == "Gallery" ? 
+          <div>
+            <div className="Gallery-header">
+              <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
+            </div>
             <div className="Card-block">
               {cards}
-            </div> : 
+            </div>
+          </div> : 
          menu[0] == "Gallery-Trainer" ? 
-            TrainerPage(currTrainer) :
-         <div>Oops. Something broke :/</div>
+          <div>
+            <div className="Gallery-header">
+              <button onClick={switchToMainScreen}>Back to Gallery Main Screen</button>
+            </div>
+              {TrainerPage(currTrainer)}
+          </div> :  
+          <div>
+            <div className="Gallery-header">
+              <button onClick={switchToMainScreen}>Back to Gallery Main Screen</button>
+            </div> 
+            <div>Oops. Something broke :/</div>
+          </div>
         }
     </div>
   );

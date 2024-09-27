@@ -44,6 +44,16 @@ function resetSave(data: any) {
             atk: 1,
             cost: mon.cost
         }
+
+        trainersSaveData[trainer[0].toLowerCase()].mons[mon.name.toLowerCase() + "shiny"] = {
+          name: mon.name + " (Shiny)",
+          state: "Locked",
+          lvl: 1,
+          xp: 0,
+          hp: 1,
+          atk: 1,
+          cost: mon.cost * 2
+      }
     })
   });
 
@@ -57,9 +67,14 @@ function Settings({menu}: Settings) {
   fetch('/defaults.json').then(response => {return response.json()}).then(tmp => setData(JSON.stringify(tmp)))
 
     return (
-    <div className="Settings">
-        <button onClick={() => {localDownload(data)}}>Reset Save data</button>
-    </div>
+      <div>
+        <div className="Gallery-header">
+          <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
+        </div>
+        <div className="Settings">
+          <button onClick={() => {localDownload(data)}}>Reset Save data</button>
+        </div>
+      </div>
   );
 }
 
