@@ -3,9 +3,11 @@ import Fight from './Fight/Fight'
 import Gallery from './Gallery/Gallery'
 import Settings from './Settings/Settings'
 import "./index.css"
+import tdata from './trainers.json'
 
 function App() {
   const [menu, setMenu] = useState("Main-Menu")
+  const [trainers, setTrainers] = useState(tdata)
 
   return (
     <div className='App'>
@@ -25,9 +27,9 @@ function App() {
           </button>
         </div>:
       menu == "Fight" ?
-        <Fight menu={[menu,setMenu]}></Fight> :
+        <Fight menu={[menu,setMenu]} trainers={[trainers, setTrainers]}></Fight> :
       menu == "Gallery" || menu == "Gallery-Trainer" ?
-        <Gallery menu={[menu,setMenu]}></Gallery> :
+        <Gallery menu={[menu,setMenu]} trainers={[trainers, setTrainers]}></Gallery> :
       menu == "Settings" ?
         <Settings menu={[menu,setMenu]}></Settings> :
       <div>Oops. Something broke :/</div>}

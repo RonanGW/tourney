@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import './Gallery.css'
 import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
-import tdata from '../trainers.json'
 
 interface Gallery {
   menu: any[]
+  trainers: any[]
 }
 
 interface mon {
@@ -27,18 +27,18 @@ interface trainer {
       mons: object
 };
 
-function Gallery({menu}: Gallery) {
+function Gallery({menu, trainers}: Gallery) {
     const [filters, setFilters] = useState(["Unlocked","Available","Locked"]);
+    const trainerObjects: [string,trainer][]  = Object.entries(trainers[0])
     const [cards, setCards] = useState(filterTrainerCards());
-    const [currTrainer, setCurrTrainer] = useState(tdata["red"]);
+    const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]);
     const [selectedMon, setSelectedMon] = useState({state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
 
   function filterTrainerCards(): JSX.Element[] {
     let newCards: JSX.Element[] = []; 
-
-    const trainers = Object.entries(tdata);
     
-    for (let [tkey,value] of trainers) {
+    
+    for (let [tkey,value] of trainerObjects) {
       filters.includes(value.state) ? newCards.push(
         <div onClick={() => switchToTrainerScreen(value)}>
             <CharCard trainer={value}></CharCard>
