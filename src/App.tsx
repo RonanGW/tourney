@@ -9,7 +9,7 @@ function App() {
   return (
     <div className='App'>
       {menu == "Main-Menu" ? 
-        <div>
+        <div className='App-content'>
           <button onClick={() => {setMenu("Fight")}}>
             Start Tourney
           </button>

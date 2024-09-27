@@ -19,3 +19,10 @@ code {
   color: white;
   min-height: 100vh;
 }
+
+.App-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10vh;
+}
