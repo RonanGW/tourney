@@ -30,14 +30,16 @@ interface trainer {
 
 
 function Fight({menu, trainers}: Fight) {
+    const [activeTrainers, setActiveTrainers] = useState(trainers[0]);
+    const trainerObjects: [string,trainer][]  = Object.entries(activeTrainers)
+    let filteredTrainers = trainerObjects.filter((t) => t[1].state == "Unlocked")
     const x = useMotionValue(0);
     const rotate = useTransform(x, [-150, 150], [-90, 90]);
     const angle = 360 / 8;
     const rotation = React.useRef(angle);
-    const trainerObjects: [string,trainer][]  = Object.entries(trainers[0])
     let divs = [];
   
-    for (let [tkey,value] of trainerObjects) {
+    for (let [tkey,value] of filteredTrainers) {
         rotation.current = rotation.current + angle
 
         divs.push(
