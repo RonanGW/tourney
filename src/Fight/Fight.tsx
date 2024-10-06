@@ -48,13 +48,6 @@ function Fight({menu, trainers}: Fight) {
 
         divs.push(
         <div
-        style={{
-            transform: `rotate(${rotation.current}deg)
-                        translate(${250}px)
-                        rotate(${rotation.current * -1}deg)
-                        ${trainers[0]["red"].name === value.name ? 'scale(1.5)' : ''}`,
-            margin: '-40px',
-          }}
         ><img src={imgURL}></img></div>)
         }
 
@@ -63,17 +56,17 @@ function Fight({menu, trainers}: Fight) {
         <div className="Gallery-header">
             <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
         </div>
-
-        <motion.div
-            style={{
-            rotate: rotate,
-            }}
-            className="relative border border-4 border-red-900 rounded-full h-[500px] w-[500px] bg-red-200"
-            >
-
-            {divs}
-            
-        </motion.div>
+        <div
+        style={{display:"flex",flexDirection:"row", justifyContent:"space-between",margin:"5vw"}}>
+            <div
+            style={{display:"flex",flexDirection:"column", alignItems:"center"}}>
+                {divs.slice(0,divs.length / 2)}
+            </div>
+            <div
+            style={{display:"flex",flexDirection:"column", alignItems:"center"}}>
+                {divs.slice(divs.length / 2,divs.length )}
+            </div>
+        </div>
     </div>
     )
 }
