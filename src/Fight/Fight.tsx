@@ -32,12 +32,10 @@ interface trainer {
 
 function Fight({menu, trainers}: Fight) {
     const [allTrainers, setAllTrainers] = useState<[string,trainer][]>(Object.entries(trainers[0]));
-    const [remainingTrainers, setRemainingTrainers] = useState<[string,trainer][]>((allTrainers).filter((t) => t[1].state == "Unlocked"))
-    let tmp = remainingTrainers.sort(() => 0.5 - Math.random())
-    tmp = remainingTrainers.slice(0, 8)
+    const [remainingTrainers, setRemainingTrainers] = useState<[string,trainer][]>((((allTrainers).filter((t) => t[1].state == "Unlocked")).sort(() => 0.5 - Math.random())).slice(0, 8))
     let leftTrainers = [];
   
-    for (let [tkey,value] of tmp) {
+    for (let [tkey,value] of remainingTrainers) {
         let tImgURL='./chars/ppl/'+ value.name.toLowerCase()+'.png'
         let mImgURL='./chars/mons/'+ value.starter.toLowerCase()+'.png'
 
