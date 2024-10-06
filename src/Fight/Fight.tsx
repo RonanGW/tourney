@@ -20,6 +20,7 @@ interface mon {
 interface trainer {
     name: string;
     state: string;
+    starter: string;
     region: string;
     class: string;
     w: number;
@@ -31,25 +32,18 @@ interface trainer {
 
 function Fight({menu, trainers}: Fight) {
     const [allTrainers, setAllTrainers] = useState<[string,trainer][]>(Object.entries(trainers[0]));
-    const [remainingTrainers, setRemainingTrainers] = useState<[string,trainer][]>((allTrainers).filter((t) => t[1].state == "Hidden"))
+    const [remainingTrainers, setRemainingTrainers] = useState<[string,trainer][]>((allTrainers).filter((t) => t[1].state == "Unlocked"))
     let tmp = remainingTrainers.sort(() => 0.5 - Math.random())
     tmp = remainingTrainers.slice(0, 8)
-
-
-    const x = useMotionValue(0);
-    const rotate = useTransform(x, [-150, 150], [-90, 90]);
-    const angle = 360 / 16;
-    const rotation = React.useRef(angle);
-    let divs = [];
+    let leftTrainers = [];
   
     for (let [tkey,value] of tmp) {
-        rotation.current = rotation.current + angle
-        let imgURL='./chars/ppl/'+ value.name.toLowerCase()+'.png'
+        let tImgURL='./chars/ppl/'+ value.name.toLowerCase()+'.png'
+        let mImgURL='./chars/mons/'+ value.starter.toLowerCase()+'.png'
 
-        divs.push(
-        <div
-        ><img src={imgURL}></img></div>)
-        }
+        leftTrainers.push(
+        <div style={{display:"flex",flexDirection:"row"}}><img src={tImgURL}></img><div><img src={mImgURL}></img></div></div>)
+    }
 
     return (
     <div>
@@ -60,11 +54,11 @@ function Fight({menu, trainers}: Fight) {
         style={{display:"flex",flexDirection:"row", justifyContent:"space-between",margin:"5vw"}}>
             <div
             style={{display:"flex",flexDirection:"column", alignItems:"center"}}>
-                {divs.slice(0,divs.length / 2)}
+                {leftTrainers.slice(0,leftTrainers.length / 2)}
             </div>
             <div
             style={{display:"flex",flexDirection:"column", alignItems:"center"}}>
-                {divs.slice(divs.length / 2,divs.length )}
+                {leftTrainers.slice(leftTrainers.length / 2,leftTrainers.length )}
             </div>
         </div>
     </div>

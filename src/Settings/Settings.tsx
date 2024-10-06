@@ -25,7 +25,8 @@ function resetSave(data: any) {
   data.trainers.forEach((trainer: any) => {
     trainersSaveData[trainer[0].toLowerCase()] = {
         name: trainer[0],
-        state: "Locked",
+        state: "Hidden",
+        starter: trainer[1],
         class: trainer[3],
         region: trainer[2],
         w: 0,
