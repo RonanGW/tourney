@@ -34,13 +34,17 @@ function Fight({menu, trainers}: Fight) {
     const [allTrainers, setAllTrainers] = useState<[string,trainer][]>(Object.entries(trainers[0]));
     const [remainingTrainers, setRemainingTrainers] = useState<[string,trainer][]>((((allTrainers).filter((t) => t[1].state == "Unlocked")).sort(() => 0.5 - Math.random())).slice(0, 8))
     let leftTrainers = [];
+    let rightTrainers = [];
   
+    let index = 0
     for (let [tkey,value] of remainingTrainers) {
         let tImgURL='./chars/ppl/'+ value.name.toLowerCase()+'.png'
         let mImgURL='./chars/mons/'+ value.starter.toLowerCase()+'.png'
 
-        leftTrainers.push(
-        <div style={{display:"flex",flexDirection:"row"}}><img src={tImgURL}></img><div><img src={mImgURL}></img></div></div>)
+        index < remainingTrainers.length /2 ?
+        leftTrainers.push(<div style={{display:"flex",flexDirection:"row"}}><img src={tImgURL}></img><div><img src={mImgURL}></img></div></div>) :
+        rightTrainers.push(<div style={{display:"flex",flexDirection:"row"}}><img src={mImgURL}></img><div><img src={tImgURL}></img></div></div>)
+        index++
     }
 
     return (
@@ -52,11 +56,11 @@ function Fight({menu, trainers}: Fight) {
         style={{display:"flex",flexDirection:"row", justifyContent:"space-between",margin:"5vw"}}>
             <div
             style={{display:"flex",flexDirection:"column", alignItems:"center"}}>
-                {leftTrainers.slice(0,leftTrainers.length / 2)}
+                {leftTrainers}
             </div>
             <div
             style={{display:"flex",flexDirection:"column", alignItems:"center"}}>
-                {leftTrainers.slice(leftTrainers.length / 2,leftTrainers.length )}
+                {rightTrainers}
             </div>
         </div>
     </div>
