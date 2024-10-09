@@ -26,7 +26,7 @@ interface trainer {
     w: number;
     l: number;
     BP: number;
-    mons: object
+    mons: any
 };
 
 
@@ -42,8 +42,14 @@ function Fight({menu, trainers}: Fight) {
         let mImgURL='./chars/mons/'+ value.starter.toLowerCase()+'.png'
 
         index < remainingTrainers.length /2 ?
-        leftTrainers.push(<div style={{display:"flex",flexDirection:"row"}}><img src={tImgURL}></img><div><img src={mImgURL}></img></div></div>) :
-        rightTrainers.push(<div style={{display:"flex",flexDirection:"row"}}><img src={mImgURL}></img><div><img src={tImgURL}></img></div></div>)
+        leftTrainers.push(<div style={{display:"flex",flexDirection:"row"}}>
+                            <img src={tImgURL}></img>
+                            <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>10 / 10</div>
+                          </div>) :
+        rightTrainers.push(<div style={{display:"flex",flexDirection:"row"}}>
+                            <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>10 / 10</div>
+                            <div><img src={tImgURL}></img></div>
+                           </div>)
         index++
     }
 
