@@ -32,7 +32,7 @@ interface trainer {
 
 function Fight({menu, trainers}: Fight) {
     const [allTrainers, setAllTrainers] = useState<[string,trainer][]>(Object.entries(trainers[0]));
-    const [remainingTrainers, setRemainingTrainers] = useState<[string,trainer][]>((((allTrainers).filter((t) => t[1].state == "Unlocked")).sort(() => 0.5 - Math.random())).slice(0, 8))
+    const [remainingTrainers, setRemainingTrainers] = useState<[string,trainer][]>((((allTrainers).filter((t) => t[1].state == "Hidden")).sort(() => 0.5 - Math.random())).slice(0, 8))
     let leftTrainers = [];
     let rightTrainers = [];
   
@@ -43,11 +43,11 @@ function Fight({menu, trainers}: Fight) {
 
         index < remainingTrainers.length /2 ?
         leftTrainers.push(<div style={{display:"flex",flexDirection:"row"}}>
-                            <img src={tImgURL}></img>
-                            <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>10 / 10</div>
+                            <div><img src={tImgURL}></img></div>
+                            <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>1 / {value.mons[value.starter].hp}</div>
                           </div>) :
         rightTrainers.push(<div style={{display:"flex",flexDirection:"row"}}>
-                            <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>10 / 10</div>
+                            <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>1 / {value.mons["charmander"].hp}</div>
                             <div><img src={tImgURL}></img></div>
                            </div>)
         index++
