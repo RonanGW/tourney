@@ -47,7 +47,7 @@ function Fight({menu, trainers}: Fight) {
                             <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>1 / {value.mons[value.starter].hp}</div>
                           </div>) :
         rightTrainers.push(<div style={{display:"flex",flexDirection:"row"}}>
-                            <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>1 / {value.mons["charmander"].hp}</div>
+                            <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>1 / {value.mons[value.starter].hp}</div>
                             <div><img src={tImgURL}></img></div>
                            </div>)
         index++
