@@ -32,7 +32,7 @@ interface trainer {
 
 function Fight({menu, trainers}: Fight) {
     const [allTrainers, setAllTrainers] = useState<[string,trainer][]>(Object.entries(trainers[0]));
-    const [remainingTrainers, setRemainingTrainers] = useState<[string,trainer][]>((((allTrainers).filter((t) => t[1].state == "Hidden")).sort(() => 0.5 - Math.random())).slice(0, 8))
+    const [remainingTrainers, setRemainingTrainers] = useState<[string,trainer][]>((((allTrainers).filter((t) => t[1].state == "Unlocked")).sort(() => 0.5 - Math.random())).slice(0, 8))
     let leftTrainers = [];
     let rightTrainers = [];
   

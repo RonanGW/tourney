@@ -9,6 +9,9 @@ interface Gallery {
 }
 
 interface mon {
+  name: string,
+  form: string,
+  shine:string,
   state: string;
   lvl: number;
   xp: number;
@@ -32,7 +35,7 @@ function Gallery({menu, trainers}: Gallery) {
     const trainerObjects: [string,trainer][]  = Object.entries(trainers[0])
     const [cards, setCards] = useState(filterTrainerCards());
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]);
-    const [selectedMon, setSelectedMon] = useState({state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
+    const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
 
   function filterTrainerCards(): JSX.Element[] {
     let newCards: JSX.Element[] = []; 
@@ -65,7 +68,7 @@ function Gallery({menu, trainers}: Gallery) {
 
   function switchToMainScreen() {
     menu[1]("Gallery");
-    setSelectedMon({state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
+    setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
     setCards(filterTrainerCards());
   }
 
