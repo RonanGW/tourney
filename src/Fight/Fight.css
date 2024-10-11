@@ -1,0 +1,17 @@
+.Fight-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 10vh;
+    padding: 5px;
+  }
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.flexCol {
+    display: flex;
+    flex-direction: column
+}

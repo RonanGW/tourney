@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import './Fight.css'
-import { motion, useMotionValue, useTransform } from 'framer-motion';
 
 interface Fight {
   menu: any[]
@@ -13,6 +12,7 @@ interface mon {
   lvl: number;
   xp: number;
   hp: number;
+  currHP: number;
   atk: number;
   cost: number;
 }
@@ -38,34 +38,36 @@ function Fight({menu, trainers}: Fight) {
   
     let index = 0
     for (let [tkey,value] of remainingTrainers) {
+        value.mons[value.starter].currHP = 1
         let tImgURL='./chars/ppl/'+ value.name.toLowerCase()+'.png'
         let mImgURL='./chars/mons/'+ value.starter.toLowerCase()+'.png'
 
         index < remainingTrainers.length /2 ?
-        leftTrainers.push(<div style={{display:"flex",flexDirection:"row"}}>
-                            <div><img src={tImgURL}></img></div>
-                            <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>1 / {value.mons[value.starter].hp}</div>
+        leftTrainers.push(<div className='flexRow'>
+                            <div className='flexCol'><img src={tImgURL}></img>{value.name}</div>
+                            <div className='flexCol'><img src={mImgURL}></img>{value.mons[value.starter].currHP} / {value.mons[value.starter].hp}</div>
                           </div>) :
-        rightTrainers.push(<div style={{display:"flex",flexDirection:"row"}}>
-                            <div style={{display:"flex",flexDirection:"column"}}><img src={mImgURL}></img>1 / {value.mons[value.starter].hp}</div>
-                            <div><img src={tImgURL}></img></div>
+        rightTrainers.push(<div className='flexRow'>
+                            <div className='flexCol'><img src={mImgURL}></img>{value.mons[value.starter].currHP} / {value.mons[value.starter].hp}</div>
+                            <div className='flexCol'><img src={tImgURL}></img>{value.name}</div>
                            </div>)
         index++
     }
 
     return (
     <div>
-        <div className="Gallery-header">
+        <div className="Fight-header">
             <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
         </div>
         <div
-        style={{display:"flex",flexDirection:"row", justifyContent:"space-between",margin:"5vw"}}>
-            <div
-            style={{display:"flex",flexDirection:"column", alignItems:"center"}}>
+        className='flexRow'
+        style={{justifyContent:"space-between",marginLeft:"10vw",marginRight:"10vw",height:"75vh"}}>
+            <div className='flexCol'
+            style={{justifyContent:"space-between"}}>
                 {leftTrainers}
             </div>
-            <div
-            style={{display:"flex",flexDirection:"column", alignItems:"center"}}>
+            <div className='flexCol'
+            style={{justifyContent:"space-between"}}>
                 {rightTrainers}
             </div>
         </div>

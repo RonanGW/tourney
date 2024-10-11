@@ -5,11 +5,13 @@ import Settings from './Settings/Settings'
 import "./index.css"
 import tdata from './trainers.json'
 
+//Primary Page (Main Loop). Critical States should originate from here so they are consistent
 function App() {
   const [menu, setMenu] = useState("Main-Menu")
   const [trainers, setTrainers] = useState(tdata)
 
   return (
+    // Conditional switch to determine which page is rendered
     <div className='App'>
       {menu == "Main-Menu" ? 
         <div className='App-content'>
