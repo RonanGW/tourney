@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './Settings.css'
 
 interface Settings {
-  menu: any[]
+  menu: any[] // passes the current state (i.e. menu) to this page so it can be undone. Value is [state,setState]
 }
 
 function localDownload(data: any) {

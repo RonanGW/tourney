@@ -44,12 +44,12 @@ function Fight({menu, trainers}: Fight) {
 
         index < remainingTrainers.length /2 ?
         leftTrainers.push(<div className='flexRow'>
-                            <div className='flexCol'><img src={tImgURL}></img>{value.name}</div>
-                            <div className='flexCol'><img src={mImgURL}></img>{value.mons[value.starter].currHP} / {value.mons[value.starter].hp}</div>
+                            <div className='flexCol' style={{backgroundColor:index == 0 ? "green":"blue"}}><img src={tImgURL}></img>{value.name}</div>
+                            <div className='flexCol' style={{backgroundColor:index == 0 ? "green":"blue"}}><img src={mImgURL}></img>{value.mons[value.starter].currHP} / {value.mons[value.starter].hp}</div>
                           </div>) :
         rightTrainers.push(<div className='flexRow'>
-                            <div className='flexCol'><img src={mImgURL}></img>{value.mons[value.starter].currHP} / {value.mons[value.starter].hp}</div>
-                            <div className='flexCol'><img src={tImgURL}></img>{value.name}</div>
+                            <div className='flexCol' style={{backgroundColor:index == 0 ? "green":"blue"}}><img src={mImgURL}></img>{value.mons[value.starter].currHP} / {value.mons[value.starter].hp}</div>
+                            <div className='flexCol' style={{backgroundColor:index == 0 ? "green":"blue"}}><img src={tImgURL}></img>{value.name}</div>
                            </div>)
         index++
     }
