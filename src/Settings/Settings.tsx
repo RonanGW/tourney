@@ -5,6 +5,7 @@ interface Settings {
   menu: any[] // passes the current state (i.e. menu) to this page so it can be undone. Value is [state,setState]
 }
 
+//locally downloads the data file for a reset game
 function localDownload(data: any) {
   const blob = new Blob([JSON.stringify(resetSave(JSON.parse(data)))], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
