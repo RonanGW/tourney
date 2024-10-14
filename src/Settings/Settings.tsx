@@ -7,22 +7,27 @@ interface Settings {
 
 //locally downloads the data file for a reset game
 function localDownload(data: any) {
+  //Creates the content to be written
   const blob = new Blob([JSON.stringify(resetSave(JSON.parse(data)))], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
 
+  //Creates a temporary html element to download content
   const link = document.createElement('a');
   link.href = url;
   link.setAttribute('download', 'trainers.json'); // Set the desired file name
 
+  //Adds Element to page, activates it, then deletes the element
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 }
 
+// Returns a object containing the default starting state for a save based on the content provided in defaults.json
 function resetSave(data: any) {
 
-  let trainersSaveData: any = {}
+  let trainersSaveData: any = {} //For storing the default data scheme to be downloaded
 
+  //Initialize each trainer using a lowercase version of their name as the key
   data.trainers.forEach((trainer: any) => {
     trainersSaveData[trainer[0].toLowerCase()] = {
         name: trainer[0],
@@ -36,6 +41,7 @@ function resetSave(data: any) {
         mons: {}
     }
 
+    //Intialize each mon for each trainer
     data.mons.forEach((mon: any) => {
       let monState = "Hidden"
       mon.name.toLowerCase() == trainer[1] ? monState = "Unlocked" : monState = "Hidden"
@@ -50,7 +56,7 @@ function resetSave(data: any) {
             atk: 1,
             cost: mon.cost
         }
-
+      //Intialize the shiny version of each mon for each trainer
       mon.name.toLowerCase() == trainer[1] ? monState = "Locked" : monState = "Hidden"
         trainersSaveData[trainer[0].toLowerCase()].mons[mon.name.toLowerCase() + mon.form.toLowerCase() + "shiny"] = {
           name:  mon.name,
