@@ -31,28 +31,28 @@ interface trainer {
 
 
 function Fight({menu, trainers}: Fight) {
-    const [allTrainers, setAllTrainers] = useState<[string,trainer][]>(Object.entries(trainers[0]));
-    const [remainingTrainers, setRemainingTrainers] = useState(Object.fromEntries((((allTrainers)
+    const [currTrainers, setCurrTrainers] = useState(Object.fromEntries((((Object.entries<trainer>(trainers[0]))
                                                                         .filter((t) => t[1].state == "Unlocked"))
                                                                         .sort(() => 0.5 - Math.random()))
                                                                         .slice(0, 8)))
+    const [activeTrainer, setActiveTrainer] = useState(Object.keys(currTrainers)[0])
     let leftTrainers = [];
     let rightTrainers = [];
   
     let evenIndex = true
-    for (const tKey in remainingTrainers) {
-        remainingTrainers[tKey].mons[remainingTrainers[tKey].starter].currHP = 1
-        let tImgURL='./chars/ppl/'+ remainingTrainers[tKey].name.toLowerCase()+'.png'
-        let mImgURL='./chars/mons/'+ remainingTrainers[tKey].starter.toLowerCase()+'.png'
+    for (const tKey in currTrainers) {
+        currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = 1
+        let tImgURL='./chars/ppl/'+ currTrainers[tKey].name.toLowerCase()+'.png'
+        let mImgURL='./chars/mons/'+ currTrainers[tKey].starter.toLowerCase()+'.png'
 
         evenIndex ?
         leftTrainers.push(<div className='flexRow'>
-                            <div className='flexCol' style={{backgroundColor:"blue"}}><img src={tImgURL}></img>{remainingTrainers[tKey].name}</div>
-                            <div className='flexCol' style={{backgroundColor:"blue"}}><img src={mImgURL}></img>{remainingTrainers[tKey].mons[remainingTrainers[tKey].starter].currHP} / {remainingTrainers[tKey].mons[remainingTrainers[tKey].starter].hp}</div>
+                            <div className='flexCol' style={{backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                            <div className='flexCol' style={{backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP} / {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}</div>
                           </div>) :
         rightTrainers.push(<div className='flexRow'>
-                            <div className='flexCol' style={{backgroundColor:"blue"}}><img src={mImgURL}></img>{remainingTrainers[tKey].mons[remainingTrainers[tKey].starter].currHP} / {remainingTrainers[tKey].mons[remainingTrainers[tKey].starter].hp}</div>
-                            <div className='flexCol' style={{backgroundColor:"blue"}}><img src={tImgURL}></img>{remainingTrainers[tKey].name}</div>
+                            <div className='flexCol' style={{backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP} / {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}</div>
+                            <div className='flexCol' style={{backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                            </div>)
         evenIndex ? evenIndex = false : evenIndex = true
     }
@@ -75,15 +75,15 @@ function Fight({menu, trainers}: Fight) {
     // }
 
     function hp(trainer: string, diff: number) {
-       let result = remainingTrainers[trainer].mons[remainingTrainers[trainer].starter].currHP - diff
+       let result = currTrainers[trainer].mons[currTrainers[trainer].starter].currHP - diff
        result < 0 ? 
         result = 0 : 
-        result > remainingTrainers[trainer].mons[remainingTrainers[trainer].starter].hp  ? 
-            result = remainingTrainers[trainer].mons[remainingTrainers[trainer].starter].hp :
+        result > currTrainers[trainer].mons[currTrainers[trainer].starter].hp  ? 
+            result = currTrainers[trainer].mons[currTrainers[trainer].starter].hp :
             result = result
-       let tmp = remainingTrainers
-       tmp[trainer].mons[remainingTrainers[trainer].starter].currHP = result
-       setRemainingTrainers(tmp)
+       let tmp = currTrainers
+       tmp[trainer].mons[currTrainers[trainer].starter].currHP = result
+       setCurrTrainers(tmp)
     }
 
     return (
