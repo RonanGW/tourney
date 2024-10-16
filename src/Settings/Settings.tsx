@@ -75,11 +75,13 @@ function resetSave(data: any) {
   return trainersSaveData
 }
 
+// Settings Menu
 function Settings({menu}: Settings) {
     
-  const [data,setData] = useState("N/A")
+  let data = "N/A" // Initial Placeholder for the content to be read from 
   
-  fetch('/defaults.json').then(response => {return response.json()}).then(tmp => setData(JSON.stringify(tmp)))
+  // Replaces data variable with the contents of defaults.json in the game's folder 
+  fetch('/defaults.json').then(response => {return response.json()}).then(tmp => data = JSON.stringify(tmp))
 
     return (
       <div>

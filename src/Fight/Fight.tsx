@@ -38,21 +38,29 @@ function Fight({menu, trainers}: Fight) {
     const [activeTrainer, setActiveTrainer] = useState(Object.keys(currTrainers)[0])
     let leftTrainers = [];
     let rightTrainers = [];
-  
     let evenIndex = true
+    
     for (const tKey in currTrainers) {
-        currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = 1
+        currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp
         let tImgURL='./chars/ppl/'+ currTrainers[tKey].name.toLowerCase()+'.png'
         let mImgURL='./chars/mons/'+ currTrainers[tKey].starter.toLowerCase()+'.png'
 
         evenIndex ?
         leftTrainers.push(<div className='flexRow'>
-                            <div className='flexCol' style={{backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                            <div className='flexCol' style={{backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP} / {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}</div>
+                            <div className='flexCol' style={{width:"128px",backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                            <div className='flexCol' style={{width:"128px",backgroundColor:tKey == activeTrainer ? "green":"blue"}}>
+                                <img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                                 / 
+                                {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
+                            </div>
                           </div>) :
         rightTrainers.push(<div className='flexRow'>
-                            <div className='flexCol' style={{backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP} / {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}</div>
-                            <div className='flexCol' style={{backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                            <div className='flexCol' style={{width:"128px",backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={mImgURL}>
+                                </img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                                 / 
+                                {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
+                            </div>
+                            <div className='flexCol' style={{width:"128px",backgroundColor:tKey == activeTrainer ? "green":"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                            </div>)
         evenIndex ? evenIndex = false : evenIndex = true
     }
