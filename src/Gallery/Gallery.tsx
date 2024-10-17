@@ -31,7 +31,7 @@ interface trainer {
 };
 
 function Gallery({menu, trainers}: Gallery) {
-    const [filters, setFilters] = useState(["Unlocked","Available","Locked"]);
+    const [filters, setFilters] = useState(["Unlocked","Available","Locked"]); // Actively displayed states
     const trainerObjects: [string,trainer][]  = Object.entries(trainers[0])
     const [cards, setCards] = useState(filterTrainerCards());
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]);
