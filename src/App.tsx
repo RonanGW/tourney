@@ -7,8 +7,8 @@ import tdata from './trainers.json'
 
 //Primary Page (Main Loop). Critical States should originate from here so they are consistent
 function App() {
-  const [menu, setMenu] = useState("Main-Menu")
-  const [trainers, setTrainers] = useState(tdata)
+  const [menu, setMenu] = useState("Main-Menu") //Key to determin which menu the player is on
+  const [trainers, setTrainers] = useState(tdata) //Object extrapolated data. This is passed to most objects and changed frequently. Consider it the core data. Needs to be saved at end of session
 
   return (
     // Conditional switch to determine which page is rendered
