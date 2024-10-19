@@ -93,9 +93,26 @@ function Fight({menu, trainers}: Fight) {
             result = currTrainers[trainer].mons[currTrainers[trainer].starter].hp :
             result = result
        let tmp = currTrainers
-       tmp[trainer].mons[tmp[trainer].starter].currHP = result;
+       tmp[trainer].mons[tmp[trainer].starter].currHP = result
        setCurrTrainers(tmp)
     }
+
+    function xp(trainer: string, diff: number) {
+        let result = currTrainers[trainer].mons[currTrainers[trainer].starter].xp + diff
+        let lvlUp = false
+        result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? lvlUp = true : lvlUp = false
+        let tmp = currTrainers
+        if (lvlUp) {
+            tmp[trainer].mons[tmp[trainer].starter].xp = result - currTrainers[trainer].mons[currTrainers[trainer].starter].lvl
+            tmp[trainer].mons[tmp[trainer].starter].lvl = tmp[trainer].mons[tmp[trainer].starter].lvl + 1
+        }
+        else {
+            tmp[trainer].mons[tmp[trainer].starter].xp = diff
+        }
+        console.log("XP function called.\n"+trainer+"\nnew lvl:"+tmp[trainer].mons[tmp[trainer].starter].lvl+"\nnew xp:"+tmp[trainer].mons[tmp[trainer].starter].xp)
+        setCurrTrainers(tmp)
+        result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? xp(trainer,0) : lvlUp = false
+     }
 
     return (
     <div>
