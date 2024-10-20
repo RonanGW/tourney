@@ -8,7 +8,7 @@ interface Gallery {
   trainers: any[] // Current trainer data for populating most up to date character info. Value is [state<trainer>,setState()]
 }
 
-// Genericc data structure for a 'mon'
+// Generic data structure for a 'mon'
 interface mon {
   name: string, //The mon's name
   form: string, //The mon's from ("" if none)
