@@ -122,14 +122,14 @@ function Fight({menu, trainers}: Fight) {
         setActiveTrainers(activeTrainers.splice(activeTrainers.indexOf(activeTrainers[0]), 1))
     }
 
-
-
     function hp(trainer: string, diff: number) {
        let result = currTrainers[trainer].mons[currTrainers[trainer].starter].currHP - diff
        if (result <= 0) {
         result = 0;
-        setActiveTrainers(activeTrainers.splice(activeTrainers.indexOf(trainer), 1))
-        console.log("removing " + trainer)
+        if (activeTrainers.includes(trainer)) {
+            setActiveTrainers(activeTrainers.splice(activeTrainers.indexOf(trainer), 1))
+            console.log("removing " + trainer)
+        }
         }
        else if (result > currTrainers[trainer].mons[currTrainers[trainer].starter].hp) { 
             result = currTrainers[trainer].mons[currTrainers[trainer].starter].hp
