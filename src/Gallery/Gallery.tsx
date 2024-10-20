@@ -4,20 +4,21 @@ import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
 
 interface Gallery {
-  menu: any[]
-  trainers: any[]
+  menu: any[] // passes the current state (i.e. gallery menu) to this page so it can be undone. Value is [state<string>,setState()]
+  trainers: any[] // Current trainer data for populating most up to date character info. Value is [state<trainer>,setState()]
 }
 
+// Genericc data structure for a 'mon'
 interface mon {
-  name: string,
-  form: string,
-  shine:string,
-  state: string;
-  lvl: number;
-  xp: number;
-  hp: number;
+  name: string, //The mon's name
+  form: string, //The mon's from ("" if none)
+  shine:string, //The mon's shine ("" if none)
+  state: string; //The state of this mon for this trainer, (i.e. Unlocked, Locked or Hidden)
+  lvl: number; //The mon's current level
+  xp: number; //The mon's current xp prior to leveling. (Cap is their current level which will let them level up)
+  hp: number; //The mon's current total HP
   atk: number;
-  cost: number;
+  cost: number; //How many BP it costs to purchase this mon once it goes from 'hidden' to 'locked'
 }
 
 interface trainer {

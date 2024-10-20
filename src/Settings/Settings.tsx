@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './Settings.css'
 
 interface Settings {
-  menu: any[] // passes the current state (i.e. menu) to this page so it can be undone. Value is [state,setState]
+  menu: any[] // passes the current state (i.e. settings menu) to this page so it can be undone. Value is [state,setState()]
 }
 
 //locally downloads the data file for a reset game
@@ -44,7 +44,7 @@ function resetSave(data: any) {
     //Intialize each mon for each trainer
     data.mons.forEach((mon: any) => {
       let monState = "Hidden"
-      mon.name.toLowerCase() == trainer[1] ? monState = "Unlocked" : monState = "Hidden"
+      mon.name.toLowerCase() == trainer[1] ? monState = "Unlocked" : monState = "Locked"
         trainersSaveData[trainer[0].toLowerCase()].mons[mon.name.toLowerCase() + mon.form.toLowerCase()] = {
             name: mon.name,
             form: mon.form,

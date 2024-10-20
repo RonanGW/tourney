@@ -5,9 +5,11 @@ interface MonCard {
 }
 
 const MonCard = ({mon}: MonCard) => {
+  let form = ""
   let shine = ""
+  mon.form != "" ? form = " " + mon.form: form = ""
   mon.shine != "" ? shine = " (" + mon.shine + ")" : shine = ""
-  let imgURL='./chars/mons/'+ mon.name.toLowerCase()+shine+'.png'
+  let imgURL='./chars/mons/'+ mon.name.toLowerCase()+form+shine+'.png'
   let cardDisplay = "cardImg "+mon.state
 
   return (
