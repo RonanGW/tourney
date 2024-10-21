@@ -17,31 +17,53 @@ interface mon {
   lvl: number; //The mon's current level
   xp: number; //The mon's current xp prior to leveling. (Cap is their current level which will let them level up)
   hp: number; //The mon's current total HP
-  atk: number;
+  atk: number; //Unused for now. Currently damage is just equal to mon's level
   cost: number; //How many BP it costs to purchase this mon once it goes from 'hidden' to 'locked'
 }
 
+// Generic data structure for a 'trainer'
 interface trainer {
-      state: string;
-      region: string;
-      class: string;
-      w: number;
-      l: number;
-      BP: number;
-      mons: object
+      state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
+      region: string; //Home region of this trainer. (Used primarily for sorting)
+      class: string; //This trainer's class. (Used primarily for sorting)
+      w: number; //Total number of tourney wins for this trainer
+      l: number; //Total number of tourney losses for this trainer
+      BP: number; //Available BP for this trainer (Game Currency)
+      mons: object //Object containing all mon data for this trainer
 };
 
+// Gallery Menu
 function Gallery({menu, trainers}: Gallery) {
-    const [filters, setFilters] = useState(["Unlocked","Available","Locked"]); // Actively displayed states
-    const trainerObjects: [string,trainer][]  = Object.entries(trainers[0])
-    const [cards, setCards] = useState(filterTrainerCards());
-    const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]);
-    const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
+    const trainerObjects: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
+    const [filters, setFilters] = useState(["Unlocked","Available","Locked"]); // Actively displayed trainer & mon statuses
+    const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
+    const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
+    const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999}) //Current Mon to display inside trainer screen
 
+  // Reset's the display to the starting Gallery Screen
+  function switchToMainScreen() {
+    menu[1]("Gallery");
+    setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
+    setCards(filterTrainerCards());
+  }
+
+  // Resets the display to the selected trainer's details page
+  function switchToTrainerScreen(trainer: any) {
+    menu[1]("Gallery-Trainer");
+    setCurrTrainer(trainer)
+    setCards(filterMonCards(trainer));
+  }
+
+  // Resets the display to the selected mon's details page
+  function switchToMonScreen(mon: mon) {
+    menu[1]("Mon");
+  }
+
+  // Returns an array of Trainer Cards to display using currently selected Filters
   function filterTrainerCards(): JSX.Element[] {
-    let newCards: JSX.Element[] = []; 
+    let newCards: JSX.Element[] = []; //Array to be filled with cards
     
-    
+    //Loop through each trainer and if their status is active, create a card for them and add it to the display list.
     for (let [tkey,value] of trainerObjects) {
       filters.includes(value.state) ? newCards.push(
         <div onClick={() => switchToTrainerScreen(value)}>
@@ -52,11 +74,13 @@ function Gallery({menu, trainers}: Gallery) {
     return newCards
   }
 
+  // Returns an array of Mon Cards to display using currently selected Filters
   function filterMonCards(trainer: any): JSX.Element[] {
-    let newCards: JSX.Element[] = []; 
+    let newCards: JSX.Element[] = []; //Array to be filled with cards
 
-    let mons = Object.entries<mon>(trainer.mons);
+    let mons = Object.entries<mon>(trainer.mons); //Turns the passed trainers mons object into an array
 
+    //Loop through each mon and if their status is active, create a card for them and add it to the display list.
     for (let [tkey,value] of mons) {
         filters.includes(value.state) ? newCards.push(
           <div onClick={() => {setSelectedMon(value)}}>
@@ -65,22 +89,6 @@ function Gallery({menu, trainers}: Gallery) {
         ) : <></>
       }
       return newCards
-  }
-
-  function switchToMainScreen() {
-    menu[1]("Gallery");
-    setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
-    setCards(filterTrainerCards());
-  }
-
-  function switchToTrainerScreen(trainer: any) {
-    menu[1]("Gallery-Trainer");
-    setCurrTrainer(trainer)
-    setCards(filterMonCards(trainer));
-  }
-
-  function switchToMonScreen(mon: mon) {
-    menu[1]("Mon");
   }
 
   function purchaseMon(trainer: trainer, mon: mon): void {

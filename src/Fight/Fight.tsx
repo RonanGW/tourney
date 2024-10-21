@@ -30,6 +30,8 @@ interface trainer {
 };
 
 
+let toRender = false
+
 function Fight({menu, trainers}: Fight) {
     const firstRender = useRef(true);
     const [currTrainers, setCurrTrainers] = useState(Object.fromEntries((((Object.entries<trainer>(trainers[0]))
@@ -38,6 +40,18 @@ function Fight({menu, trainers}: Fight) {
                                                                         .slice(0, 8)))
     const [activeTrainers, setActiveTrainers] = useState<string[]>(shuffleArray(Object.keys(currTrainers)))
     const [fullCards, setFullCards] = useState(combineLists)
+
+    useEffect(() => {
+        // Update the document title using the browser API
+        console.log("Active Trainers: ")
+        console.log(activeTrainers)
+
+        if (toRender) {
+            setFullCards(combineLists)
+            toRender = false
+        }
+      });
+
     if (firstRender.current) {firstRender.current = false;}
 
     function shuffleArray(array: string[]) {
@@ -52,7 +66,7 @@ function Fight({menu, trainers}: Fight) {
 
     function combineLists(): JSX.Element {
         return (
-         <div
+         <div key={Math.random()}
           className='flexRow'
           style={{justifyContent:"space-between",marginLeft:"10vw",marginRight:"10vw",height:"75vh"}}>
              <div className='flexCol'
@@ -69,18 +83,16 @@ function Fight({menu, trainers}: Fight) {
     function setTrainerCards(left: boolean): JSX.Element[] {
         let trainers: JSX.Element[] = [];
         let index = 0
-        console.log(activeTrainers)
         
         
         for (const tKey in currTrainers) {
             if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
-                //console.log(tKey)
                 if (firstRender.current) {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
                 let tImgURL='./chars/ppl/'+ currTrainers[tKey].name.toLowerCase()+'.png'
                 let mImgURL='./chars/mons/'+ currTrainers[tKey].starter.toLowerCase()+'.png'
         
                 if (tKey == activeTrainers[0]) {
-                    trainers.push(<div key={Math.random()} className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
+                    trainers.push(<div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
                                         <img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
@@ -90,7 +102,7 @@ function Fight({menu, trainers}: Fight) {
                                 </div>)
                 }
                 else if (currTrainers[tKey].mons[currTrainers[tKey].starter].currHP <= 0) {
-                    trainers.push(<div key={Math.random()} className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
+                    trainers.push(<div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}>
                                         <img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
@@ -100,37 +112,46 @@ function Fight({menu, trainers}: Fight) {
                                 </div>)
                 }
                 else {
-                    trainers.push(<div key={Math.random()} className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey);setFullCards(combineLists)}}>
-                    <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                    <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}>
-                        <img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
-                        / 
-                        {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
+                    trainers.push(
+                    <div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
+                        <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                        <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}>
+                            <img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                            / 
+                            {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
                     </div>
                 </div>)
                 }
-            //console.log("-----------------------------")
             }
             index++
         }
-
         return trainers
     }
 
+    function removeTrainers(trainersToRemove: string[]) {
+        toRender = true
+        setActiveTrainers([...activeTrainers].filter((tKey) => !trainersToRemove.includes(tKey)))//splice(tmp.indexOf(tmp[0]), 1))
+    }
+
     function act(target: string) {
-        hp(target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl)
-        setActiveTrainers(activeTrainers.splice(activeTrainers.indexOf(activeTrainers[0]), 1))
+        let defeat = hp(target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl) //currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl
+        let removals = [activeTrainers[0]]
+        if (defeat) {
+            removals.push(target)
+        }
+        if (activeTrainers.length > 2) {
+           removeTrainers(removals)
+        }
+        else if (activeTrainers.length <= 2) {
+            console.log("ROUND COMPLETE!!!")
+            toRender = true
+            setActiveTrainers([...shuffleArray(Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0))])            
+        }
     }
 
     function hp(trainer: string, diff: number) {
        let result = currTrainers[trainer].mons[currTrainers[trainer].starter].currHP - diff
-       if (result <= 0) {
-        result = 0;
-        if (activeTrainers.includes(trainer)) {
-            setActiveTrainers(activeTrainers.splice(activeTrainers.indexOf(trainer), 1))
-            console.log("removing " + trainer)
-        }
-        }
+       if (result <= 0) {result = 0}
        else if (result > currTrainers[trainer].mons[currTrainers[trainer].starter].hp) { 
             result = currTrainers[trainer].mons[currTrainers[trainer].starter].hp
        }
@@ -138,6 +159,12 @@ function Fight({menu, trainers}: Fight) {
        let tmp = currTrainers
        tmp[trainer].mons[tmp[trainer].starter].currHP = result
        setCurrTrainers(tmp)
+
+       if (activeTrainers.includes(trainer) && result == 0) {
+        console.log(activeTrainers[0] + " defeated "+trainer+"!")
+        return true
+       }
+       else {return false}
     }
 
     function xp(trainer: string, diff: number) {
@@ -152,7 +179,7 @@ function Fight({menu, trainers}: Fight) {
         else {
             tmp[trainer].mons[tmp[trainer].starter].xp = diff
         }
-        console.log("XP function called.\n"+trainer+"\nnew lvl:"+tmp[trainer].mons[tmp[trainer].starter].lvl+"\nnew xp:"+tmp[trainer].mons[tmp[trainer].starter].xp)
+        //console.log("XP function called.\n"+trainer+"\nnew lvl:"+tmp[trainer].mons[tmp[trainer].starter].lvl+"\nnew xp:"+tmp[trainer].mons[tmp[trainer].starter].xp)
         setCurrTrainers(tmp)
         result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? xp(trainer,0) : lvlUp = false
      }
