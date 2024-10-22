@@ -33,8 +33,8 @@ function resetSave(data: any) {
         name: trainer[0],
         state: "Unlocked",
         starter: trainer[1],
-        class: trainer[3],
-        region: trainer[2],
+        class: trainer[4],
+        region: trainer[3],
         w: 0,
         l: 0,
         BP: 0,
@@ -44,7 +44,7 @@ function resetSave(data: any) {
     //Intialize each mon for each trainer
     data.mons.forEach((mon: any) => {
       let monState = "Hidden"
-      mon.name.toLowerCase() == trainer[1] ? monState = "Unlocked" : monState = "Locked"
+      if (mon.name.toLowerCase() == trainer[1] && mon.form.toLowerCase() == trainer[2]) {monState = "Unlocked"} else {monState = "Locked"}
         trainersSaveData[trainer[0].toLowerCase()].mons[mon.name.toLowerCase() + mon.form.toLowerCase()] = {
             name: mon.name,
             form: mon.form,
