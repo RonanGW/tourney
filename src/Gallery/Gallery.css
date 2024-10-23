@@ -33,9 +33,11 @@ button {
 
 .Gallery-vertical-panel {
   display: flex;
+  position: sticky;
+  top: 0;
   flex-direction: column;
   align-items: start;
-  min-width: 10vw;
+  min-width: 15vw;
 }
 
 .Card-block {
@@ -58,7 +60,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 10px;
+  margin: 8px;
 }
 
 .cardImg {
