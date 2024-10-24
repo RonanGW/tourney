@@ -42,21 +42,21 @@ function Gallery({menu, trainers}: Gallery) {
 
   // Reset's the display to the starting Gallery Screen
   function switchToMainScreen() {
-    menu[1]("Gallery");
+    menu[1]("Gallery"); //setMenu function for the menu state defined & passed by parent object
     setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
     setCards(filterTrainerCards());
   }
 
   // Resets the display to the selected trainer's details page
   function switchToTrainerScreen(trainer: any) {
-    menu[1]("Gallery-Trainer");
+    menu[1]("Gallery-Trainer"); //setMenu function for the menu state defined & passed by parent object
     setCurrTrainer(trainer)
     setCards(filterMonCards(trainer));
   }
 
   // Resets the display to the selected mon's details page
   function switchToMonScreen(mon: mon) {
-    menu[1]("Mon");
+    menu[1]("Mon"); //setMenu function for the menu state defined & passed by parent object
   }
 
   // Returns an array of Trainer Cards to display using currently selected Filters
