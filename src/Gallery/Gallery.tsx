@@ -3,6 +3,7 @@ import './Gallery.css'
 import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
 
+//Interface to pass state variables created by parent object
 interface Gallery {
   menu: any[] // passes the current state (i.e. gallery menu) to this page so it can be undone. Value is [state<string>,setState()]
   trainers: any[] // Current trainer data for populating most up to date character info. Value is [state<trainer>,setState()]
@@ -23,13 +24,15 @@ interface mon {
 
 // Generic data structure for a 'trainer'
 interface trainer {
-      state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
-      region: string; //Home region of this trainer. (Used primarily for sorting)
-      class: string; //This trainer's class. (Used primarily for sorting)
-      w: number; //Total number of tourney wins for this trainer
-      l: number; //Total number of tourney losses for this trainer
-      BP: number; //Available BP for this trainer (Game Currency)
-      mons: object //Object containing all mon data for this trainer
+  name: string; //The display name of the trainer
+  state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
+  starter: string; //The active starting mon of the trainer
+  region: string; //Home region of this trainer. (Used primarily for sorting)
+  class: string; //This trainer's class. (Used primarily for sorting)
+  w: number; //Total number of tourney wins for this trainer
+  l: number; //Total number of tourney losses for this trainer
+  BP: number; //Available BP for this trainer (Game Currency)
+  mons: object //Object containing all mon data for this trainer
 };
 
 // Gallery Menu
@@ -91,6 +94,7 @@ function Gallery({menu, trainers}: Gallery) {
       return newCards
   }
 
+  //Unlocks an availabe mon for a given trainer in exchange for BP
   function purchaseMon(trainer: trainer, mon: mon): void {
       if (trainer.BP >= mon.cost) {
         mon.state="Unlocked"
@@ -99,6 +103,8 @@ function Gallery({menu, trainers}: Gallery) {
       }
   }
 
+  //Sets the object to display the 'Trainer Page' content, which is the trainer selected, their details and all the mons they have that are unlocked or available next
+  //Also allows the user to open a display revealing the details of each of their mons
   function TrainerPage(trainer: trainer): JSX.Element {
 
     return <div className="Gallery-content">
@@ -142,6 +148,7 @@ function Gallery({menu, trainers}: Gallery) {
         </div>
   }
   
+  //Returns the Gallery object, which would allow users to view trainer details and make purchases 
   return (
     <div className="Gallery">
         {menu[0] == "Gallery" ? 

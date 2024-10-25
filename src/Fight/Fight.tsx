@@ -1,33 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './Fight.css'
 
+//Interface to pass state variables created by parent object
 interface Fight {
-  menu: any[]
-  trainers: any[]
-
+    menu: any[] // passes the current state (i.e. gallery menu) to this page so it can be undone. Value is [state<string>,setState()]
+    trainers: any[] // Current trainer data for populating most up to date character info. Value is [state<trainer>,setState()]
 }
 
+// Generic data structure for a 'mon'
 interface mon {
-  state: string;
-  lvl: number;
-  xp: number;
-  hp: number;
-  currHP: number;
-  atk: number;
-  cost: number;
-}
+    name: string, //The mon's name
+    form: string, //The mon's from ("" if none)
+    shine:string, //The mon's shine ("" if none)
+    state: string; //The state of this mon for this trainer, (i.e. Unlocked, Locked or Hidden)
+    lvl: number; //The mon's current level
+    xp: number; //The mon's current xp prior to leveling. (Cap is their current level which will let them level up)
+    hp: number; //The mon's current total HP
+    currHP: number; //The mon's current remaining HP
+    atk: number; //Unused for now. Currently damage is just equal to mon's level
+    cost: number; //How many BP it costs to purchase this mon once it goes from 'hidden' to 'locked'
+  }
 
-interface trainer {
-    name: string;
-    state: string;
-    starter: string;
-    region: string;
-    class: string;
-    w: number;
-    l: number;
-    BP: number;
-    mons: any
-};
+  // Generic data structure for a 'trainer'
+  interface trainer {
+    name: string; //The display name of the trainer
+    state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
+    starter: string; //The active starting mon of the trainer
+    region: string; //Home region of this trainer. (Used primarily for sorting)
+    class: string; //This trainer's class. (Used primarily for sorting)
+    w: number; //Total number of tourney wins for this trainer
+    l: number; //Total number of tourney losses for this trainer
+    BP: number; //Available BP for this trainer (Game Currency)
+    mons: any //Object containing all mon data for this trainer
+  };
 
 
 let toRender = false
