@@ -35,7 +35,7 @@ interface mon {
   };
 
 
-let toRender = false
+let toRender = false //Representation of current render
 
 function Fight({menu, trainers}: Fight) {
     const firstRender = useRef(true);
