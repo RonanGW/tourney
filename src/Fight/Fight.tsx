@@ -105,7 +105,7 @@ function Fight({menu, trainers}: Fight) {
                     trainers.push(<div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
-                                        <img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                                        <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
                                         / 
                                         {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
                                     </div>
@@ -115,7 +115,7 @@ function Fight({menu, trainers}: Fight) {
                     trainers.push(<div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}>
-                                        <img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                                        <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
                                         / 
                                         {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
                                     </div>
@@ -126,7 +126,7 @@ function Fight({menu, trainers}: Fight) {
                     <div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
                         <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                         <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}>
-                            <img src={mImgURL}></img>{currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                            <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
                             / 
                             {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
                     </div>
@@ -149,8 +149,9 @@ function Fight({menu, trainers}: Fight) {
     }
 
     function act(target: string) {
-        let defeat = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl) //currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl
+        let defeat = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl)
         let removals = [activeTrainers[0]]
+        editTData(defeat[0])
         if (defeat[1]) {
             removals.push(target)
         }
@@ -163,7 +164,6 @@ function Fight({menu, trainers}: Fight) {
             setActiveTrainers([...shuffleArray(Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0))])            
         }
 
-        editTData(defeat[0])
     }
 
     function hp(tData: any, trainer: string, diff: number) {
@@ -175,10 +175,11 @@ function Fight({menu, trainers}: Fight) {
         
        tData[trainer].mons[tData[trainer].starter].currHP = result
 
-       if (activeTrainers.includes(trainer) && result == 0) {
+       if (result == 0) {
         tData[trainer].mons[tData[trainer].starter].hp = tData[trainer].mons[tData[trainer].starter].hp + 1
-        console.log(activeTrainers[0] + " defeated "+trainer+"!")
         tData = xp(tData,activeTrainers[0],1)
+    }
+       if (activeTrainers.includes(trainer) && result == 0) {
         return [tData,true]
        }
        else {return [tData,false]}
