@@ -138,8 +138,8 @@ function Fight({menu, trainers}: Fight) {
         return trainers
     }
 
-    function editTData(tData: object) {
-
+    function editTData(tData: any) {
+        setCurrTrainers(tData)
     }
 
     // Re-renders display by removing the passed trainers from the active trainers list
@@ -149,10 +149,9 @@ function Fight({menu, trainers}: Fight) {
     }
 
     function act(target: string) {
-       let tmp = currTrainers
         let defeat = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl) //currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl
         let removals = [activeTrainers[0]]
-        if (defeat) {
+        if (defeat[1]) {
             removals.push(target)
         }
         if (activeTrainers.length > 2) {
@@ -164,43 +163,39 @@ function Fight({menu, trainers}: Fight) {
             setActiveTrainers([...shuffleArray(Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0))])            
         }
 
-        editTData(tmp)
+        editTData(defeat[0])
     }
 
-    function hp(tData: object, trainer: string, diff: number) {
+    function hp(tData: any, trainer: string, diff: number) {
        let result = currTrainers[trainer].mons[currTrainers[trainer].starter].currHP - diff
        if (result <= 0) {result = 0}
        else if (result > currTrainers[trainer].mons[currTrainers[trainer].starter].hp) { 
             result = currTrainers[trainer].mons[currTrainers[trainer].starter].hp
        }
         
-       let tmp = currTrainers
-       tmp[trainer].mons[tmp[trainer].starter].currHP = result
-       setCurrTrainers(tmp)
+       tData[trainer].mons[tData[trainer].starter].currHP = result
 
        if (activeTrainers.includes(trainer) && result == 0) {
+        tData[trainer].mons[tData[trainer].starter].hp = tData[trainer].mons[tData[trainer].starter].hp + 1
         console.log(activeTrainers[0] + " defeated "+trainer+"!")
-        xp(tData,activeTrainers[0],1)
-        return true
+        tData = xp(tData,activeTrainers[0],1)
+        return [tData,true]
        }
-       else {return false}
+       else {return [tData,false]}
     }
 
-    function xp(tData: object, trainer: string, diff: number) {
+    function xp(tData: any, trainer: string, diff: number) {
         let result = currTrainers[trainer].mons[currTrainers[trainer].starter].xp + diff
         let lvlUp = false
         result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? lvlUp = true : lvlUp = false
-        let tmp = currTrainers
         if (lvlUp) {
             console.log(activeTrainers[0] + "should level up")
-            tmp[trainer].mons[tmp[trainer].starter].xp = result - currTrainers[trainer].mons[currTrainers[trainer].starter].lvl
-            tmp[trainer].mons[tmp[trainer].starter].lvl = tmp[trainer].mons[tmp[trainer].starter].lvl + 1
+            tData[trainer].mons[tData[trainer].starter].xp = result - currTrainers[trainer].mons[currTrainers[trainer].starter].lvl
+            tData[trainer].mons[tData[trainer].starter].lvl = tData[trainer].mons[tData[trainer].starter].lvl + 1
         }
         else {
-            tmp[trainer].mons[tmp[trainer].starter].xp = diff
+            tData[trainer].mons[tData[trainer].starter].xp = diff
         }
-        //console.log("XP function called.\n"+trainer+"\nnew lvl:"+tmp[trainer].mons[tmp[trainer].starter].lvl+"\nnew xp:"+tmp[trainer].mons[tmp[trainer].starter].xp)
-        setCurrTrainers(tmp)
         result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? xp(tData,trainer,0) : lvlUp = false
         
         console.log(activeTrainers[0] + "gained xp")
