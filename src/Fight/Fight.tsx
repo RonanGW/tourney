@@ -138,69 +138,74 @@ function Fight({menu, trainers}: Fight) {
         return trainers
     }
 
-    function editTData(tData: any) {
-        setCurrTrainers(tData)
-    }
-
     // Re-renders display by removing the passed trainers from the active trainers list
     function removeTrainers(trainersToRemove: string[]) {
         toRender = true // Forces Render
         setActiveTrainers([...activeTrainers].filter((tKey) => !trainersToRemove.includes(tKey)))
     }
 
+    //Processes the action a trainer can take when it is their turn as well as the consequences
     function act(target: string) {
+        //Multipurpose value which contains both modified tData [0] & whether the attack resullted in a defeat or not [1]
         let defeat = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl)
-        let removals = [activeTrainers[0]]
-        editTData(defeat[0])
+        let removals = [activeTrainers[0]] //Trainers to be removed from the turn queue
+        
+        setCurrTrainers(defeat[0]) //update tData
+        //If target was defeated, set for removal from turn queue
         if (defeat[1]) {
             removals.push(target)
         }
+        //If there are remaining turns, process removals from queue, otherwise, reset queue
         if (activeTrainers.length > 2) {
            removeTrainers(removals)
         }
         else if (activeTrainers.length <= 2) {
-            console.log("ROUND COMPLETE!!!")
             toRender = true
             setActiveTrainers([...shuffleArray(Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0))])            
         }
 
     }
 
+    //Cause a target to lose some of their current HP
     function hp(tData: any, trainer: string, diff: number) {
-       let result = currTrainers[trainer].mons[currTrainers[trainer].starter].currHP - diff
+       let result = tData[trainer].mons[tData[trainer].starter].currHP - diff //Calculates loss of HP
+       // HP would go out of bounds, bring it back to the edge of bounds
        if (result <= 0) {result = 0}
-       else if (result > currTrainers[trainer].mons[currTrainers[trainer].starter].hp) { 
-            result = currTrainers[trainer].mons[currTrainers[trainer].starter].hp
+       else if (result > tData[trainer].mons[tData[trainer].starter].hp) { 
+            result = tData[trainer].mons[tData[trainer].starter].hp
        }
-        
+
+       // Set current hp to calculated result
        tData[trainer].mons[tData[trainer].starter].currHP = result
 
+       //If target is defeated, give the attacker xp and the target an hp buff
        if (result == 0) {
         tData[trainer].mons[tData[trainer].starter].hp = tData[trainer].mons[tData[trainer].starter].hp + 1
-        tData = xp(tData,activeTrainers[0],1)
-    }
+        tData = xp(tData,activeTrainers[0],tData[trainer].mons[tData[trainer].starter].lvl)
+       }
+       //If the defeated target is still in the queue, return the edited data and true, otherwise return the edited data and false
        if (activeTrainers.includes(trainer) && result == 0) {
         return [tData,true]
        }
        else {return [tData,false]}
     }
 
+    //Causes mon to gain xp and levelup if threshod is met
     function xp(tData: any, trainer: string, diff: number) {
-        let result = currTrainers[trainer].mons[currTrainers[trainer].starter].xp + diff
-        let lvlUp = false
+        let result = currTrainers[trainer].mons[currTrainers[trainer].starter].xp + diff //Calculates XP gained
+        let lvlUp = false //Assumed levelup threshold not met unless otherwise specified below
         result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? lvlUp = true : lvlUp = false
+        //If mon should level up, increase the, taking off the amount that would level them up once and increment their level
         if (lvlUp) {
-            console.log(activeTrainers[0] + "should level up")
             tData[trainer].mons[tData[trainer].starter].xp = result - currTrainers[trainer].mons[currTrainers[trainer].starter].lvl
             tData[trainer].mons[tData[trainer].starter].lvl = tData[trainer].mons[tData[trainer].starter].lvl + 1
         }
         else {
             tData[trainer].mons[tData[trainer].starter].xp = diff
         }
-        result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? xp(tData,trainer,0) : lvlUp = false
-        
-        console.log(activeTrainers[0] + "gained xp")
-        return tData
+        //If trainer can level up again, do so recursively until fully leveled up
+        result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? tData = xp(tData,trainer,0) : lvlUp = false
+        return tData // Returned modified data
      }
 
      function win(tdata: object, trainer: trainer) {
