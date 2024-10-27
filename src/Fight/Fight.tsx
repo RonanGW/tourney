@@ -37,15 +37,18 @@ interface mon {
 
 let toRender = false //Representation of current render
 
+//Returns the content of the Fight Menu
 function Fight({menu, trainers}: Fight) {
-    const firstRender = useRef(true);
-    const [currTrainers, setCurrTrainers] = useState(Object.fromEntries((((Object.entries<trainer>(trainers[0]))
+    const firstRender = useRef(true) ///To distinguish the first render
+    const [currTrainers, setCurrTrainers] = useState(Object.fromEntries((((Object.entries<trainer>(trainers[0])) //Filtered duplicate of trainer data modified to indicate the modifiable nature of this menu and onlly include 8 random selections
                                                                         .filter((t) => t[1].state == "Unlocked"))
                                                                         .sort(() => 0.5 - Math.random()))
                                                                         .slice(0, 8)))
-    const [activeTrainers, setActiveTrainers] = useState<string[]>(shuffleArray(Object.keys(currTrainers)))
-    const [fullCards, setFullCards] = useState(combineLists)
+    const [activeTrainers, setActiveTrainers] = useState<string[]>(shuffleArray(Object.keys(currTrainers))) //Array of Keys of the trainers still able to fight
+    const [fullCards, setFullCards] = useState(combineLists) //The content to render
 
+    //This useEffect is set to re-render manually when the trigger is set to true
+    //Also functions as a primary debugging function for seeing the most up to date changes
     useEffect(() => {
         // Update the document title using the browser API
         console.log("Active Trainers: ")
@@ -57,8 +60,9 @@ function Fight({menu, trainers}: Fight) {
         }
       });
 
-    if (firstRender.current) {firstRender.current = false;}
-
+    if (firstRender.current) {firstRender.current = false;} //If the is the first render, log this.
+    
+    //Shuffle an array of strings in a random order
     function shuffleArray(array: string[]) {
         for (var i = array.length - 1; i >= 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
@@ -69,6 +73,7 @@ function Fight({menu, trainers}: Fight) {
         return array
     }
 
+    //Generate the content to be displayed in the Fight menu
     function combineLists(): JSX.Element {
         return (
          <div key={Math.random()}
@@ -85,10 +90,10 @@ function Fight({menu, trainers}: Fight) {
          </div>)
      }
 
+    //Creates a list of trainers, enabling different visuals and functions depending on the trainer's current fight state
     function setTrainerCards(left: boolean): JSX.Element[] {
-        let trainers: JSX.Element[] = [];
-        let index = 0
-        
+        let trainers: JSX.Element[] = []; //Placeholder to add to contet. Will be the return value.
+        let index = 0 //For determining the hallf way point to split the content in the middle while still generating correctly and using the same function
         
         for (const tKey in currTrainers) {
             if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
@@ -133,13 +138,19 @@ function Fight({menu, trainers}: Fight) {
         return trainers
     }
 
+    function editTData(tData: object) {
+
+    }
+
+    // Re-renders display by removing the passed trainers from the active trainers list
     function removeTrainers(trainersToRemove: string[]) {
-        toRender = true
-        setActiveTrainers([...activeTrainers].filter((tKey) => !trainersToRemove.includes(tKey)))//splice(tmp.indexOf(tmp[0]), 1))
+        toRender = true // Forces Render
+        setActiveTrainers([...activeTrainers].filter((tKey) => !trainersToRemove.includes(tKey)))
     }
 
     function act(target: string) {
-        let defeat = hp(target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl) //currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl
+       let tmp = currTrainers
+        let defeat = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl) //currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl
         let removals = [activeTrainers[0]]
         if (defeat) {
             removals.push(target)
@@ -152,9 +163,11 @@ function Fight({menu, trainers}: Fight) {
             toRender = true
             setActiveTrainers([...shuffleArray(Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0))])            
         }
+
+        editTData(tmp)
     }
 
-    function hp(trainer: string, diff: number) {
+    function hp(tData: object, trainer: string, diff: number) {
        let result = currTrainers[trainer].mons[currTrainers[trainer].starter].currHP - diff
        if (result <= 0) {result = 0}
        else if (result > currTrainers[trainer].mons[currTrainers[trainer].starter].hp) { 
@@ -167,17 +180,19 @@ function Fight({menu, trainers}: Fight) {
 
        if (activeTrainers.includes(trainer) && result == 0) {
         console.log(activeTrainers[0] + " defeated "+trainer+"!")
+        xp(tData,activeTrainers[0],1)
         return true
        }
        else {return false}
     }
 
-    function xp(trainer: string, diff: number) {
+    function xp(tData: object, trainer: string, diff: number) {
         let result = currTrainers[trainer].mons[currTrainers[trainer].starter].xp + diff
         let lvlUp = false
         result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? lvlUp = true : lvlUp = false
         let tmp = currTrainers
         if (lvlUp) {
+            console.log(activeTrainers[0] + "should level up")
             tmp[trainer].mons[tmp[trainer].starter].xp = result - currTrainers[trainer].mons[currTrainers[trainer].starter].lvl
             tmp[trainer].mons[tmp[trainer].starter].lvl = tmp[trainer].mons[tmp[trainer].starter].lvl + 1
         }
@@ -186,7 +201,14 @@ function Fight({menu, trainers}: Fight) {
         }
         //console.log("XP function called.\n"+trainer+"\nnew lvl:"+tmp[trainer].mons[tmp[trainer].starter].lvl+"\nnew xp:"+tmp[trainer].mons[tmp[trainer].starter].xp)
         setCurrTrainers(tmp)
-        result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? xp(trainer,0) : lvlUp = false
+        result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? xp(tData,trainer,0) : lvlUp = false
+        
+        console.log(activeTrainers[0] + "gained xp")
+        return tData
+     }
+
+     function win(tdata: object, trainer: trainer) {
+        return tdata
      }
 
     return (
