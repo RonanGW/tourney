@@ -138,32 +138,26 @@ function Fight({menu, trainers}: Fight) {
         return trainers
     }
 
-    // Re-renders display by removing the passed trainers from the active trainers list
-    function removeTrainers(trainersToRemove: string[]) {
-        toRender = true // Forces Render
-        setActiveTrainers([...activeTrainers].filter((tKey) => !trainersToRemove.includes(tKey)))
-    }
-
     //Processes the action a trainer can take when it is their turn as well as the consequences
     function act(target: string) {
         //Multipurpose value which contains both modified tData [0] & whether the attack resullted in a defeat or not [1]
-        let defeat = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl)
-        let removals = [activeTrainers[0]] //Trainers to be removed from the turn queue
+        let tData = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl)
+        let remainingKeys = activeTrainers
+        remainingKeys = remainingKeys.filter((tKey) => tKey != activeTrainers[0])
         
-        setCurrTrainers(defeat[0]) //update tData
+        setCurrTrainers(tData[0]) //update tData
         //If target was defeated, set for removal from turn queue
-        if (defeat[1]) {
-            removals.push(target)
+        if (tData[1]) {
+            remainingKeys = remainingKeys.filter((tKey) => tKey != target)
         }
-        //If there are remaining turns, process removals from queue, otherwise, reset queue
-        if (activeTrainers.length > 2) {
-           removeTrainers(removals)
+        if (remainingKeys.length <= 2) {
+            remainingKeys = shuffleArray(Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0))
+            if (remainingKeys.length == 1) {
+                win(tData[1], activeTrainers[0])
+            }            
         }
-        else if (activeTrainers.length <= 2) {
-            toRender = true
-            setActiveTrainers([...shuffleArray(Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0))])            
-        }
-
+        toRender = true
+        setActiveTrainers(remainingKeys)
     }
 
     //Cause a target to lose some of their current HP
@@ -182,9 +176,6 @@ function Fight({menu, trainers}: Fight) {
        if (result == 0) {
         tData[trainer].mons[tData[trainer].starter].hp = tData[trainer].mons[tData[trainer].starter].hp + 1
         tData = xp(tData,activeTrainers[0],tData[trainer].mons[tData[trainer].starter].lvl)
-       }
-       //If the defeated target is still in the queue, return the edited data and true, otherwise return the edited data and false
-       if (activeTrainers.includes(trainer) && result == 0) {
         return [tData,true]
        }
        else {return [tData,false]}
@@ -208,7 +199,8 @@ function Fight({menu, trainers}: Fight) {
         return tData // Returned modified data
      }
 
-     function win(tdata: object, trainer: trainer) {
+     function win(tdata: object, trainer: string) {
+        console.log(trainer + " has won!")
         return tdata
      }
 
