@@ -145,7 +145,6 @@ function Fight({menu, trainers}: Fight) {
         let remainingKeys = activeTrainers
         remainingKeys = remainingKeys.filter((tKey) => tKey != activeTrainers[0])
         
-        setCurrTrainers(tData[0]) //update tData
         //If target was defeated, set for removal from turn queue
         if (tData[1]) {
             remainingKeys = remainingKeys.filter((tKey) => tKey != target)
@@ -153,9 +152,10 @@ function Fight({menu, trainers}: Fight) {
         if (remainingKeys.length <= 2) {
             remainingKeys = shuffleArray(Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0))
             if (remainingKeys.length == 1) {
-                win(tData[1], activeTrainers[0])
+                tData[0] = win(tData[0], activeTrainers[0])
             }            
         }
+        setCurrTrainers(tData[0]) //update tData
         toRender = true
         setActiveTrainers(remainingKeys)
     }
@@ -199,8 +199,9 @@ function Fight({menu, trainers}: Fight) {
         return tData // Returned modified data
      }
 
-     function win(tdata: object, trainer: string) {
+     function win(tdata: any, trainer: string) {
         console.log(trainer + " has won!")
+        tdata[trainer].BP = tdata[trainer].BP + 1
         return tdata
      }
 
