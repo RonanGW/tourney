@@ -46,7 +46,7 @@ function resetSave(data: any) {
       let monState = "Hidden"
       if (mon.name.toLowerCase() == trainer[1] && mon.form.toLowerCase() == trainer[2] //If trainer default starter and form match
       ) {monState = "Unlocked"}
-      else if (mon.name.toLowerCase() == trainer[1] || mon.unlocker == ""//If trainer default starter
+      else if (mon.name.toLowerCase() == trainer[1] || mon.unlocker == "" ||  mon.unlocker == trainer[1] + trainer[2]//If trainer default starter, a default reveal or revealed based starter, set to reveal. Otherwise, hide
       ) {monState = "Locked"} else {monState = "Hidden"}
         trainersSaveData[trainer[0].toLowerCase()].mons[mon.name.toLowerCase() + mon.form.toLowerCase()] = {
             name: mon.name,

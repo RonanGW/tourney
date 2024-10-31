@@ -83,6 +83,19 @@ function Fight({menu, trainers}: Fight) {
              style={{justifyContent:"space-between"}}>
                  {setTrainerCards(true)}
              </div>
+             <div>
+                {activeTrainers.length <= 1 ? 
+                    <>
+                    <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
+                        <img src={'./chars/ppl/'+ currTrainers[activeTrainers[0]].name.toLowerCase()+'.png'}>
+                        </img>
+                        {currTrainers[activeTrainers[0]].name} is victorius!
+                    </div>
+                    <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
+                    </> :
+                    <></>
+                }
+             </div>
              <div className='flexCol'
              style={{justifyContent:"space-between"}}>
                  {setTrainerCards(false)}
