@@ -29,7 +29,7 @@ function resetSave(data: any) {
 
   //Initialize each trainer using a lowercase version of their name as the key
   data.trainers.forEach((trainer: any) => {
-    trainersSaveData[trainer[0].toLowerCase()] = {
+    trainersSaveData[trainer[0]] = {
         name: trainer[0],
         state: "Unlocked",
         starter: trainer[1],
@@ -44,11 +44,11 @@ function resetSave(data: any) {
     //Intialize each mon for each trainer
     data.mons.forEach((mon: any) => {
       let monState = "Hidden"
-      if (mon.name.toLowerCase() == trainer[1] && mon.form.toLowerCase() == trainer[2] //If trainer default starter and form match
+      if (mon.name == trainer[1] && mon.form == trainer[2] //If trainer default starter and form match
       ) {monState = "Unlocked"}
-      else if (mon.name.toLowerCase() == trainer[1] || mon.unlocker == "" ||  mon.unlocker == trainer[1] + trainer[2]//If trainer default starter, a default reveal or revealed based starter, set to reveal. Otherwise, hide
+      else if (mon.name == trainer[1] || mon.unlocker == "" ||  mon.unlocker == trainer[1] + trainer[2]//If trainer default starter, a default reveal or revealed based starter, set to reveal. Otherwise, hide
       ) {monState = "Locked"} else {monState = "Hidden"}
-        trainersSaveData[trainer[0].toLowerCase()].mons[mon.name.toLowerCase() + mon.form.toLowerCase()] = {
+        trainersSaveData[trainer[0]].mons[mon.name + mon.form] = {
             name: mon.name,
             form: mon.form,
             shine: "",
@@ -60,8 +60,8 @@ function resetSave(data: any) {
             cost: mon.cost
         }
       //Intialize the shiny version of each mon for each trainer
-      mon.name.toLowerCase() == trainer[1] ? monState = "Locked" : monState = "Hidden"
-        trainersSaveData[trainer[0].toLowerCase()].mons[mon.name.toLowerCase() + mon.form.toLowerCase() + "shiny"] = {
+      mon.name == trainer[1] ? monState = "Locked" : monState = "Hidden"
+        trainersSaveData[trainer[0]].mons[mon.name + mon.form + "shiny"] = {
           name:  mon.name,
           form: mon.form,
           shine: "Shiny",

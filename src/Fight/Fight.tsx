@@ -87,7 +87,7 @@ function Fight({menu, trainers}: Fight) {
                 {activeTrainers.length <= 1 ? 
                     <>
                     <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
-                        <img src={'./chars/ppl/'+ currTrainers[activeTrainers[0]].name.toLowerCase()+'.png'}>
+                        <img src={'./chars/ppl/'+ currTrainers[activeTrainers[0]].name+'.png'}>
                         </img>
                         {currTrainers[activeTrainers[0]].name} is victorius!
                     </div>
@@ -111,8 +111,8 @@ function Fight({menu, trainers}: Fight) {
         for (const tKey in currTrainers) {
             if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
                 if (firstRender.current) {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
-                let tImgURL='./chars/ppl/'+ currTrainers[tKey].name.toLowerCase()+'.png'
-                let mImgURL='./chars/mons/'+ currTrainers[tKey].starter.toLowerCase()+'.png'
+                let tImgURL='./chars/ppl/'+ currTrainers[tKey].name+'.png'
+                let mImgURL='./chars/mons/'+ currTrainers[tKey].starter+'.png'
         
                 if (tKey == activeTrainers[0]) {
                     trainers.push(<div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
