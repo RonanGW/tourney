@@ -57,7 +57,8 @@ function resetSave(data: any) {
             xp: 0,
             hp: 1,
             atk: 1,
-            cost: mon.cost
+            cost: mon.cost,
+            unlocker: mon.unlocker
         }
       //Intialize the shiny version of each mon for each trainer
       mon.name == trainer[1] ? monState = "Locked" : monState = "Hidden"
@@ -70,7 +71,8 @@ function resetSave(data: any) {
           xp: 0,
           hp: 1,
           atk: 1,
-          cost: mon.cost * 2
+          cost: mon.cost * 2,
+          unlocker: mon.name
       }
     })
   });
