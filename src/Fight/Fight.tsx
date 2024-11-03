@@ -203,14 +203,10 @@ function Fight({menu, trainers}: Fight) {
         if (lvlUp) {
             tData[trainer].mons[tData[trainer].starter].xp = result - currTrainers[trainer].mons[currTrainers[trainer].starter].lvl
             tData[trainer].mons[tData[trainer].starter].lvl = tData[trainer].mons[tData[trainer].starter].lvl + 1
-            let key = Object.keys(tData[trainer].mons)
             if (tData[trainer].mons[tData[trainer].starter].lvl >= 2) {
-                console.log("Unlock evos!")
-                for (const mKey in key) {
-                    //console.log("Checkin if " + tData[trainer].starter + " unlocks " + key[mKey])
-                    if (tData[trainer].mons[key[mKey]].unlocker == tData[trainer].starter) {
-                        console.log("UNLOCKING " + key[mKey])
-                        tData[trainer].mons[key[mKey]].state = "Available"
+                for (const mKey in tData[trainer].mons) {
+                    if (tData[trainer].mons[mKey].unlocker == tData[trainer].starter) {
+                        tData[trainer].mons[mKey].state = "Available"
                     }
                 }
             }
