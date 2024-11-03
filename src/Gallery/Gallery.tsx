@@ -125,7 +125,7 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div className="Gallery-vertical-panel">
                 {selectedMon.state == "blank" ? "" : 
-                    <div className="Gallery-vertical-panel">
+                    <div>
                         <MonCard mon={selectedMon}></MonCard>
                         <div className="Gallery-info-panel">
                             { selectedMon.state == "Unlocked" ?

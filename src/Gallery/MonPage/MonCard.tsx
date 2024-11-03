@@ -1,7 +1,7 @@
 import '../Gallery.css'
 
 interface MonCard {
-  mon: any;
+  mon: any; //Passes the mon object from  the parent element
 }
 
 const MonCard = ({mon}: MonCard) => {
