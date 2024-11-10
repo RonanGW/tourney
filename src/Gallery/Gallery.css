@@ -31,6 +31,23 @@ button {
   min-height: 70vh;
 }
 
+.filter {
+  background-color: rgb(141, 223, 223);
+  color: black;
+  border-style: solid;
+  border-color: blue;
+  border-width: thick;
+  border-radius: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 8px;
+}
+.p-multiselect-panel {
+  background-color: rgb(255, 0, 0);
+}
+
 .Gallery-vertical-panel {
   display: flex;
   flex-direction: column;
@@ -46,6 +63,7 @@ button {
   align-items: center;
   justify-content: center;
 }
+
 .char-card {
   background-color: rgb(141, 223, 223);
   color: black;

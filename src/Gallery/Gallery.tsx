@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { MultiSelect } from 'primereact/multiselect';
 import './Gallery.css'
 import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
@@ -37,11 +38,30 @@ interface trainer {
 
 // Gallery Menu
 function Gallery({menu, trainers}: Gallery) {
+    const [selectedRegions, setSelectedRegions] = useState(["Kanto"]);
+    const [selectedClasses, setSelectedClasses] = useState(["Hero"]);
     const trainerObjects: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
     const [filters, setFilters] = useState(["Unlocked","Available","Locked"]); // Actively displayed trainer & mon statuses
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
     const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999}) //Current Mon to display inside trainer screen
+
+
+
+    const regions = [
+      { value: 'Place', label: 'Place', name: 'Place'  }
+    ];
+
+    const classes = [
+      { value: 'Hero', label: 'Hero', name: 'Hero'  },
+      { value: 'Rival', label: 'Rival', name: 'Rival'   },
+      { value: 'Champion', label: 'Champion', name: 'Champion'   },
+      { value: 'Elite Four', label: 'Elite Four', name: 'Elite Four'   },
+      { value: 'Gym Leader', label: 'Gym Leader', name: 'Gym Leader'   },
+      { value: 'Villain', label: 'Villain', name: 'Villain'   },
+      { value: 'Professor', label: 'Professor', name: 'Professor'   },
+    ];
+
 
   // Reset's the display to the starting Gallery Screen
   function switchToMainScreen() {
@@ -68,7 +88,7 @@ function Gallery({menu, trainers}: Gallery) {
     
     //Loop through each trainer and if their status is active, create a card for them and add it to the display list.
     for (let [tkey,value] of trainerObjects) {
-      filters.includes(value.state) ? newCards.push(
+      filters.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class)? newCards.push(
         <div onClick={() => switchToTrainerScreen(value)}>
             <CharCard trainer={value}></CharCard>
         </div>
@@ -142,8 +162,16 @@ function Gallery({menu, trainers}: Gallery) {
                         </div>
                     </div>}
             </div>
-            <div className="Card-block">
-                {cards}
+            <div>
+              <div>
+                <button>State</button>
+                <button>Type1</button>
+                <button>Type2</button>
+                <button>Region</button>
+              </div>
+              <div className="Card-block">
+                  {cards}
+              </div>
             </div>
         </div>
   }
@@ -156,8 +184,17 @@ function Gallery({menu, trainers}: Gallery) {
             <div className="Gallery-header">
               <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
             </div>
-            <div className="Card-block">
-              {cards}
+            <div>
+              <div>
+                <button>State</button>
+                {<MultiSelect value={selectedRegions} onChange={(e) => setSelectedRegions(e.value)} options={regions} optionLabel="name" display="chip"
+    placeholder="Regions" maxSelectedLabels={15} className="filter md:filter" />}
+                {<MultiSelect value={selectedClasses} onChange={(e) => setSelectedClasses(e.value)} options={classes} optionLabel="name" display="chip"
+    placeholder="Regions" maxSelectedLabels={15} className="filter md:filter" />}
+              </div>
+              <div className="Card-block">
+                {cards}
+              </div>
             </div>
           </div> : 
          menu[0] == "Gallery-Trainer" ? 
