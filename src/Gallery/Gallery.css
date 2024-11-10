@@ -33,11 +33,10 @@ button {
 
 .Gallery-vertical-panel {
   display: flex;
-  position: sticky;
-  top: 0;
   flex-direction: column;
   align-items: start;
-  min-width: 15vw;
+  position: sticky;
+  top: 0;
 }
 
 .Card-block {
