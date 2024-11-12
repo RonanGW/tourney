@@ -36,6 +36,8 @@ interface trainer {
   mons: object //Object containing all mon data for this trainer
 };
 
+let toRender = false //Representation of current render
+
 // Gallery Menu
 function Gallery({menu, trainers}: Gallery) {
     const [selectedRegions, setSelectedRegions] = useState(["Kanto"]);
@@ -46,10 +48,29 @@ function Gallery({menu, trainers}: Gallery) {
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
     const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999}) //Current Mon to display inside trainer screen
 
+    //This useEffect is set to re-render manually when the trigger is set to true
+    //Also functions as a primary debugging function for seeing the most up to date changes
+    useEffect(() => {
+      // Update the document title using the browser API
 
+      if (toRender) {
+          setCards(filterTrainerCards())
+          toRender = false
+      }
+    });
 
     const regions = [
-      { value: 'Place', label: 'Place', name: 'Place'  }
+      { value: 'Kanto', label: 'Kanto', name: 'Kanto'  },
+      { value: 'Johto', label: 'Johto', name: 'Johto'   },
+      { value: 'Hoenn', label: 'Hoenn', name: 'Hoenn'   },
+      { value: 'Sinnoh', label: 'Sinnoh', name: 'Sinnoh'   },
+      { value: 'Hisui', label: 'Hisui', name: 'Hisui'   },
+      { value: 'Unova', label: 'Unova', name: 'Unova'   },
+      { value: 'Kalos', label: 'Kalos', name: 'Kalos'   },
+      { value: 'Alola', label: 'Alola', name: 'Alola'   },
+      { value: 'Galar', label: 'Galar', name: 'Galar'   },
+      { value: 'Paldea', label: 'Paldea', name: 'Paldea'   },
+      { value: 'Ransei', label: 'Ransei', name: 'Ransei'   }
     ];
 
     const classes = [
@@ -89,7 +110,7 @@ function Gallery({menu, trainers}: Gallery) {
     //Loop through each trainer and if their status is active, create a card for them and add it to the display list.
     for (let [tkey,value] of trainerObjects) {
       filters.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class)? newCards.push(
-        <div onClick={() => switchToTrainerScreen(value)}>
+        <div key={Math.random()} onClick={() => switchToTrainerScreen(value)}>
             <CharCard trainer={value}></CharCard>
         </div>
       ) : <></>
@@ -165,8 +186,7 @@ function Gallery({menu, trainers}: Gallery) {
             <div>
               <div>
                 <button>State</button>
-                <button>Type1</button>
-                <button>Type2</button>
+                <button>Type</button>
                 <button>Region</button>
               </div>
               <div className="Card-block">
@@ -185,11 +205,11 @@ function Gallery({menu, trainers}: Gallery) {
               <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
             </div>
             <div>
-              <div>
+              <div className='filter'>
                 <button>State</button>
-                {<MultiSelect value={selectedRegions} onChange={(e) => setSelectedRegions(e.value)} options={regions} optionLabel="name" display="chip"
+                {<MultiSelect value={selectedRegions} onChange={(e) => {toRender = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
     placeholder="Regions" maxSelectedLabels={15} className="filter md:filter" />}
-                {<MultiSelect value={selectedClasses} onChange={(e) => setSelectedClasses(e.value)} options={classes} optionLabel="name" display="chip"
+                {<MultiSelect value={selectedClasses} onChange={(e) => {toRender = true;setSelectedClasses(e.value)}} options={classes} optionLabel="name" display="chip"
     placeholder="Regions" maxSelectedLabels={15} className="filter md:filter" />}
               </div>
               <div className="Card-block">

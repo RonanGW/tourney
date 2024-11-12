@@ -32,20 +32,34 @@ button {
 }
 
 .filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-multiselect {
   background-color: rgb(141, 223, 223);
   color: black;
   border-style: solid;
   border-color: blue;
+  width: 15%;
+  height: 10%;
   border-width: thick;
   border-radius: 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   margin: 8px;
 }
 .p-multiselect-panel {
-  background-color: rgb(255, 0, 0);
+  background-color: rgb(141, 223, 223);
+}
+
+.p-multiselect-item {
+  background-color: rgb(144, 223, 141);
+  color: black;
+  border-style: solid;
+  border-color: blue;
+  display: flex;
+  flex-direction: row;
 }
 
 .Gallery-vertical-panel {
