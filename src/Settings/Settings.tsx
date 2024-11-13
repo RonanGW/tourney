@@ -57,6 +57,9 @@ function resetSave(data: any) {
             xp: 0,
             hp: 1,
             atk: 1,
+            type1: mon.type1 != null ? mon.type1 : "Null",
+            type2: mon.type2 != "" ? mon.type2 : null,
+            region: mon.region != null ? mon.region : "Unkown",
             cost: mon.cost,
             unlocker: mon.unlocker
         }

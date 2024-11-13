@@ -36,12 +36,14 @@ interface trainer {
   mons: object //Object containing all mon data for this trainer
 };
 
-let toRender = false //Representation of current render
+let renderTrainers = false //Representation of current render
+let renderMons = false //Representation of current render
 
 // Gallery Menu
 function Gallery({menu, trainers}: Gallery) {
     const [selectedRegions, setSelectedRegions] = useState(["Kanto"]);
     const [selectedClasses, setSelectedClasses] = useState(["Hero"]);
+    const [selectedTypes, setSelectedTypes] = useState(["Normal"]);
     const trainerObjects: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
     const [filters, setFilters] = useState(["Unlocked","Available","Locked"]); // Actively displayed trainer & mon statuses
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
@@ -53,9 +55,13 @@ function Gallery({menu, trainers}: Gallery) {
     useEffect(() => {
       // Update the document title using the browser API
 
-      if (toRender) {
+      if (renderTrainers) {
           setCards(filterTrainerCards())
-          toRender = false
+          renderTrainers = false
+      }
+      else if (renderMons) {
+        setCards(filterMonCards(currTrainer))
+        renderMons = false
       }
     });
 
@@ -81,6 +87,28 @@ function Gallery({menu, trainers}: Gallery) {
       { value: 'Gym Leader', label: 'Gym Leader', name: 'Gym Leader'   },
       { value: 'Villain', label: 'Villain', name: 'Villain'   },
       { value: 'Professor', label: 'Professor', name: 'Professor'   },
+    ];
+
+    const types = [
+      { value: 'Bug', label: 'Bug', name: 'Bug'   },
+      { value: 'Dark', label: 'Dark', name: 'Dark'   },
+      { value: 'Dragon', label: 'Dragon', name: 'Dragon'   },
+      { value: 'Electric', label: 'Electric', name: 'Electric'   },
+      { value: 'Fairy', label: 'Fairy', name: 'Fairy'   },
+      { value: 'Fighting', label: 'Fighting', name: 'Fighting'   },
+      { value: 'Fire', label: 'Fire', name: 'Fire'   },
+      { value: 'Flying', label: 'Flying', name: 'Flying'   },
+      { value: 'Ghost', label: 'Ghost', name: 'Ghost'   },
+      { value: 'Grass', label: 'Grass', name: 'Grass'   },
+      { value: 'Ground', label: 'Ground', name: 'Ground'   },
+      { value: 'Ice', label: 'Ice', name: 'Ice'   },
+      { value: 'Normal', label: 'Normal', name: 'Normal'  },
+      { value: 'Null', label: 'Null', name: 'Null'  },
+      { value: 'Poison', label: 'Poison', name: 'Poison'  },
+      { value: 'Psychic', label: 'Psychic', name: 'Psychic'  },
+      { value: 'Rock', label: 'Rock', name: 'Rock'  },
+      { value: 'Steel', label: 'Steel', name: 'Steel'  },
+      { value: 'Water', label: 'Water', name: 'Water'   },
     ];
 
 
@@ -122,11 +150,11 @@ function Gallery({menu, trainers}: Gallery) {
   function filterMonCards(trainer: any): JSX.Element[] {
     let newCards: JSX.Element[] = []; //Array to be filled with cards
 
-    let mons = Object.entries<mon>(trainer.mons); //Turns the passed trainers mons object into an array
+    let mons = Object.entries<any>(trainer.mons); //Turns the passed trainers mons object into an array
 
     //Loop through each mon and if their status is active, create a card for them and add it to the display list.
     for (let [tkey,value] of mons) {
-        filters.includes(value.state) ? newCards.push(
+        filters.includes(value.state) && selectedRegions.includes(value.region) && (selectedTypes.includes(value.type1) || selectedTypes.includes(value.type2))? newCards.push(
           <div onClick={() => {setSelectedMon(value)}}>
               <MonCard mon={value}></MonCard>
           </div>
@@ -184,10 +212,12 @@ function Gallery({menu, trainers}: Gallery) {
                     </div>}
             </div>
             <div>
-              <div>
+              <div className='filter'>
                 <button>State</button>
-                <button>Type</button>
-                <button>Region</button>
+                {<MultiSelect value={selectedTypes} onChange={(e) => {renderMons = true;setSelectedTypes(e.value)}} options={types} optionLabel="name"
+    placeholder="Type" maxSelectedLabels={15} className="filter md:filter" />}
+                {<MultiSelect value={selectedRegions} onChange={(e) => {renderMons = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name"
+    placeholder="Region" maxSelectedLabels={15} className="filter md:filter" />}
               </div>
               <div className="Card-block">
                   {cards}
@@ -207,9 +237,9 @@ function Gallery({menu, trainers}: Gallery) {
             <div>
               <div className='filter'>
                 <button>State</button>
-                {<MultiSelect value={selectedRegions} onChange={(e) => {toRender = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
+                {<MultiSelect value={selectedRegions} onChange={(e) => {renderTrainers = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
     placeholder="Regions" maxSelectedLabels={15} className="filter md:filter" />}
-                {<MultiSelect value={selectedClasses} onChange={(e) => {toRender = true;setSelectedClasses(e.value)}} options={classes} optionLabel="name" display="chip"
+                {<MultiSelect value={selectedClasses} onChange={(e) => {renderTrainers = true;setSelectedClasses(e.value)}} options={classes} optionLabel="name" display="chip"
     placeholder="Regions" maxSelectedLabels={15} className="filter md:filter" />}
               </div>
               <div className="Card-block">
