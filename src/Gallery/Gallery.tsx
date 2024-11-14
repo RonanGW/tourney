@@ -3,7 +3,6 @@ import { MultiSelect } from 'primereact/multiselect';
 import './Gallery.css'
 import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
-
 //Interface to pass state variables created by parent object
 interface Gallery {
   menu: any[] // passes the current state (i.e. gallery menu) to this page so it can be undone. Value is [state<string>,setState()]
@@ -20,7 +19,7 @@ interface mon {
   xp: number; //The mon's current xp prior to leveling. (Cap is their current level which will let them level up)
   hp: number; //The mon's current total HP
   atk: number; //Unused for now. Currently damage is just equal to mon's level
-  cost: number; //How many BP it costs to purchase this mon once it goes from 'hidden' to 'locked'
+  //cost: number; //How many BP it costs to purchase this mon once it goes from 'hidden' to 'locked'
 }
 
 // Generic data structure for a 'trainer'
@@ -38,12 +37,14 @@ interface trainer {
 
 let renderTrainers = false //Representation of current render
 let renderMons = false //Representation of current render
+let dex: any = {}
+fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = tmp)
 
 // Gallery Menu
 function Gallery({menu, trainers}: Gallery) {
     const [selectedRegions, setSelectedRegions] = useState(["Kanto"]);
     const [selectedClasses, setSelectedClasses] = useState(["Hero"]);
-    const [selectedTypes, setSelectedTypes] = useState(["Normal"]);
+    const [selectedTypes, setSelectedTypes] = useState(["Grass"]);
     const trainerObjects: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
     const [filters, setFilters] = useState(["Unlocked","Available","Locked"]); // Actively displayed trainer & mon statuses
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
@@ -154,7 +155,7 @@ function Gallery({menu, trainers}: Gallery) {
 
     //Loop through each mon and if their status is active, create a card for them and add it to the display list.
     for (let [tkey,value] of mons) {
-        filters.includes(value.state) && selectedRegions.includes(value.region) && (selectedTypes.includes(value.type1) || selectedTypes.includes(value.type2))? newCards.push(
+        filters.includes(value.state) && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))? newCards.push(
           <div onClick={() => {setSelectedMon(value)}}>
               <MonCard mon={value}></MonCard>
           </div>
@@ -165,9 +166,9 @@ function Gallery({menu, trainers}: Gallery) {
 
   //Unlocks an availabe mon for a given trainer in exchange for BP
   function purchaseMon(trainer: trainer, mon: mon): void {
-      if (trainer.BP >= mon.cost) {
+      if (trainer.BP >= dex.mons[mon.name + mon.form].cost) {
         mon.state="Unlocked"
-        trainer.BP = trainer.BP - mon.cost
+        trainer.BP = trainer.BP - dex.mons[mon.name + mon.form].cost
         setCards(filterMonCards(trainer))
       }
   }
