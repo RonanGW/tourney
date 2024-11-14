@@ -29,53 +29,49 @@ function resetSave(data: any) {
 
   //Initialize each trainer using a lowercase version of their name as the key
   data.trainers.forEach((trainer: any) => {
-    trainersSaveData[trainer[0]] = {
-        name: trainer[0],
+    trainersSaveData[trainer.name] = {
+        name: trainer.name,
         state: "Unlocked",
-        starter: trainer[1],
-        class: trainer[4],
-        region: trainer[3],
+        starter: trainer.starter,
+        class: trainer.class,
+        region: trainer.region,
         w: 0,
         l: 0,
         BP: 0,
         mons: {}
     }
+  });
 
+  
     //Intialize each mon for each trainer
-    data.mons.forEach((mon: any) => {
+    Object.keys(data.mons).forEach((monKey: any) => {
+      data.trainers.forEach((trainer: any) => {
       let monState = "Hidden"
-      if (mon.name == trainer[1] && mon.form == trainer[2] //If trainer default starter and form match
+      if (data.mons[monKey].name == trainer.starter && data.mons[monKey].form == trainer.starterForm //If trainer default starter and form match
       ) {monState = "Unlocked"}
-      else if (mon.name == trainer[1] || mon.unlocker == "" ||  mon.unlocker == trainer[1] + trainer[2]//If trainer default starter, a default reveal or revealed based starter, set to reveal. Otherwise, hide
+      else if (data.mons[monKey].name == trainer.starter || data.mons[monKey].unlocker == "" ||  data.mons[monKey].unlocker == trainer.starter + trainer.starterForm//If trainer default starter, a default reveal or revealed based starter, set to reveal. Otherwise, hide
       ) {monState = "Locked"} else {monState = "Hidden"}
-        trainersSaveData[trainer[0]].mons[mon.name + mon.form] = {
-            name: mon.name,
-            form: mon.form,
+        trainersSaveData[trainer.name].mons[data.mons[monKey].name + data.mons[monKey].form] = {
+            name: data.mons[monKey].name,
+            form: data.mons[monKey].form,
             shine: "",
             state: monState,
             lvl: 1,
             xp: 0,
             hp: 1,
-            atk: 1,
-            type1: mon.type1 != null ? mon.type1 : "Null",
-            type2: mon.type2 != "" ? mon.type2 : null,
-            region: mon.region != null ? mon.region : "Unkown",
-            cost: mon.cost,
-            unlocker: mon.unlocker
+            atk: 1
         }
       //Intialize the shiny version of each mon for each trainer
-      mon.name == trainer[1] ? monState = "Locked" : monState = "Hidden"
-        trainersSaveData[trainer[0]].mons[mon.name + mon.form + "shiny"] = {
-          name:  mon.name,
-          form: mon.form,
+      data.mons[monKey].name == trainer.starter ? monState = "Locked" : monState = "Hidden"
+        trainersSaveData[trainer.name].mons[data.mons[monKey].name + data.mons[monKey].form + "shiny"] = {
+          name:  data.mons[monKey].name,
+          form: data.mons[monKey].form,
           shine: "Shiny",
           state: monState,
           lvl: 1,
           xp: 0,
           hp: 1,
-          atk: 1,
-          cost: mon.cost * 2,
-          unlocker: mon.name
+          atk: 1
       }
     })
   });
@@ -89,7 +85,7 @@ function Settings({menu}: Settings) {
   let data = "N/A" // Initial Placeholder for the content to be read from 
   
   // Replaces data variable with the contents of defaults.json in the game's folder 
-  fetch('/defaults.json').then(response => {return response.json()}).then(tmp => data = JSON.stringify(tmp))
+  fetch('/dex.json').then(response => {return response.json()}).then(tmp => data = JSON.stringify(tmp))
 
     return (
       <div>
