@@ -108,6 +108,7 @@ function Fight({menu, trainers}: Fight) {
         let trainers: JSX.Element[] = []; //Placeholder to add to contet. Will be the return value.
         let index = 0 //For determining the hallf way point to split the content in the middle while still generating correctly and using the same function
         
+        //For each trainer in play, determine which action to apply to the card based on turn and status
         for (const tKey in currTrainers) {
             if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
                 if (firstRender.current) {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
