@@ -16,7 +16,6 @@ const MonCard = ({mon}: MonCard) => {
     <div className='char-card'>
       <img src={imgURL} className={cardDisplay}></img>
       {mon.state == "Unlocked" ? mon.name : "???"}
-      {mon.state == "Unlocked" ? shine : ""}
     </div>
   );
 }
