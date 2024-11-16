@@ -155,6 +155,8 @@ function Gallery({menu, trainers}: Gallery) {
 
     //Loop through each mon and if their status is active, create a card for them and add it to the display list.
     for (let [tkey,value] of mons) {
+      console.log(value.name + value.form + ": " + dex.mons[value.name + value.form].region)
+      // && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))
         filters.includes(value.state) && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))? newCards.push(
           <div onClick={() => {setSelectedMon(value)}}>
               <MonCard mon={value}></MonCard>
@@ -215,9 +217,9 @@ function Gallery({menu, trainers}: Gallery) {
             <div>
               <div className='filter'>
                 <button>State</button>
-                {<MultiSelect value={selectedTypes} onChange={(e) => {renderMons = true;setSelectedTypes(e.value)}} options={types} optionLabel="name"
+                {<MultiSelect value={selectedTypes} onChange={(e) => {renderMons = true;setSelectedTypes(e.value)}} options={types} optionLabel="name" display="chip"
     placeholder="Type" maxSelectedLabels={15} className="filter md:filter" />}
-                {<MultiSelect value={selectedRegions} onChange={(e) => {renderMons = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name"
+                {<MultiSelect value={selectedRegions} onChange={(e) => {renderMons = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
     placeholder="Region" maxSelectedLabels={15} className="filter md:filter" />}
               </div>
               <div className="Card-block">
