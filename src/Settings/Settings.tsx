@@ -32,7 +32,7 @@ function resetSave(data: any) {
     trainersSaveData[trainer.name] = {
         name: trainer.name,
         state: "Unlocked",
-        starter: trainer.starter,
+        starter: trainer.starter + trainer.starterForm,
         class: trainer.class,
         region: trainer.region,
         w: 0,

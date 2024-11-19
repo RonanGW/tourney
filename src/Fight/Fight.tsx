@@ -26,6 +26,7 @@ interface mon {
     name: string; //The display name of the trainer
     state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
     starter: string; //The active starting mon of the trainer
+    starterForm: string; //The active starting mon's form
     region: string; //Home region of this trainer. (Used primarily for sorting)
     class: string; //This trainer's class. (Used primarily for sorting)
     w: number; //Total number of tourney wins for this trainer
@@ -51,8 +52,8 @@ function Fight({menu, trainers}: Fight) {
     //Also functions as a primary debugging function for seeing the most up to date changes
     useEffect(() => {
         // Update the document title using the browser API
-        console.log("Active Trainers: ")
-        console.log(activeTrainers)
+        //console.log("Active Trainers: ")
+        //console.log(activeTrainers)
 
         if (toRender) {
             setFullCards(combineLists)
@@ -110,10 +111,12 @@ function Fight({menu, trainers}: Fight) {
         
         //For each trainer in play, determine which action to apply to the card based on turn and status
         for (const tKey in currTrainers) {
+            try {
             if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
                 if (firstRender.current) {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
                 let tImgURL='./chars/ppl/'+ currTrainers[tKey].name+'.png'
                 let mImgURL='./chars/mons/'+ currTrainers[tKey].starter+'.png'
+                currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+'.png' : mImgURL = mImgURL
         
                 if (tKey == activeTrainers[0]) {
                     trainers.push(<div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
@@ -147,6 +150,10 @@ function Fight({menu, trainers}: Fight) {
                 </div>)
                 }
             }
+        }
+        catch {
+            console.log(tKey)
+        }
             index++
         }
         return trainers

@@ -42,7 +42,7 @@ fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = 
 
 // Gallery Menu
 function Gallery({menu, trainers}: Gallery) {
-    const [selectedRegions, setSelectedRegions] = useState(["Kanto"]);
+    const [selectedRegions, setSelectedRegions] = useState(["Kanto","Johto","Paldea"]);
     const [selectedClasses, setSelectedClasses] = useState(["Hero"]);
     const [selectedTypes, setSelectedTypes] = useState(["Grass"]);
     const trainerObjects: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
@@ -88,6 +88,7 @@ function Gallery({menu, trainers}: Gallery) {
       { value: 'Gym Leader', label: 'Gym Leader', name: 'Gym Leader'   },
       { value: 'Villain', label: 'Villain', name: 'Villain'   },
       { value: 'Professor', label: 'Professor', name: 'Professor'   },
+      { value: 'Trainer', label: 'Trainer', name: 'Trainer'   },
     ];
 
     const types = [
