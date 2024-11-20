@@ -66,30 +66,9 @@ function Gallery({menu, trainers}: Gallery) {
       }
     });
 
-    const regions = [
-      { value: 'Kanto', label: 'Kanto', name: 'Kanto'  },
-      { value: 'Johto', label: 'Johto', name: 'Johto'   },
-      { value: 'Hoenn', label: 'Hoenn', name: 'Hoenn'   },
-      { value: 'Sinnoh', label: 'Sinnoh', name: 'Sinnoh'   },
-      { value: 'Hisui', label: 'Hisui', name: 'Hisui'   },
-      { value: 'Unova', label: 'Unova', name: 'Unova'   },
-      { value: 'Kalos', label: 'Kalos', name: 'Kalos'   },
-      { value: 'Alola', label: 'Alola', name: 'Alola'   },
-      { value: 'Galar', label: 'Galar', name: 'Galar'   },
-      { value: 'Paldea', label: 'Paldea', name: 'Paldea'   },
-      { value: 'Ransei', label: 'Ransei', name: 'Ransei'   }
-    ];
-
-    const classes = [
-      { value: 'Hero', label: 'Hero', name: 'Hero'  },
-      { value: 'Rival', label: 'Rival', name: 'Rival'   },
-      { value: 'Champion', label: 'Champion', name: 'Champion'   },
-      { value: 'Elite Four', label: 'Elite Four', name: 'Elite Four'   },
-      { value: 'Gym Leader', label: 'Gym Leader', name: 'Gym Leader'   },
-      { value: 'Villain', label: 'Villain', name: 'Villain'   },
-      { value: 'Professor', label: 'Professor', name: 'Professor'   },
-      { value: 'Trainer', label: 'Trainer', name: 'Trainer'   },
-    ];
+    const regions = [...new Set([...new Set(trainerObjects.map(item => item[1].region))].map(item => Object.create({value: item, label: item, name: item})))];
+   
+    const classes = [...new Set([...new Set(trainerObjects.map(item => item[1].class))].map(item => Object.create({value: item, label: item, name: item})))];
 
     const types = [
       { value: 'Bug', label: 'Bug', name: 'Bug'   },
