@@ -6,6 +6,13 @@
     padding: 5px;
   }
 
+.fightCard {
+  border-style: solid;
+  border-color: black;
+  border-width: thick;
+  border-radius: 5%;
+}
+
 .flexRow {
     display: flex;
     flex-direction: row;

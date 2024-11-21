@@ -119,7 +119,7 @@ function Fight({menu, trainers}: Fight) {
                 currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+'.png' : mImgURL = mImgURL
         
                 if (tKey == activeTrainers[0]) {
-                    trainers.push(<div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
+                    trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
                                         <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
@@ -129,7 +129,7 @@ function Fight({menu, trainers}: Fight) {
                                 </div>)
                 }
                 else if (currTrainers[tKey].mons[currTrainers[tKey].starter].currHP <= 0) {
-                    trainers.push(<div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
+                    trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                                     <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}>
                                         <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
@@ -140,7 +140,7 @@ function Fight({menu, trainers}: Fight) {
                 }
                 else {
                     trainers.push(
-                    <div className='flexRow' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
+                    <div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
                         <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                         <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}>
                             <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
@@ -152,6 +152,11 @@ function Fight({menu, trainers}: Fight) {
             }
         }
         catch {
+            trainers.push(
+                <div className='flexRow fightCard' style={{width:"128px",backgroundColor:"black", display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
+                    {menu[1]("Main-Menu")}
+                    <div>There was an error loading {tKey}. They have no mon assigned to them under the key {currTrainers[tKey].starter}</div>
+                </div>)
             console.log(tKey)
         }
             index++

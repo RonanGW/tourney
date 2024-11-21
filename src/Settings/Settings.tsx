@@ -3,12 +3,29 @@ import './Settings.css'
 
 interface Settings {
   menu: any[] // passes the current state (i.e. settings menu) to this page so it can be undone. Value is [state,setState()]
+  tdata: any // passes the current state (i.e. tdata) to this page so it can be undone. Value is [state,setState()]
 }
 
 //locally downloads the data file for a reset game
-function localDownload(data: any) {
+function localReset(data: any) {
   //Creates the content to be written
   const blob = new Blob([JSON.stringify(resetSave(JSON.parse(data)))], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  //Creates a temporary html element to download content
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'trainers.json'); // Set the desired file name
+
+  //Adds Element to page, activates it, then deletes the element
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function localDownload(data: any) {
+  //Creates the content to be written
+  const blob = new Blob([JSON.stringify(JSON.parse(data))], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
 
   //Creates a temporary html element to download content
@@ -80,7 +97,7 @@ function resetSave(data: any) {
 }
 
 // Settings Menu
-function Settings({menu}: Settings) {
+function Settings({menu, tdata}: Settings) {
     
   let data = "N/A" // Initial Placeholder for the content to be read from 
   
@@ -92,8 +109,9 @@ function Settings({menu}: Settings) {
         <div className="Gallery-header">
           <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
         </div>
-        <div className="Settings">
-          <button onClick={() => {localDownload(data)}}>Reset Save data</button>
+        <div className="Settings" style={{display: "flex", flexDirection: "column", width: "50vh"}}>
+          <button onClick={() => {localReset(data)}}>Reset Save data</button>
+          <button onClick={() => {console.log(tdata);localDownload(JSON.stringify(tdata))}}>Download Save data</button>
         </div>
       </div>
   );
