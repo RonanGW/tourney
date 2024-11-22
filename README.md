@@ -13,6 +13,10 @@ defaults.json
     ]
 }
 
+I reccommend for chrome, using
+this plugin: https://chromewebstore.google.com/detail/downloads-overwrite-alrea/lddjgfpjnifpeondafidennlcfagekbp?hl=en-US
+& adjusting your default download path and disabling ask for download in chrome://settings/downloads while running this game otherwise savein you're data is a pain due to the size
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

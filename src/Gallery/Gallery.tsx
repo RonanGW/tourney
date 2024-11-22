@@ -42,10 +42,41 @@ fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = 
 
 // Gallery Menu
 function Gallery({menu, trainers}: Gallery) {
-    const [selectedRegions, setSelectedRegions] = useState(["Kanto","Johto","Paldea"]);
-    const [selectedClasses, setSelectedClasses] = useState(["Hero"]);
-    const [selectedTypes, setSelectedTypes] = useState(["Grass"]);
-    const trainerObjects: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
+  const trainerObjects: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
+  const regions = [...new Set([...new Set(trainerObjects.map(item => item[1].region))].map(item => Object.create({value: item, label: item, name: item})))];
+  const classes = [...new Set([...new Set(trainerObjects.map(item => item[1].class))].map(item => Object.create({value: item, label: item, name: item})))];
+  const types = [
+    { value: 'Bug', label: 'Bug', name: 'Bug'},
+    { value: 'Dark', label: 'Dark', name: 'Dark'},
+    { value: 'Dragon', label: 'Dragon', name: 'Dragon'},
+    { value: 'Electric', label: 'Electric', name: 'Electric'},
+    { value: 'Fairy', label: 'Fairy', name: 'Fairy'},
+    { value: 'Fighting', label: 'Fighting', name: 'Fighting'},
+    { value: 'Fire', label: 'Fire', name: 'Fire'},
+    { value: 'Flying', label: 'Flying', name: 'Flying'},
+    { value: 'Ghost', label: 'Ghost', name: 'Ghost'},
+    { value: 'Grass', label: 'Grass', name: 'Grass'},
+    { value: 'Ground', label: 'Ground', name: 'Ground'},
+    { value: 'Ice', label: 'Ice', name: 'Ice'},
+    { value: 'Normal', label: 'Normal', name: 'Normal'},
+    { value: 'Null', label: 'Null', name: 'Null'},
+    { value: 'Poison', label: 'Poison', name: 'Poison'},
+    { value: 'Psychic', label: 'Psychic', name: 'Psychic'},
+    { value: 'Rock', label: 'Rock', name: 'Rock'},
+    { value: 'Steel', label: 'Steel', name: 'Steel'},
+    { value: 'Water', label: 'Water', name: 'Water'},
+  ];
+  const shines = [
+    { value: '', label: '', name: ''},
+    { value: 'Shiny', label: 'Shiny', name: 'Shiny'},
+    { value: 'Albino', label: 'Albino', name: 'Albino'},
+    { value: 'Melanistic', label: 'Melanistic', name: 'Melanistic'},
+  ]
+
+    const [selectedRegions, setSelectedRegions] = useState(...[regions.map((r) => r.value)]);
+    const [selectedClasses, setSelectedClasses] = useState(...[classes.map((c) => c.value)]);
+    const [selectedTypes, setSelectedTypes] = useState(...[types.map((t) => t.value)]);
+    const [selectedShines, setSelectedShines] = useState(...[shines.map((t) => t.value)]);
     const [filters, setFilters] = useState(["Unlocked","Available","Locked"]); // Actively displayed trainer & mon statuses
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
@@ -66,31 +97,7 @@ function Gallery({menu, trainers}: Gallery) {
       }
     });
 
-    const regions = [...new Set([...new Set(trainerObjects.map(item => item[1].region))].map(item => Object.create({value: item, label: item, name: item})))];
-   
-    const classes = [...new Set([...new Set(trainerObjects.map(item => item[1].class))].map(item => Object.create({value: item, label: item, name: item})))];
-
-    const types = [
-      { value: 'Bug', label: 'Bug', name: 'Bug'},
-      { value: 'Dark', label: 'Dark', name: 'Dark'},
-      { value: 'Dragon', label: 'Dragon', name: 'Dragon'},
-      { value: 'Electric', label: 'Electric', name: 'Electric'},
-      { value: 'Fairy', label: 'Fairy', name: 'Fairy'},
-      { value: 'Fighting', label: 'Fighting', name: 'Fighting'},
-      { value: 'Fire', label: 'Fire', name: 'Fire'},
-      { value: 'Flying', label: 'Flying', name: 'Flying'},
-      { value: 'Ghost', label: 'Ghost', name: 'Ghost'},
-      { value: 'Grass', label: 'Grass', name: 'Grass'},
-      { value: 'Ground', label: 'Ground', name: 'Ground'},
-      { value: 'Ice', label: 'Ice', name: 'Ice'},
-      { value: 'Normal', label: 'Normal', name: 'Normal'},
-      { value: 'Null', label: 'Null', name: 'Null'},
-      { value: 'Poison', label: 'Poison', name: 'Poison'},
-      { value: 'Psychic', label: 'Psychic', name: 'Psychic'},
-      { value: 'Rock', label: 'Rock', name: 'Rock'},
-      { value: 'Steel', label: 'Steel', name: 'Steel'},
-      { value: 'Water', label: 'Water', name: 'Water'},
-    ];
+    
 
 
   // Reset's the display to the starting Gallery Screen
@@ -135,9 +142,9 @@ function Gallery({menu, trainers}: Gallery) {
 
     //Loop through each mon and if their status is active, create a card for them and add it to the display list.
     for (let [tkey,value] of mons) {
-      console.log(value.name + value.form + ": " + dex.mons[value.name + value.form].region)
+      //console.log(value.name + value.form + ": " + dex.mons[value.name + value.form].region)
       // && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))
-        filters.includes(value.state) && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))? newCards.push(
+        filters.includes(value.state) && selectedShines.includes(value.shine) && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))? newCards.push(
           <div onClick={() => {setSelectedMon(value)}}>
               <MonCard mon={value}></MonCard>
           </div>
@@ -201,6 +208,8 @@ function Gallery({menu, trainers}: Gallery) {
     placeholder="Type" maxSelectedLabels={15} className="filter md:filter" />}
                 {<MultiSelect value={selectedRegions} onChange={(e) => {renderMons = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
     placeholder="Region" maxSelectedLabels={15} className="filter md:filter" />}
+                {<MultiSelect value={selectedShines} onChange={(e) => {renderMons = true;setSelectedShines(e.value)}} options={shines} optionLabel="name" display="chip"
+            placeholder="Shine" maxSelectedLabels={15} className="filter md:filter" />}
               </div>
               <div className="Card-block">
                   {cards}
@@ -223,7 +232,7 @@ function Gallery({menu, trainers}: Gallery) {
                 {<MultiSelect value={selectedRegions} onChange={(e) => {renderTrainers = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
     placeholder="Regions" maxSelectedLabels={15} className="filter md:filter" />}
                 {<MultiSelect value={selectedClasses} onChange={(e) => {renderTrainers = true;setSelectedClasses(e.value)}} options={classes} optionLabel="name" display="chip"
-    placeholder="Regions" maxSelectedLabels={15} className="filter md:filter" />}
+    placeholder="Classes" maxSelectedLabels={15} className="filter md:filter" />}
               </div>
               <div className="Card-block">
                 {cards}

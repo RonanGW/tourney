@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './Settings.css'
+import FileSaver from 'file-saver';
 
 interface Settings {
   menu: any[] // passes the current state (i.e. settings menu) to this page so it can be undone. Value is [state,setState()]
@@ -10,33 +11,13 @@ interface Settings {
 function localReset(data: any) {
   //Creates the content to be written
   const blob = new Blob([JSON.stringify(resetSave(JSON.parse(data)))], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-
-  //Creates a temporary html element to download content
-  const link = document.createElement('a');
-  link.href = url;
-  link.setAttribute('download', 'trainers.json'); // Set the desired file name
-
-  //Adds Element to page, activates it, then deletes the element
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  FileSaver.saveAs(blob, "trainers.json");
 }
 
 function localDownload(data: any) {
   //Creates the content to be written
   const blob = new Blob([JSON.stringify(JSON.parse(data))], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-
-  //Creates a temporary html element to download content
-  const link = document.createElement('a');
-  link.href = url;
-  link.setAttribute('download', 'trainers.json'); // Set the desired file name
-
-  //Adds Element to page, activates it, then deletes the element
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  FileSaver.saveAs(blob, "trainers.json");
 }
 
 // Returns a object containing the default starting state for a save based on the content provided in defaults.json
@@ -98,7 +79,6 @@ function resetSave(data: any) {
 
 // Settings Menu
 function Settings({menu, tdata}: Settings) {
-    
   let data = "N/A" // Initial Placeholder for the content to be read from 
   
   // Replaces data variable with the contents of defaults.json in the game's folder 
@@ -111,7 +91,7 @@ function Settings({menu, tdata}: Settings) {
         </div>
         <div className="Settings" style={{display: "flex", flexDirection: "column", width: "50vh"}}>
           <button onClick={() => {localReset(data)}}>Reset Save data</button>
-          <button onClick={() => {console.log(tdata);localDownload(JSON.stringify(tdata))}}>Download Save data</button>
+          <button onClick={() => {localDownload(JSON.stringify(tdata))}}>Download Save data</button>
         </div>
       </div>
   );
