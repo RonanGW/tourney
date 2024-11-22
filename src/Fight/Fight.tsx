@@ -112,53 +112,49 @@ function Fight({menu, trainers}: Fight) {
         //For each trainer in play, determine which action to apply to the card based on turn and status
         for (const tKey in currTrainers) {
             try {
-            if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
-                if (firstRender.current) {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
-                let tImgURL='./chars/ppl/'+ currTrainers[tKey].name+'.png'
-                let mImgURL='./chars/mons/'+ currTrainers[tKey].starter+'.png'
-                currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+'.png' : mImgURL = mImgURL
-        
-                if (tKey == activeTrainers[0]) {
-                    trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
-                                    <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                                    <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
-                                        <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
-                                        / 
-                                        {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
-                                    </div>
-                                </div>)
-                }
-                else if (currTrainers[tKey].mons[currTrainers[tKey].starter].currHP <= 0) {
-                    trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
-                                    <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                                    <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}>
-                                        <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
-                                        / 
-                                        {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
-                                    </div>
-                                </div>)
-                }
-                else {
-                    trainers.push(
-                    <div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
-                        <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                        <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}>
-                            <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
-                            / 
-                            {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
-                    </div>
-                </div>)
+                if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
+                    if (firstRender.current) {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
+                    let tImgURL='./chars/ppl/'+ currTrainers[tKey].name+'.png'
+                    let mImgURL='./chars/mons/'+ currTrainers[tKey].starter+'.png'
+                    currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+'.png' : mImgURL = mImgURL
+            
+                    if (tKey == activeTrainers[0]) {
+                        trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
+                                        <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                                        <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
+                                            <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                                            / 
+                                            {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
+                                        </div>
+                                    </div>)
+                    }
+                    else if (currTrainers[tKey].mons[currTrainers[tKey].starter].currHP <= 0) {
+                        trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
+                                        <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                                        <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}>
+                                            <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                                            / 
+                                            {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
+                                        </div>
+                                    </div>)
+                    }
+                    else {
+                        trainers.push(
+                        <div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
+                            <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                            <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}>
+                                <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                                / 
+                                {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
+                        </div>
+                    </div>)
+                    }
                 }
             }
-        }
-        catch {
-            trainers.push(
-                <div className='flexRow fightCard' style={{width:"128px",backgroundColor:"black", display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
-                    {menu[1]("Main-Menu")}
-                    <div>There was an error loading {tKey}. They have no mon assigned to them under the key {currTrainers[tKey].starter}</div>
-                </div>)
-            console.log(tKey)
-        }
+            catch {
+                console.log("There was an error loading "+tKey+". They have no mon assigned to them under the key "+currTrainers[tKey].starter)
+                menu[1]("Main-Menu")
+            }
             index++
         }
         return trainers
