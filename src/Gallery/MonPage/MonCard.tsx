@@ -4,6 +4,13 @@ interface MonCard {
   mon: any; //Passes the mon object from  the parent element
 }
 
+const loadImage = (imageUrl: string, monKey: string) => {
+  const img = new Image();
+  img.src = imageUrl;
+
+  img.onload = () => {(img.height != 96 || img.width != 96) ? console.log("Size for "+monKey+" not correct size. Dimensions: h:"+img.height+"--w:"+img.width) : console.log()};
+};
+
 const MonCard = ({mon}: MonCard) => {
   let form = ""
   let shine = ""
@@ -14,6 +21,7 @@ const MonCard = ({mon}: MonCard) => {
 
   return (
     <div className='char-card'>
+      {loadImage(imgURL, mon.name + mon.form)}
       <img src={imgURL} className={cardDisplay}></img>
       {mon.state == "Unlocked" ? mon.name : "???"}
     </div>
