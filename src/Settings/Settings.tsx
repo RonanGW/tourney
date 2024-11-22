@@ -91,7 +91,7 @@ function Settings({menu, tdata}: Settings) {
         </div>
         <div className="Settings" style={{display: "flex", flexDirection: "column", width: "50vh"}}>
           <button onClick={() => {localReset(data)}}>Reset Save data</button>
-          <button onClick={() => {localDownload(JSON.stringify(tdata))}}>Download Save data</button>
+          <button onClick={() => {console.log(tdata);localDownload(JSON.stringify(tdata))}}>Download Save data</button>
         </div>
       </div>
   );
