@@ -25,4 +25,5 @@ yarn-error.log*
 /public/chars
 /public/trainers.json
 /public/dex.json
+/public/SaveData/
 /src/trainers.json
