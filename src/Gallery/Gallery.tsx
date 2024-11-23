@@ -139,10 +139,27 @@ function Gallery({menu, trainers}: Gallery) {
     let trainerData: any
     fetch('/Savedata/'+trainer.name+'.json')
       .then(response => {return response.json()})
-        .then((tmp) => {trainerData = tmp;
+        .then((tmp) => {
+          trainerData = tmp
         });
 
         let newCards: JSX.Element[] = []; //Array to be filled with cards
+
+        const timeoutId = window.setTimeout(() => {
+          console.log(trainerData)
+          let mons = Object.entries<any>(trainerData.mons); //Turns the passed trainers mons object into an array
+          //Loop through each mon and if their status is active, create a card for them and add it to the display list.
+          for (let [tkey,value] of mons) {
+            //console.log(value.name + value.form + ": " + dex.mons[value.name + value.form].region)
+            // && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))
+              filters.includes(value.state) && selectedShines.includes(value.shine) && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))? newCards.push(
+                <div onClick={() => {setSelectedMon(value)}}>
+                    <MonCard mon={value}></MonCard>
+                </div>
+              ) : <></>
+            }
+            setSelectedTypes(types.map((t) => t.value))
+        }, 500)
 
       return newCards
   }

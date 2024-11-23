@@ -26,4 +26,5 @@ yarn-error.log*
 /public/trainers.json
 /public/dex.json
 /public/SaveData/
+/public/tmp/
 /src/trainers.json
