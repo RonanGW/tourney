@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { MultiSelect } from 'primereact/multiselect';
 import './Gallery.css'
 import CharCard from './TrainerPage/CharCard'
@@ -73,10 +73,10 @@ function Gallery({menu, trainers}: Gallery) {
     { value: 'Melanistic', label: 'Melanistic', name: 'Melanistic'},
   ]
 
-    const [selectedRegions, setSelectedRegions] = useState(...[regions.map((r) => r.value)]);
-    const [selectedClasses, setSelectedClasses] = useState(...[classes.map((c) => c.value)]);
-    const [selectedTypes, setSelectedTypes] = useState(...[types.map((t) => t.value)]);
-    const [selectedShines, setSelectedShines] = useState(...[shines.map((t) => t.value)]);
+    const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value));
+    const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value));
+    const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value));
+    const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value));
     const [filters, setFilters] = useState(["Unlocked","Available","Locked"]); // Actively displayed trainer & mon statuses
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
@@ -136,20 +136,14 @@ function Gallery({menu, trainers}: Gallery) {
 
   // Returns an array of Mon Cards to display using currently selected Filters
   function filterMonCards(trainer: any): JSX.Element[] {
-    let newCards: JSX.Element[] = []; //Array to be filled with cards
+    let trainerData: any
+    fetch('/Savedata/'+trainer.name+'.json')
+      .then(response => {return response.json()})
+        .then((tmp) => {trainerData = tmp;
+        });
 
-    let mons = Object.entries<any>(trainer.mons); //Turns the passed trainers mons object into an array
+        let newCards: JSX.Element[] = []; //Array to be filled with cards
 
-    //Loop through each mon and if their status is active, create a card for them and add it to the display list.
-    for (let [tkey,value] of mons) {
-      //console.log(value.name + value.form + ": " + dex.mons[value.name + value.form].region)
-      // && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))
-        filters.includes(value.state) && selectedShines.includes(value.shine) && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))? newCards.push(
-          <div onClick={() => {setSelectedMon(value)}}>
-              <MonCard mon={value}></MonCard>
-          </div>
-        ) : <></>
-      }
       return newCards
   }
 

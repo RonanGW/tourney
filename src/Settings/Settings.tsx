@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react'
 import './Settings.css'
 import FileSaver from 'file-saver';
 
@@ -11,7 +10,7 @@ interface Settings {
 function localReset(data: any) {
   //Creates the content to be written
   const blob = new Blob([JSON.stringify(resetSave(JSON.parse(data)))], { type: 'application/json' });
-  FileSaver.saveAs(blob, "trainers.json");
+  //FileSaver.saveAs(blob, "trainers.json");
 }
 
 function localDownload(data: any) {
@@ -24,6 +23,7 @@ function localDownload(data: any) {
 function resetSave(data: any) {
 
   let trainersSaveData: any = {} //For storing the default data scheme to be downloaded
+  let trainerList: any = {}
 
   //Initialize each trainer using a lowercase version of their name as the key
   data.trainers.forEach((trainer: any) => {
@@ -38,6 +38,17 @@ function resetSave(data: any) {
         BP: 0,
         mons: {}
     }
+    trainerList[trainer.name] = {
+      name: trainer.name,
+      state: "Unlocked",
+      starter: trainer.starter + trainer.starterForm,
+      class: trainer.class,
+      region: trainer.region,
+      w: 0,
+      l: 0,
+      BP: 0,
+      mons: {}
+  }
   });
 
   
@@ -74,7 +85,17 @@ function resetSave(data: any) {
     })
   });
 
-  return trainersSaveData
+  let i = 1
+  Object.keys(trainersSaveData).forEach((trainer: any) => {
+    const timeoutId = window.setTimeout(() => {
+      const blob = new Blob([JSON.stringify(trainersSaveData[trainer])], { type: 'application/json' });
+      console.log("FileSaver.saveAs(blob, "+trainer+" +'.json');")
+      FileSaver.saveAs(blob, trainer +".json");
+    }, 500*i)
+    i++
+  })
+
+  return trainerList
 }
 
 // Settings Menu

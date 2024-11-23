@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Fight from './Fight/Fight'
 import Gallery from './Gallery/Gallery'
 import Settings from './Settings/Settings'
@@ -10,6 +10,7 @@ function App() {
   const [menu, setMenu] = useState("Main-Menu") //Key to determin which menu the player is on
   const [trainers, setTrainers] = useState(tdata) //Object extrapolated data. This is passed to most objects and changed frequently. Consider it the core data. Needs to be saved at end of session
 
+  console.log(trainers)
   return (
     // Conditional switch to determine which page is rendered
     <div className='App'>
