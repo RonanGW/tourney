@@ -15,7 +15,8 @@ defaults.json
 
 I reccommend for chrome, using
 this plugin: https://chromewebstore.google.com/detail/downloads-overwrite-alrea/lddjgfpjnifpeondafidennlcfagekbp?hl=en-US
-& adjusting your default download path and disabling ask for download in chrome://settings/downloads while running this game otherwise savein you're data is a pain due to the size
+& adjusting your default download path and disabling ask for download in chrome://settings/downloads while running this game otherwise savein you're data is a pain due to the size.
+I do not suggest saving to the public folder, but rather somewhere else and then moving into the Public Savedata folder, as when public's files are changed in dev mode, it causes full page reload.
 
 # Getting Started with Create React App
 

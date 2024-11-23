@@ -16,7 +16,7 @@ function localReset(data: any) {
 function localDownload(data: any) {
   //Creates the content to be written
   const blob = new Blob([JSON.stringify(JSON.parse(data))], { type: 'application/json' });
-  FileSaver.saveAs(blob, "trainers.json");
+  //FileSaver.saveAs(blob, "trainers.json");
 }
 
 // Returns a object containing the default starting state for a save based on the content provided in defaults.json
@@ -86,7 +86,7 @@ function resetSave(data: any) {
   });
 
   let i = 1
-  Object.keys(trainersSaveData).forEach(async (trainer: any) => {
+  Object.keys(trainersSaveData).forEach((trainer: any) => {
     const timeoutId = window.setTimeout(() => {
       const blob = new Blob([JSON.stringify(trainersSaveData[trainer])], { type: 'application/json' });
       FileSaver.saveAs(blob, trainer +".json");

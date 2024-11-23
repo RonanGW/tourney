@@ -72,12 +72,17 @@ function Gallery({menu, trainers}: Gallery) {
     { value: 'Albino', label: 'Albino', name: 'Albino'},
     { value: 'Melanistic', label: 'Melanistic', name: 'Melanistic'},
   ]
+  const states = [
+    { value: 'Unlocked', label: 'Unlocked', name: 'Unlocked'},
+    { value: 'Available', label: 'Available', name: 'Available'},
+    { value: 'Locked', label: 'Locked', name: 'Locked'}
+  ]
 
     const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value));
     const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value));
     const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value));
     const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value));
-    const [filters, setFilters] = useState(["Unlocked","Available","Locked"]); // Actively displayed trainer & mon statuses
+    const [selectedStates, setSelectedStates] = useState(states.map((t) => t.value)); // Actively displayed trainer & mon statuses
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
     const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999}) //Current Mon to display inside trainer screen
@@ -125,7 +130,7 @@ function Gallery({menu, trainers}: Gallery) {
     
     //Loop through each trainer and if their status is active, create a card for them and add it to the display list.
     for (let [tkey,value] of trainerObjects) {
-      filters.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class)? newCards.push(
+      selectedStates.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class)? newCards.push(
         <div key={Math.random()} onClick={() => switchToTrainerScreen(value)}>
             <CharCard trainer={value}></CharCard>
         </div>
@@ -152,7 +157,7 @@ function Gallery({menu, trainers}: Gallery) {
           for (let [tkey,value] of mons) {
             //console.log(value.name + value.form + ": " + dex.mons[value.name + value.form].region)
             // && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))
-              filters.includes(value.state) && selectedShines.includes(value.shine) && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))? newCards.push(
+              selectedStates.includes(value.state) && selectedShines.includes(value.shine) && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))? newCards.push(
                 <div onClick={() => {setSelectedMon(value)}}>
                     <MonCard mon={value}></MonCard>
                 </div>
@@ -214,7 +219,8 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div>
               <div className='filter'>
-                <button>State</button>
+                {<MultiSelect value={selectedStates} onChange={(e) => {renderMons = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
+    placeholder="States" maxSelectedLabels={15} className="filter md:filter" />}
                 {<MultiSelect value={selectedTypes} onChange={(e) => {renderMons = true;setSelectedTypes(e.value)}} options={types} optionLabel="name" display="chip"
     placeholder="Type" maxSelectedLabels={15} className="filter md:filter" />}
                 {<MultiSelect value={selectedRegions} onChange={(e) => {renderMons = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
@@ -239,7 +245,8 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div>
               <div className='filter'>
-                <button>State</button>
+                {<MultiSelect value={selectedStates} onChange={(e) => {renderTrainers = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
+    placeholder="States" maxSelectedLabels={15} className="filter md:filter" />}
                 {<MultiSelect value={selectedRegions} onChange={(e) => {renderTrainers = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
     placeholder="Regions" maxSelectedLabels={15} className="filter md:filter" />}
                 {<MultiSelect value={selectedClasses} onChange={(e) => {renderTrainers = true;setSelectedClasses(e.value)}} options={classes} optionLabel="name" display="chip"
