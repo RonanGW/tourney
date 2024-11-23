@@ -86,10 +86,9 @@ function resetSave(data: any) {
   });
 
   let i = 1
-  Object.keys(trainersSaveData).forEach((trainer: any) => {
+  Object.keys(trainersSaveData).forEach(async (trainer: any) => {
     const timeoutId = window.setTimeout(() => {
       const blob = new Blob([JSON.stringify(trainersSaveData[trainer])], { type: 'application/json' });
-      console.log("FileSaver.saveAs(blob, "+trainer+" +'.json');")
       FileSaver.saveAs(blob, trainer +".json");
     }, 500*i)
     i++
