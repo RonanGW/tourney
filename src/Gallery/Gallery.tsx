@@ -82,7 +82,7 @@ function Gallery({menu, trainers}: Gallery) {
     const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value));
     const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value));
     const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value));
-    const [selectedStates, setSelectedStates] = useState(states.map((t) => t.value)); // Actively displayed trainer & mon statuses
+    const [selectedStates, setSelectedStates] = useState(["Unlocked"]); // Actively displayed trainer & mon statuses
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
     const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999}) //Current Mon to display inside trainer screen

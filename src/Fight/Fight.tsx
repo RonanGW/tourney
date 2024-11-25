@@ -38,13 +38,19 @@ interface mon {
 
 let toRender = false //Representation of current render
 
+
+
+
+
 //Returns the content of the Fight Menu
 function Fight({menu, trainers}: Fight) {
+    const [isLoading, setIsLoading] = useState(true);
     const firstRender = useRef(true) ///To distinguish the first render
     const [currTrainers, setCurrTrainers] = useState(Object.fromEntries((((Object.entries<trainer>(trainers[0])) //Filtered duplicate of trainer data modified to indicate the modifiable nature of this menu and onlly include 8 random selections
                                                                         .filter((t) => t[1].state == "Unlocked"))
                                                                         .sort(() => 0.5 - Math.random()))
-                                                                        .slice(0, 8)))
+                                                                        .slice(0, 8))
+                                                    )
     const [activeTrainers, setActiveTrainers] = useState<string[]>(shuffleArray(Object.keys(currTrainers))) //Array of Keys of the trainers still able to fight
     const [fullCards, setFullCards] = useState(combineLists) //The content to render
 
@@ -73,6 +79,8 @@ function Fight({menu, trainers}: Fight) {
         }
         return array
     }
+
+   
 
     //Generate the content to be displayed in the Fight menu
     function combineLists(): JSX.Element {
@@ -153,7 +161,7 @@ function Fight({menu, trainers}: Fight) {
             }
             catch {
                 console.log("There was an error loading "+tKey+". They have no mon assigned to them under the key "+currTrainers[tKey].starter)
-                menu[1]("Main-Menu")
+                //menu[1]("Main-Menu")
             }
             index++
         }
@@ -233,12 +241,29 @@ function Fight({menu, trainers}: Fight) {
         return tdata
      }
 
+     if (isLoading){
+        let result: any = {}
+
+        Promise.all(Object.keys(currTrainers).map((key) => {
+            return new Promise((resolve, reject) => {
+                fetch('/Savedata/'+key+'.json')
+                .then((response) => {resolve(response.json())})});}))
+                    .then((values) => {console.log(values);values.map((y: any) => {result[y.name] = y})})
+                    .then(() => {
+                        toRender = true
+                        setCurrTrainers(result)
+                        setIsLoading(false);
+                        });
+                    }
+
     return (
     <div>
         <div className="Fight-header">
             <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
         </div>
-        {fullCards}
+        {isLoading ? (
+        <p>Loading...</p> 
+         ) : (fullCards)}
     </div>
     )
 }
