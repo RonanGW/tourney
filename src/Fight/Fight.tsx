@@ -160,7 +160,7 @@ function Fight({menu, trainers}: Fight) {
                 }
             }
             catch {
-                console.log("There was an error loading "+tKey+". They have no mon assigned to them under the key "+currTrainers[tKey].starter)
+                if (!isLoading) console.log("There was an error loading "+tKey+". They have no mon assigned to them under the key "+currTrainers[tKey].starter)
                 //menu[1]("Main-Menu")
             }
             index++
@@ -254,7 +254,7 @@ function Fight({menu, trainers}: Fight) {
                         setCurrTrainers(result)
                         setIsLoading(false);
                         });
-            console.log(result)
+            //console.log(result)
         }
 
     return (
