@@ -121,7 +121,7 @@ function Fight({menu, trainers}: Fight) {
         for (const tKey in currTrainers) {
             try {
                 if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
-                    if (firstRender.current) {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
+                    if (currTrainers[tKey].mons[currTrainers[tKey].starter].currHP == undefined) {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
                     let tImgURL='./chars/ppl/'+ currTrainers[tKey].name+'.png'
                     let mImgURL='./chars/mons/'+ currTrainers[tKey].starter+'.png'
                     currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+'.png' : mImgURL = mImgURL
@@ -248,13 +248,14 @@ function Fight({menu, trainers}: Fight) {
             return new Promise((resolve, reject) => {
                 fetch('/Savedata/'+key+'.json')
                 .then((response) => {resolve(response.json())})});}))
-                    .then((values) => {console.log(values);values.map((y: any) => {result[y.name] = y})})
+                    .then((values) => {values.map((y: any) => {result[y.name] = y})})
                     .then(() => {
                         toRender = true
                         setCurrTrainers(result)
                         setIsLoading(false);
                         });
-                    }
+            console.log(result)
+        }
 
     return (
     <div>
