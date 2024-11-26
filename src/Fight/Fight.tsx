@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './Fight.css'
+import FileSaver from 'file-saver';
 
 //Interface to pass state variables created by parent object
 interface Fight {
@@ -35,29 +36,21 @@ interface mon {
     mons: any //Object containing all mon data for this trainer
   };
 
-
 let toRender = false //Representation of current render
-
-
-
-
 
 //Returns the content of the Fight Menu
 function Fight({menu, trainers}: Fight) {
-    const [isLoading, setIsLoading] = useState(true);
-    const firstRender = useRef(true) ///To distinguish the first render
+    const [isLoading, setIsLoading] = useState(true); //Loading state to prevent errors while mon data is being generated.
     const [currTrainers, setCurrTrainers] = useState(Object.fromEntries((((Object.entries<trainer>(trainers[0])) //Filtered duplicate of trainer data modified to indicate the modifiable nature of this menu and onlly include 8 random selections
                                                                         .filter((t) => t[1].state == "Unlocked"))
                                                                         .sort(() => 0.5 - Math.random()))
-                                                                        .slice(0, 8))
-                                                    )
+                                                                        .slice(0, 8)))
     const [activeTrainers, setActiveTrainers] = useState<string[]>(shuffleArray(Object.keys(currTrainers))) //Array of Keys of the trainers still able to fight
     const [fullCards, setFullCards] = useState(combineLists) //The content to render
 
     //This useEffect is set to re-render manually when the trigger is set to true
     //Also functions as a primary debugging function for seeing the most up to date changes
     useEffect(() => {
-        // Update the document title using the browser API
         //console.log("Active Trainers: ")
         //console.log(activeTrainers)
 
@@ -65,9 +58,8 @@ function Fight({menu, trainers}: Fight) {
             setFullCards(combineLists)
             toRender = false
         }
-      });
+    });
 
-    if (firstRender.current) {firstRender.current = false;} //If the is the first render, log this.
     
     //Shuffle an array of strings in a random order
     function shuffleArray(array: string[]) {
@@ -80,33 +72,36 @@ function Fight({menu, trainers}: Fight) {
         return array
     }
 
-   
-
     //Generate the content to be displayed in the Fight menu
     function combineLists(): JSX.Element {
         return (
          <div key={Math.random()}
           className='flexRow'
           style={{justifyContent:"space-between",marginLeft:"10vw",marginRight:"10vw",height:"75vh"}}>
-             <div className='flexCol'
-             style={{justifyContent:"space-between"}}>
+             <div className='flexCol' style={{justifyContent:"space-between"}}>
                  {setTrainerCards(true)}
              </div>
              <div>
                 {activeTrainers.length <= 1 ? 
-                    <>
-                    <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
+                    <><div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
                         <img src={'./chars/ppl/'+ currTrainers[activeTrainers[0]].name+'.png'}>
                         </img>
                         {currTrainers[activeTrainers[0]].name} is victorius!
                     </div>
-                    <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
-                    </> :
-                    <></>
+                    <button onClick={() => {menu[1]("Main-Menu")
+                        let i = 1
+                        Object.keys(currTrainers).forEach((trainer: any) => {
+                          const timeoutId = window.setTimeout(() => {
+                            const blob = new Blob([JSON.stringify(currTrainers[trainer])], { type: 'application/json' });
+                            FileSaver.saveAs(blob, trainer +".json");
+                          }, 500*i)
+                          i++
+                        })
+
+                    }}>Back Main Menu</button></>:<></>
                 }
              </div>
-             <div className='flexCol'
-             style={{justifyContent:"space-between"}}>
+             <div className='flexCol' style={{justifyContent:"space-between"}}>
                  {setTrainerCards(false)}
              </div>
          </div>)
@@ -172,8 +167,7 @@ function Fight({menu, trainers}: Fight) {
     function act(target: string) {
         //Multipurpose value which contains both modified tData [0] & whether the attack resullted in a defeat or not [1]
         let tData = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl)
-        let remainingKeys = activeTrainers
-        remainingKeys = remainingKeys.filter((tKey) => tKey != activeTrainers[0])
+        let remainingKeys = activeTrainers.filter((tKey) => tKey != activeTrainers[0])
         
         //If target was defeated, set for removal from turn queue
         if (tData[1]) {
@@ -254,7 +248,6 @@ function Fight({menu, trainers}: Fight) {
                         setCurrTrainers(result)
                         setIsLoading(false);
                         });
-            //console.log(result)
         }
 
     return (
