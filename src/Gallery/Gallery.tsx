@@ -163,7 +163,7 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>
               ) : <></>
             }
-            setSelectedTypes(types.map((t) => t.value))
+            setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
         }, 500)
 
       return newCards
@@ -218,11 +218,11 @@ function Gallery({menu, trainers}: Gallery) {
                     </div>}
             </div>
             <div>
-              <div className='filter'>
+              <div className='filter-block'>
                 {<MultiSelect value={selectedStates} onChange={(e) => {renderMons = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
     placeholder="States" maxSelectedLabels={15} className="filter md:filter" />}
                 {<MultiSelect value={selectedTypes} onChange={(e) => {renderMons = true;setSelectedTypes(e.value)}} options={types} optionLabel="name" display="chip"
-    placeholder="Type" maxSelectedLabels={15} className="filter md:filter" />}
+    placeholder="Type" maxSelectedLabels={25} className="filter md:filter" />}
                 {<MultiSelect value={selectedRegions} onChange={(e) => {renderMons = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
     placeholder="Region" maxSelectedLabels={15} className="filter md:filter" />}
                 {<MultiSelect value={selectedShines} onChange={(e) => {renderMons = true;setSelectedShines(e.value)}} options={shines} optionLabel="name" display="chip"

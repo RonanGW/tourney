@@ -38,13 +38,23 @@ button {
   justify-content: center;
 }
 
+
+.filter-block {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
 .p-multiselect {
   background-color: rgb(141, 223, 223);
   color: black;
   border-style: solid;
   border-color: blue;
   width: 256px;
-  height: 10%;
+  height: 5vh;
   border-width: thick;
   border-radius: 5%;
   margin: 8px;
@@ -71,11 +81,16 @@ button {
 }
 
 .Card-block {
+  height: 75vh;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
+  align-items: start;
+  justify-content: start;
+  box-sizing: border-box;
+  overflow-y:scroll;
+  scrollbar-color: rgb(169, 106, 6) rgb(62, 52, 32);
+  scrollbar-width: thin
 }
 
 .char-card {
