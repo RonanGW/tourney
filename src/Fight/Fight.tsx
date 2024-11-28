@@ -60,6 +60,28 @@ function Fight({menu, trainers}: Fight) {
         }
     });
 
+    const types = {
+        "Bug": ["Grass","Psychic","Dark"],
+        "Dark": ["Psychic","Ghost"],
+        "Dragon": ["Dragon"],
+        "Electric": ["Water","Flying"],
+        "Fairy": ["Fighting","Dragon","Dark"],
+        "Fighting": ["Normal","Ice","Rock","Dark","Steel"],
+        "Fire": ["Grass","Ice","Bug","Steel"],
+        "Flying": ["Grass","Fighting","Bug"],
+        "Ghost": ["Psychic","Ghost"],
+        "Grass": ["Water","Ground","Rock"],
+        "Ground": ["Fire","Electric","Poison","Rock","Steel"],
+        "Ice": ["Grass","Ground","Flying","Ice"],
+        "Normal": ["Null"],
+        "Null": ["Normal"],
+        "Poison": ["Grass","Fairy"],
+        "Psychic": ["Fighting","Poison"],
+        "Rock": ["Fire","Ice","Flying","Bug"],
+        "Steel": ["Ice","Rock","Steel"],
+        "Water": ["Fire","Ground","Rock"]
+    };
+
     
     //Shuffle an array of strings in a random order
     function shuffleArray(array: string[]) {
