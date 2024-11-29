@@ -20,21 +20,21 @@ interface mon {
     currHP: number; //The mon's current remaining HP
     atk: number; //Unused for now. Currently damage is just equal to mon's level
     cost: number; //How many BP it costs to purchase this mon once it goes from 'hidden' to 'locked'
-  }
+}
 
-  // Generic data structure for a 'trainer'
-  interface trainer {
-    name: string; //The display name of the trainer
-    state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
-    starter: string; //The active starting mon of the trainer
-    starterForm: string; //The active starting mon's form
-    region: string; //Home region of this trainer. (Used primarily for sorting)
-    class: string; //This trainer's class. (Used primarily for sorting)
-    w: number; //Total number of tourney wins for this trainer
-    l: number; //Total number of tourney losses for this trainer
-    BP: number; //Available BP for this trainer (Game Currency)
-    mons: any //Object containing all mon data for this trainer
-  };
+// Generic data structure for a 'trainer'
+interface trainer {
+name: string; //The display name of the trainer
+state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
+starter: string; //The active starting mon of the trainer
+starterForm: string; //The active starting mon's form
+region: string; //Home region of this trainer. (Used primarily for sorting)
+class: string; //This trainer's class. (Used primarily for sorting)
+w: number; //Total number of tourney wins for this trainer
+l: number; //Total number of tourney losses for this trainer
+BP: number; //Available BP for this trainer (Game Currency)
+mons: any //Object containing all mon data for this trainer
+};
 
 let toRender = false //Representation of current render
 
@@ -256,6 +256,7 @@ function Fight({menu, trainers}: Fight) {
 
      function win(tdata: any, trainer: string) {
         tdata[trainer].BP = tdata[trainer].BP + 1
+        tdata[trainer].w = tdata[trainer].w + 1
         return tdata
      }
 

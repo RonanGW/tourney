@@ -67,7 +67,7 @@ function Gallery({menu, trainers}: Gallery) {
     { value: 'Water', label: 'Water', name: 'Water'},
   ];
   const shines = [
-    { value: '', label: '', name: ''},
+    { value: '', label: '', name: 'Normal'},
     { value: 'Shiny', label: 'Shiny', name: 'Shiny'},
     { value: 'Albino', label: 'Albino', name: 'Albino'},
     { value: 'Melanistic', label: 'Melanistic', name: 'Melanistic'},
@@ -98,12 +98,10 @@ function Gallery({menu, trainers}: Gallery) {
       }
       else if (renderMons) {
         setCards(filterMonCards(currTrainer))
+        menu[1]("Gallery-Trainer"); //setMenu function for the menu state defined & passed by parent object
         renderMons = false
       }
     });
-
-    
-
 
   // Reset's the display to the starting Gallery Screen
   function switchToMainScreen() {
@@ -114,9 +112,13 @@ function Gallery({menu, trainers}: Gallery) {
 
   // Resets the display to the selected trainer's details page
   function switchToTrainerScreen(trainer: any) {
-    menu[1]("Gallery-Trainer"); //setMenu function for the menu state defined & passed by parent object
-    setCurrTrainer(trainer)
-    setCards(filterMonCards(trainer));
+    fetch('/Savedata/'+trainer.name+'.json')
+      .then(response => {return response.json()})
+        .then((tmp) => {
+          renderMons = true
+          setCurrTrainer(tmp)
+          setCards(filterMonCards(tmp));
+        });
   }
 
   // Resets the display to the selected mon's details page
@@ -130,7 +132,7 @@ function Gallery({menu, trainers}: Gallery) {
     
     //Loop through each trainer and if their status is active, create a card for them and add it to the display list.
     for (let [tkey,value] of trainerObjects) {
-      selectedStates.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class)? newCards.push(
+      selectedStates.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class) ? newCards.push(
         <div key={Math.random()} onClick={() => switchToTrainerScreen(value)}>
             <CharCard trainer={value}></CharCard>
         </div>
@@ -151,7 +153,6 @@ function Gallery({menu, trainers}: Gallery) {
         let newCards: JSX.Element[] = []; //Array to be filled with cards
 
         const timeoutId = window.setTimeout(() => {
-          console.log(trainerData)
           let mons = Object.entries<any>(trainerData.mons); //Turns the passed trainers mons object into an array
           //Loop through each mon and if their status is active, create a card for them and add it to the display list.
           for (let [tkey,value] of mons) {
@@ -181,7 +182,6 @@ function Gallery({menu, trainers}: Gallery) {
   //Sets the object to display the 'Trainer Page' content, which is the trainer selected, their details and all the mons they have that are unlocked or available next
   //Also allows the user to open a display revealing the details of each of their mons
   function TrainerPage(trainer: trainer): JSX.Element {
-
     return <div className="Gallery-content">
             <div className="Gallery-vertical-panel">
                 <CharCard trainer={trainer}></CharCard>
