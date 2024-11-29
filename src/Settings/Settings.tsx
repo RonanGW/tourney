@@ -10,7 +10,7 @@ interface Settings {
 function localReset(data: any) {
   //Creates the content to be written
   const blob = new Blob([JSON.stringify(resetSave(JSON.parse(data)))], { type: 'application/json' });
-  //FileSaver.saveAs(blob, "trainers.json");
+  FileSaver.saveAs(blob, "trainers.json");
 }
 
 function localDownload(data: any) {

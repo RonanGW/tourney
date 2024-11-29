@@ -59,6 +59,7 @@ button {
   border-radius: 5%;
   margin: 8px;
 }
+
 .p-multiselect-panel {
   background-color: rgb(141, 223, 223);
 }
@@ -70,6 +71,14 @@ button {
   border-color: blue;
   display: flex;
   flex-direction: row;
+}
+
+.p-multiselect-token {
+  background-color: rgb(201, 229, 190);
+  color: black;
+  border-style: solid;
+  border-color: rgb(33, 77, 20);
+  border-radius: 10%;
 }
 
 .Gallery-vertical-panel {
