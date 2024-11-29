@@ -114,7 +114,9 @@ function Fight({menu, trainers}: Fight) {
                         let i = 1
                         Object.keys(currTrainers).forEach((trainer: any) => {
                           const timeoutId = window.setTimeout(() => {
-                            const blob = new Blob([JSON.stringify(currTrainers[trainer])], { type: 'application/json' });
+                            let tmp = currTrainers[trainer]
+                            tmp.mons[tmp.starter].currHP = undefined
+                            const blob = new Blob([JSON.stringify(tmp)], { type: 'application/json' });
                             FileSaver.saveAs(blob, trainer +".json");
                           }, 500*i)
                           i++
