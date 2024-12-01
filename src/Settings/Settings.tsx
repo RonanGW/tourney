@@ -42,10 +42,7 @@ function resetSave(data: any) {
       name: trainer.name,
       state: "Unlocked",
       starter: trainer.starter + trainer.starterForm,
-      class: trainer.class,
-      region: trainer.region,
       w: 0,
-      l: 0,
       BP: 0,
       mons: {}
   }
@@ -71,7 +68,7 @@ function resetSave(data: any) {
             atk: 1
         }
       //Intialize the shiny version of each mon for each trainer
-      data.mons[monKey].name == trainer.starter ? monState = "Locked" : monState = "Hidden"
+      data.mons[monKey].name == trainer.starter && data.mons[monKey].form == trainer.starterForm ? monState = "Locked" : monState = "Hidden"
         trainersSaveData[trainer.name].mons[data.mons[monKey].name + data.mons[monKey].form + "shiny"] = {
           name:  data.mons[monKey].name,
           form: data.mons[monKey].form,

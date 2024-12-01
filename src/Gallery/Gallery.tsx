@@ -217,7 +217,7 @@ function Gallery({menu, trainers}: Gallery) {
                         </div>
                     </div>}
             </div>
-            <div>
+            <div className='Gallery-sortBlock'>
               <div className='filter-block'>
                 {<MultiSelect value={selectedStates} onChange={(e) => {renderMons = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
     placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}

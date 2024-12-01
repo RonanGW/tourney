@@ -10,6 +10,7 @@
   border-style: solid;
   border-color: black;
   border-width: thick;
+  color: black;
   border-radius: 5%;
 }
 
@@ -20,5 +21,20 @@
 
 .flexCol {
     display: flex;
-    flex-direction: column
+    flex-direction: column;
+}
+
+.active {
+  width: 128px;
+  background-color: #83EA83;
+}
+
+.alive {
+  width: 128px;
+  background-color: #77D5D5;
+}
+
+.defeated {
+  width: 128px;
+  background-color: #718DCD;
 }

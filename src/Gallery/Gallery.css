@@ -61,11 +61,11 @@ button {
 }
 
 .p-multiselect-panel {
-  background-color: rgb(141, 223, 223);
+  background-color: #77D5D5;
 }
 
 .p-multiselect-item {
-  background-color: rgb(144, 223, 141);
+  background-color: #C5D3F5;
   color: black;
   border-style: solid;
   border-color: blue;
@@ -74,11 +74,11 @@ button {
 }
 
 .p-multiselect-token {
-  background-color: rgb(201, 229, 190);
+  background-color: #C5D3F5;
   color: black;
   border-style: solid;
-  border-color: rgb(33, 77, 20);
-  border-radius: 10%;
+  border-color: #4D6AAD;
+  border-radius: 20%;
 }
 
 .Gallery-vertical-panel {
@@ -89,21 +89,25 @@ button {
   top: 0;
 }
 
+.Gallery-sortBlock {
+  width: 100%;
+}
+
 .Card-block {
   height: 75vh;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: start;
-  justify-content: start;
+  justify-content: center;
   box-sizing: border-box;
   overflow-y:scroll;
-  scrollbar-color: rgb(169, 106, 6) rgb(62, 52, 32);
+  scrollbar-color: #C5D3F5 #4D6AAD;
   scrollbar-width: thin
 }
 
 .char-card {
-  background-color: rgb(141, 223, 223);
+  background-color: #77D5D5;
   color: black;
   border-style: solid;
   border-color: blue;
@@ -124,7 +128,7 @@ button {
 }
 
 .Gallery-info-panel {
-  background-color: rgb(141, 223, 223);
+  background-color: #77D5D5;
   color: black;
   border-style: solid;
   border-color: blue;

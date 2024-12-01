@@ -147,8 +147,8 @@ function Fight({menu, trainers}: Fight) {
             
                     if (tKey == activeTrainers[0]) {
                         trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
-                                        <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                                        <div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
+                                        <div className='flexCol active'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                                        <div className='flexCol active'>
                                             <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
                                             / 
                                             {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
@@ -157,8 +157,8 @@ function Fight({menu, trainers}: Fight) {
                     }
                     else if (currTrainers[tKey].mons[currTrainers[tKey].starter].currHP <= 0) {
                         trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
-                                        <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                                        <div className='flexCol' style={{width:"128px",backgroundColor:"red"}}>
+                                        <div className='flexCol defeated'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                                        <div className='flexCol defeated'>
                                             <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
                                             / 
                                             {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
@@ -168,8 +168,8 @@ function Fight({menu, trainers}: Fight) {
                     else {
                         trainers.push(
                         <div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
-                            <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                            <div className='flexCol' style={{width:"128px",backgroundColor:"blue"}}>
+                            <div className='flexCol alive'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                            <div className='flexCol alive'>
                                 <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
                                 / 
                                 {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
