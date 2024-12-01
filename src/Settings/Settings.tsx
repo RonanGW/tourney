@@ -42,6 +42,8 @@ function resetSave(data: any) {
       name: trainer.name,
       state: "Unlocked",
       starter: trainer.starter + trainer.starterForm,
+      class: trainer.class,
+      region: trainer.region,
       w: 0,
       BP: 0,
       mons: {}

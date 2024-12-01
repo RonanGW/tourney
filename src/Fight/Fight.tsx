@@ -60,7 +60,10 @@ function Fight({menu, trainers}: Fight) {
         }
     });
 
-    const types = {
+    let dex: any = {}
+    fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = tmp)
+
+    const types: any = {
         "Bug": ["Grass","Psychic","Dark"],
         "Dark": ["Psychic","Ghost"],
         "Dragon": ["Dragon"],
@@ -105,7 +108,7 @@ function Fight({menu, trainers}: Fight) {
              </div>
              <div>
                 {activeTrainers.length <= 1 ? 
-                    <><div className='flexCol' style={{width:"128px",backgroundColor:"green"}}>
+                    <><div className='flexCol active'>
                         <img src={'./chars/ppl/'+ currTrainers[activeTrainers[0]].name+'.png'}>
                         </img>
                         {currTrainers[activeTrainers[0]].name} is victorius!
@@ -190,7 +193,7 @@ function Fight({menu, trainers}: Fight) {
     //Processes the action a trainer can take when it is their turn as well as the consequences
     function act(target: string) {
         //Multipurpose value which contains both modified tData [0] & whether the attack resullted in a defeat or not [1]
-        let tData = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].lvl)
+        let tData = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter])
         let remainingKeys = activeTrainers.filter((tKey) => tKey != activeTrainers[0])
         
         //If target was defeated, set for removal from turn queue
@@ -209,14 +212,30 @@ function Fight({menu, trainers}: Fight) {
     }
 
     //Cause a target to lose some of their current HP
-    function hp(tData: any, trainer: string, diff: number) {
-       let result = tData[trainer].mons[tData[trainer].starter].currHP - diff //Calculates loss of HP
+    function hp(tData: any, trainer: string, diff: any) {
+        let dmgMultiplier = 1
+        let attackerType1 = dex.mons[diff.name + diff.form].type1
+        let attackerType2 = "noType"
+        if (dex.mons[diff.name + diff.form].type2 != undefined) {attackerType2 = dex.mons[diff.name + diff.form].type2}
+        let defenderType1 = dex.mons[tData[trainer].starter].type1
+        let defenderType2 = "noType"
+        if (dex.mons[tData[trainer].starter].type2 != undefined) {defenderType2 = dex.mons[tData[trainer].starter].type2}
+
+        console.log(attackerType1 + " && " + attackerType2 + " vs. " + defenderType1 + " && " + defenderType2)
+        if (types[attackerType2] != undefined) {
+            if (types[attackerType1].includes(defenderType1)) {dmgMultiplier = dmgMultiplier*2;console.log("Super Effective!")}
+            else if (types[attackerType2].includes(defenderType1)) {dmgMultiplier = dmgMultiplier*2;console.log("Super Effective!")}
+            else if (types[attackerType1].includes(defenderType2)) {dmgMultiplier = dmgMultiplier*2;console.log("Super Effective!")}
+            else if (types[attackerType2].includes(defenderType2)) {dmgMultiplier = dmgMultiplier*2;console.log("Super Effective!")}
+        }
+
+       let result = tData[trainer].mons[tData[trainer].starter].currHP - (diff.lvl * dmgMultiplier) //Calculates loss of HP
+       console.log("Attack dealt " +diff.lvl * dmgMultiplier+ "dmg")
        // HP would go out of bounds, bring it back to the edge of bounds
        if (result <= 0) {result = 0}
        else if (result > tData[trainer].mons[tData[trainer].starter].hp) { 
             result = tData[trainer].mons[tData[trainer].starter].hp
        }
-
        // Set current hp to calculated result
        tData[trainer].mons[tData[trainer].starter].currHP = result
 
