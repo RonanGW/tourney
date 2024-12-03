@@ -206,6 +206,12 @@ function Gallery({menu, trainers}: Gallery) {
                             { selectedMon.state == "Unlocked" ?
                             <div>
                                 <p>Level: {selectedMon.lvl}</p>
+                                <div className='flexRow'>
+                                <img src={"/icons/"+dex.mons[selectedMon.name + selectedMon.form].type1 + ".png"} className='typeImg'/>
+                                  {dex.mons[selectedMon.name + selectedMon.form].type2 != "" ?
+                                  <img src={"/icons/"+dex.mons[selectedMon.name + selectedMon.form].type2 + ".png"} className='typeImg'/> :
+                                  <></>}
+                                </div>
                                 <p>XP: {selectedMon.xp}</p>
                                 <p>HP: {selectedMon.hp}</p>
                                 <p>Atk: {selectedMon.atk}</p>

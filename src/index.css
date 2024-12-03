@@ -26,3 +26,18 @@ code {
   align-items: center;
   padding-top: 10vh;
 }
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.flexCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.typeImg {
+  width: 128px;
+  height: 32px;
+}
