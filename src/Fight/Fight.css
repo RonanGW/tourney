@@ -7,6 +7,7 @@
   }
 
 .fightCard {
+  font-size: calc(var(--element-width) / 26);
   border-style: solid;
   border-color: black;
   border-width: thick;

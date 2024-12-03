@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './Fight.css'
 import FileSaver from 'file-saver';
+import { Tooltip } from 'react-tooltip';
 
 //Interface to pass state variables created by parent object
 interface Fight {
@@ -147,11 +148,14 @@ function Fight({menu, trainers}: Fight) {
                     let tImgURL='./chars/ppl/'+ currTrainers[tKey].name+'.png'
                     let mImgURL='./chars/mons/'+ currTrainers[tKey].starter+'.png'
                     currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+'.png' : mImgURL = mImgURL
-            
+
                     if (tKey == activeTrainers[0]) {
                         trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                                         <div className='flexCol active'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                                        <div className='flexCol active'>
+                                        <Tooltip anchorSelect={"#"+currTrainers[tKey].starter}>
+                                            {currTrainers[tKey].mons[currTrainers[tKey].starter].name}
+                                        </Tooltip>
+                                        <div id={currTrainers[tKey].starter} className='flexCol active'>
                                             <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
                                             / 
                                             {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
@@ -161,7 +165,10 @@ function Fight({menu, trainers}: Fight) {
                     else if (currTrainers[tKey].mons[currTrainers[tKey].starter].currHP <= 0) {
                         trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                                         <div className='flexCol defeated'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                                        <div className='flexCol defeated'>
+                                        <Tooltip anchorSelect={"#"+currTrainers[tKey].starter}>
+                                            <p>{currTrainers[tKey].mons[currTrainers[tKey].starter].name}</p>
+                                        </Tooltip>
+                                        <div id={currTrainers[tKey].starter} className='flexCol defeated'>
                                             <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
                                             / 
                                             {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
@@ -169,14 +176,16 @@ function Fight({menu, trainers}: Fight) {
                                     </div>)
                     }
                     else {
-                        trainers.push(
-                        <div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
-                            <div className='flexCol alive'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                            <div className='flexCol alive'>
-                                <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
-                                / 
-                                {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
-                        </div>
+                        trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
+                                        <div className='flexCol alive'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
+                                        <Tooltip anchorSelect={"#"+currTrainers[tKey].starter}>
+                                            <p>{currTrainers[tKey].mons[currTrainers[tKey].starter].name}</p>
+                                        </Tooltip>
+                                        <div id={currTrainers[tKey].starter} className='flexCol alive'>
+                                            <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                                            / 
+                                            {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
+                                    </div>
                     </div>)
                     }
                 }
@@ -216,17 +225,17 @@ function Fight({menu, trainers}: Fight) {
         let dmgMultiplier = 1
         let attackerType1 = dex.mons[diff.name + diff.form].type1
         let attackerType2 = "noType"
-        if (dex.mons[diff.name + diff.form].type2 != undefined) {attackerType2 = dex.mons[diff.name + diff.form].type2}
+        if (dex.mons[diff.name + diff.form].type2 != undefined && dex.mons[diff.name + diff.form].type2 != "") {attackerType2 = dex.mons[diff.name + diff.form].type2}
         let defenderType1 = dex.mons[tData[trainer].starter].type1
         let defenderType2 = "noType"
-        if (dex.mons[tData[trainer].starter].type2 != undefined) {defenderType2 = dex.mons[tData[trainer].starter].type2}
+        if (dex.mons[tData[trainer].starter].type2 != undefined && dex.mons[tData[trainer].starter].type2 != "") {defenderType2 = dex.mons[tData[trainer].starter].type2}
 
         console.log(attackerType1 + " && " + attackerType2 + " vs. " + defenderType1 + " && " + defenderType2)
-        if (types[attackerType2] != undefined) {
-            if (types[attackerType1].includes(defenderType1)) {dmgMultiplier = dmgMultiplier*2;console.log("Super Effective!")}
-            else if (types[attackerType2].includes(defenderType1)) {dmgMultiplier = dmgMultiplier*2;console.log("Super Effective!")}
-            else if (types[attackerType1].includes(defenderType2)) {dmgMultiplier = dmgMultiplier*2;console.log("Super Effective!")}
-            else if (types[attackerType2].includes(defenderType2)) {dmgMultiplier = dmgMultiplier*2;console.log("Super Effective!")}
+        if (types[attackerType1].includes(defenderType1)) {console.log("Super Effective");dmgMultiplier = 2}
+        else if (types[attackerType1].includes(defenderType2)) {console.log("Super Effective");dmgMultiplier = 2}
+        else if (types[attackerType2] != undefined && types[attackerType2] != "") {
+            if (types[attackerType2].includes(defenderType1)) {console.log("Super Effective");dmgMultiplier = 2}
+            else if (types[attackerType2].includes(defenderType2)) {console.log("Super Effective");dmgMultiplier = 2}
         }
 
        let result = tData[trainer].mons[tData[trainer].starter].currHP - (diff.lvl * dmgMultiplier) //Calculates loss of HP

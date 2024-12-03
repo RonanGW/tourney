@@ -4,6 +4,7 @@ import Gallery from './Gallery/Gallery'
 import Settings from './Settings/Settings'
 import "./index.css"
 import tdata from './trainers.json'
+import 'react-tooltip/dist/react-tooltip.css'
 
 //Primary Page (Main Loop). Critical States should originate from here so they are consistent
 function App() {
