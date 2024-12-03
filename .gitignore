@@ -23,8 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 /public/chars
-/public/trainers.json
-/public/dex.json
 /public/SaveData/
-/public/tmp/
+/public/icons/
+/public/dex.json
 /src/trainers.json

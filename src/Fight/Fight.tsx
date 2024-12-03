@@ -39,6 +39,8 @@ mons: any //Object containing all mon data for this trainer
 
 let toRender = false //Representation of current render
 
+let dex: any = {}
+fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = tmp)
 //Returns the content of the Fight Menu
 function Fight({menu, trainers}: Fight) {
     const [isLoading, setIsLoading] = useState(true); //Loading state to prevent errors while mon data is being generated.
@@ -61,8 +63,6 @@ function Fight({menu, trainers}: Fight) {
         }
     });
 
-    let dex: any = {}
-    fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = tmp)
 
     const types: any = {
         "Bug": ["Grass","Psychic","Dark"],
@@ -153,7 +153,13 @@ function Fight({menu, trainers}: Fight) {
                         trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                                         <div className='flexCol active'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                                         <Tooltip anchorSelect={"#"+currTrainers[tKey].starter}>
-                                            {currTrainers[tKey].mons[currTrainers[tKey].starter].name}
+                                            <div className='flexCol'>
+                                                {currTrainers[tKey].mons[currTrainers[tKey].starter].name}
+                                                <div className='flexRow'>
+                                                    <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type1 + ".png"} className='typeImg'/>
+                                                    {dex.mons[currTrainers[tKey].starter].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type2 + ".png"} className='typeImg'/>:<></>}
+                                                </div>
+                                            </div>
                                         </Tooltip>
                                         <div id={currTrainers[tKey].starter} className='flexCol active'>
                                             <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
@@ -166,7 +172,13 @@ function Fight({menu, trainers}: Fight) {
                         trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                                         <div className='flexCol defeated'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                                         <Tooltip anchorSelect={"#"+currTrainers[tKey].starter}>
-                                            <p>{currTrainers[tKey].mons[currTrainers[tKey].starter].name}</p>
+                                            <div className='flexCol'>
+                                                {currTrainers[tKey].mons[currTrainers[tKey].starter].name}
+                                                <div className='flexRow'>
+                                                    <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type1 + ".png"} className='typeImg'/>
+                                                    {dex.mons[currTrainers[tKey].starter].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type2 + ".png"} className='typeImg'/>:<></>}
+                                                </div>
+                                            </div>
                                         </Tooltip>
                                         <div id={currTrainers[tKey].starter} className='flexCol defeated'>
                                             <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
@@ -179,7 +191,13 @@ function Fight({menu, trainers}: Fight) {
                         trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
                                         <div className='flexCol alive'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
                                         <Tooltip anchorSelect={"#"+currTrainers[tKey].starter}>
-                                            <p>{currTrainers[tKey].mons[currTrainers[tKey].starter].name}</p>
+                                            <div className='flexCol'>
+                                                {currTrainers[tKey].mons[currTrainers[tKey].starter].name}
+                                                <div className='flexRow'>
+                                                    <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type1 + ".png"} className='typeImg'/>
+                                                    {dex.mons[currTrainers[tKey].starter].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type2 + ".png"} className='typeImg'/>:<></>}
+                                                </div>
+                                            </div>
                                         </Tooltip>
                                         <div id={currTrainers[tKey].starter} className='flexCol alive'>
                                             <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
