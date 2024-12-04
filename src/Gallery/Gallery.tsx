@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { MultiSelect } from 'primereact/multiselect';
-import './Gallery.css'
 import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
+import FileSaver from 'file-saver';
+import './Gallery.css'
 //Interface to pass state variables created by parent object
 interface Gallery {
   menu: any[] // passes the current state (i.e. gallery menu) to this page so it can be undone. Value is [state<string>,setState()]
@@ -32,7 +33,7 @@ interface trainer {
   w: number; //Total number of tourney wins for this trainer
   l: number; //Total number of tourney losses for this trainer
   BP: number; //Available BP for this trainer (Game Currency)
-  mons: object //Object containing all mon data for this trainer
+  mons: any //Object containing all mon data for this trainer
 };
 
 let renderTrainers = false //Representation of current render
@@ -175,7 +176,13 @@ function Gallery({menu, trainers}: Gallery) {
       if (trainer.BP >= dex.mons[mon.name + mon.form].cost) {
         mon.state="Unlocked"
         trainer.BP = trainer.BP - dex.mons[mon.name + mon.form].cost
-        setCards(filterMonCards(trainer))
+          trainer.mons[mon.name + mon.form + mon.shine.toLowerCase()] = mon
+
+        const timeoutId = window.setTimeout(() => {
+          const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
+          FileSaver.saveAs(blob, trainer.name +".json");
+        }, 500)
+        
       }
   }
 
@@ -217,7 +224,7 @@ function Gallery({menu, trainers}: Gallery) {
                                 <p>Atk: {selectedMon.atk}</p>
                             </div> :
                             selectedMon.state == "Available" ?
-                                <button onClick={() => {purchaseMon(trainer, selectedMon)}}>Purchase for {selectedMon.cost}BP</button> :
+                                <button onClick={() => {purchaseMon(trainer, selectedMon)}}>Purchase for {dex.mons[selectedMon.name + selectedMon.form].cost}BP</button> :
                                 <p>Continue Raising your current mons to unlock this Mon for purchase.</p>
                             }
                         </div>

@@ -286,9 +286,15 @@ function Fight({menu, trainers}: Fight) {
             tData[trainer].mons[tData[trainer].starter].lvl = tData[trainer].mons[tData[trainer].starter].lvl + 1
             if (tData[trainer].mons[tData[trainer].starter].lvl >= 2) {
                 for (const mKey in tData[trainer].mons) {
-                    if (tData[trainer].mons[mKey].unlocker == tData[trainer].starter) {
+                    console.log(tData[trainer].mons[mKey].shine)
+                    console.log(dex.mons[tData[trainer].mons[mKey].name + tData[trainer].mons[mKey].form].unlocker)
+                    console.log(tData[trainer].starter)
+                    if (tData[trainer].mons[mKey].shine == "" && (dex.mons[tData[trainer].mons[mKey].name + tData[trainer].mons[mKey].form].unlocker) == tData[trainer].starter) {
                         tData[trainer].mons[mKey].state = "Available"
                     }
+                    else if (tData[trainer].mons[mKey].shine == "Shiny" && 
+                                (tData[trainer].mons[mKey].name + tData[trainer].mons[mKey].form) == tData[trainer].starter) 
+                            {tData[trainer].mons[mKey].state = "Available"}
                 }
             }
         }
