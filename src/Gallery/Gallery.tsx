@@ -83,7 +83,7 @@ function Gallery({menu, trainers}: Gallery) {
     const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value));
     const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value));
     const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value));
-    const [selectedStates, setSelectedStates] = useState(["Unlocked"]); // Actively displayed trainer & mon statuses
+    const [selectedStates, setSelectedStates] = useState(["Unlocked","Available"]); // Actively displayed trainer & mon statuses
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
     const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999}) //Current Mon to display inside trainer screen
@@ -165,7 +165,7 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>
               ) : <></>
             }
-            setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
+            setSelectedMon(trainerData.mons[trainerData.starter])
         }, 500)
 
       return newCards
@@ -184,6 +184,16 @@ function Gallery({menu, trainers}: Gallery) {
         }, 500)
         
       }
+  }
+
+  function setStarter(trainer: trainer, mon: mon):void {
+    trainer.starter = selectedMon.name + selectedMon.form + selectedMon.shine.toLowerCase()
+
+    const timeoutId = window.setTimeout(() => {
+      const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
+      FileSaver.saveAs(blob, trainer.name +".json");
+    }, 500)
+
   }
 
   //Sets the object to display the 'Trainer Page' content, which is the trainer selected, their details and all the mons they have that are unlocked or available next
@@ -212,6 +222,10 @@ function Gallery({menu, trainers}: Gallery) {
                         <div className="Gallery-info-panel">
                             { selectedMon.state == "Unlocked" ?
                             <div>
+                                {(selectedMon.name + selectedMon.form + selectedMon.shine.toLowerCase())== trainer.starter ?
+                                 <div>{trainer.name}'s starter</div>:
+                                 <button onClick={() =>{setStarter(trainer,selectedMon)}}>Set as starter</button>
+                                 }
                                 <p>Level: {selectedMon.lvl}</p>
                                 <div className='flexRow'>
                                 <img src={"/icons/"+dex.mons[selectedMon.name + selectedMon.form].type1 + ".png"} className='typeImg'/>

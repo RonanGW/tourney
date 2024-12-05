@@ -51,19 +51,6 @@ function Fight({menu, trainers}: Fight) {
     const [activeTrainers, setActiveTrainers] = useState<string[]>(shuffleArray(Object.keys(currTrainers))) //Array of Keys of the trainers still able to fight
     const [fullCards, setFullCards] = useState(combineLists) //The content to render
 
-    //This useEffect is set to re-render manually when the trigger is set to true
-    //Also functions as a primary debugging function for seeing the most up to date changes
-    useEffect(() => {
-        //console.log("Active Trainers: ")
-        //console.log(activeTrainers)
-
-        if (toRender) {
-            setFullCards(combineLists)
-            toRender = false
-        }
-    });
-
-
     const types: any = {
         "Bug": ["Grass","Psychic","Dark"],
         "Dark": ["Psychic","Ghost"],
@@ -86,6 +73,31 @@ function Fight({menu, trainers}: Fight) {
         "Water": ["Fire","Ground","Rock"]
     };
 
+    if (isLoading){
+        let result: any = {}
+
+        Promise.all(Object.keys(currTrainers).map((key) => {
+            return new Promise((resolve, reject) => {
+                fetch('/Savedata/'+key+'.json')
+                .then((response) => {resolve(response.json())})});}))
+                    .then((values) => {values.map((y: any) => {result[y.name] = y})})
+                    .then(() => {
+                        toRender = true
+                        setCurrTrainers(result)
+                        setIsLoading(false);
+                        });
+    }
+    //This useEffect is set to re-render manually when the trigger is set to true
+    //Also functions as a primary debugging function for seeing the most up to date changes
+    useEffect(() => {
+        //console.log("Active Trainers: ")
+        //console.log(activeTrainers)
+
+        if (toRender) {
+            setFullCards(combineLists)
+            toRender = false
+        }
+    });
     
     //Shuffle an array of strings in a random order
     function shuffleArray(array: string[]) {
@@ -147,7 +159,9 @@ function Fight({menu, trainers}: Fight) {
                     if (currTrainers[tKey].mons[currTrainers[tKey].starter].currHP == undefined) {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
                     let tImgURL='./chars/ppl/'+ currTrainers[tKey].name+'.png'
                     let mImgURL='./chars/mons/'+ currTrainers[tKey].starter+'.png'
-                    currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+'.png' : mImgURL = mImgURL
+                    currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" && currTrainers[tKey].mons[currTrainers[tKey].starter].shine == "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+'.png' : mImgURL = mImgURL
+                    currTrainers[tKey].mons[currTrainers[tKey].starter].shine == "Shiny" && currTrainers[tKey].mons[currTrainers[tKey].starter].form == "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' (Shiny).png' : mImgURL = mImgURL
+                    currTrainers[tKey].mons[currTrainers[tKey].starter].shine == "Shiny" && currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+' (Shiny).png' : mImgURL = mImgURL
 
                     if (tKey == activeTrainers[0]) {
                         trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
@@ -156,8 +170,8 @@ function Fight({menu, trainers}: Fight) {
                                             <div className='flexCol'>
                                                 {currTrainers[tKey].mons[currTrainers[tKey].starter].name}
                                                 <div className='flexRow'>
-                                                    <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type1 + ".png"} className='typeImg'/>
-                                                    {dex.mons[currTrainers[tKey].starter].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type2 + ".png"} className='typeImg'/>:<></>}
+                                                    <img src={"/icons/"+dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type1 + ".png"} className='typeImg'/>
+                                                    {dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type2 + ".png"} className='typeImg'/>:<></>}
                                                 </div>
                                             </div>
                                         </Tooltip>
@@ -196,9 +210,9 @@ function Fight({menu, trainers}: Fight) {
                                             <div className='flexCol'>
                                                 {currTrainers[tKey].mons[currTrainers[tKey].starter].name}
                                                 <div className='flexRow'>
-                                                    <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type1 + ".png"} className='typeImg'/>
-                                                    {dex.mons[currTrainers[tKey].starter].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type2 + ".png"} className='typeImg'/>:<></>}
-                                                    {effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[currTrainers[tKey].starter].type1,dex.mons[currTrainers[tKey].starter].type2) ? <div className='active circle'></div>:<></>}
+                                                    <img src={"/icons/"+dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type1 + ".png"} className='typeImg'/>
+                                                    {dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type2 + ".png"} className='typeImg'/>:<></>}
+                                                    {effective(dex.mons[currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].name + currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].form].type1,dex.mons[currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].name + currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].form].type2,dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type1,dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type2) ? <div className='active circle'></div>:<></>}
                                                 </div>
                                             </div>
                                         </Tooltip>
@@ -213,6 +227,7 @@ function Fight({menu, trainers}: Fight) {
             }
             catch {
                 if (!isLoading) console.log("There was an error loading "+tKey+". They have no mon assigned to them under the key "+currTrainers[tKey].starter)
+                    console.log(currTrainers[tKey].mons)
                 //menu[1]("Main-Menu")
             }
             index++
@@ -315,21 +330,6 @@ function Fight({menu, trainers}: Fight) {
         tdata[trainer].w = tdata[trainer].w + 1
         return tdata
      }
-
-     if (isLoading){
-        let result: any = {}
-
-        Promise.all(Object.keys(currTrainers).map((key) => {
-            return new Promise((resolve, reject) => {
-                fetch('/Savedata/'+key+'.json')
-                .then((response) => {resolve(response.json())})});}))
-                    .then((values) => {values.map((y: any) => {result[y.name] = y})})
-                    .then(() => {
-                        toRender = true
-                        setCurrTrainers(result)
-                        setIsLoading(false);
-                        });
-        }
 
     return (
     <div>
