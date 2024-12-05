@@ -15,6 +15,12 @@
   border-radius: 5%;
 }
 
+.circle {
+  border-radius: 50%;
+  max-width: 8px;
+  height: 8px;
+}
+
 .active {
   width: 128px;
   background-color: #83EA83;
@@ -27,5 +33,5 @@
 
 .defeated {
   width: 128px;
-  background-color: #718DCD;
+  background-color: #fb8585;
 }

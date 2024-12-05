@@ -177,6 +177,7 @@ function Fight({menu, trainers}: Fight) {
                                                 <div className='flexRow'>
                                                     <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type1 + ".png"} className='typeImg'/>
                                                     {dex.mons[currTrainers[tKey].starter].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type2 + ".png"} className='typeImg'/>:<></>}
+                                                    {effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[currTrainers[tKey].starter].type1,dex.mons[currTrainers[tKey].starter].type2) ? <div className='active circle'></div>:<></>}
                                                 </div>
                                             </div>
                                         </Tooltip>
@@ -186,6 +187,7 @@ function Fight({menu, trainers}: Fight) {
                                             {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
                                         </div>
                                     </div>)
+                                    console.log(activeTrainers[0])
                     }
                     else {
                         trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
@@ -196,6 +198,7 @@ function Fight({menu, trainers}: Fight) {
                                                 <div className='flexRow'>
                                                     <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type1 + ".png"} className='typeImg'/>
                                                     {dex.mons[currTrainers[tKey].starter].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type2 + ".png"} className='typeImg'/>:<></>}
+                                                    {effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[currTrainers[tKey].starter].type1,dex.mons[currTrainers[tKey].starter].type2) ? <div className='active circle'></div>:<></>}
                                                 </div>
                                             </div>
                                         </Tooltip>
@@ -238,6 +241,16 @@ function Fight({menu, trainers}: Fight) {
         setActiveTrainers(remainingKeys)
     }
 
+    function effective(attackerType1: string, attackerType2: string, defenderType1: string, defenderType2: string): boolean {
+        if (types[attackerType1].includes(defenderType1)) {console.log("Super Effective");return true}
+        else if (types[attackerType1].includes(defenderType2)) {console.log("Super Effective");return true}
+        else if (types[attackerType2] != undefined && types[attackerType2] != "") {
+            if (types[attackerType2].includes(defenderType1)) {console.log("Super Effective");return true}
+            else if (types[attackerType2].includes(defenderType2)) {console.log("Super Effective");return true}
+        }
+        return false
+    }
+    
     //Cause a target to lose some of their current HP
     function hp(tData: any, trainer: string, diff: any) {
         let dmgMultiplier = 1
@@ -248,13 +261,7 @@ function Fight({menu, trainers}: Fight) {
         let defenderType2 = "noType"
         if (dex.mons[tData[trainer].starter].type2 != undefined && dex.mons[tData[trainer].starter].type2 != "") {defenderType2 = dex.mons[tData[trainer].starter].type2}
 
-        console.log(attackerType1 + " && " + attackerType2 + " vs. " + defenderType1 + " && " + defenderType2)
-        if (types[attackerType1].includes(defenderType1)) {console.log("Super Effective");dmgMultiplier = 2}
-        else if (types[attackerType1].includes(defenderType2)) {console.log("Super Effective");dmgMultiplier = 2}
-        else if (types[attackerType2] != undefined && types[attackerType2] != "") {
-            if (types[attackerType2].includes(defenderType1)) {console.log("Super Effective");dmgMultiplier = 2}
-            else if (types[attackerType2].includes(defenderType2)) {console.log("Super Effective");dmgMultiplier = 2}
-        }
+        if (effective(attackerType1,attackerType2,defenderType1,defenderType2)) {dmgMultiplier = 2}
 
        let result = tData[trainer].mons[tData[trainer].starter].currHP - (diff.lvl * dmgMultiplier) //Calculates loss of HP
        console.log("Attack dealt " +diff.lvl * dmgMultiplier+ "dmg")
@@ -286,9 +293,6 @@ function Fight({menu, trainers}: Fight) {
             tData[trainer].mons[tData[trainer].starter].lvl = tData[trainer].mons[tData[trainer].starter].lvl + 1
             if (tData[trainer].mons[tData[trainer].starter].lvl >= 2) {
                 for (const mKey in tData[trainer].mons) {
-                    console.log(tData[trainer].mons[mKey].shine)
-                    console.log(dex.mons[tData[trainer].mons[mKey].name + tData[trainer].mons[mKey].form].unlocker)
-                    console.log(tData[trainer].starter)
                     if (tData[trainer].mons[mKey].shine == "" && (dex.mons[tData[trainer].mons[mKey].name + tData[trainer].mons[mKey].form].unlocker) == tData[trainer].starter) {
                         tData[trainer].mons[mKey].state = "Available"
                     }
