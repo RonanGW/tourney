@@ -154,80 +154,60 @@ function Fight({menu, trainers}: Fight) {
         
         //For each trainer in play, determine which action to apply to the card based on turn and status
         for (const tKey in currTrainers) {
+            let loopTrainer = currTrainers[tKey]
+            let loopActiveMon = loopTrainer.mons[loopTrainer.starter]
             try {
                 if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
-                    if (currTrainers[tKey].mons[currTrainers[tKey].starter].currHP == undefined) {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP = currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
-                    let tImgURL='./chars/ppl/'+ currTrainers[tKey].name+'.png'
-                    let mImgURL='./chars/mons/'+ currTrainers[tKey].starter+'.png'
-                    currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" && currTrainers[tKey].mons[currTrainers[tKey].starter].shine == "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+'.png' : mImgURL = mImgURL
-                    currTrainers[tKey].mons[currTrainers[tKey].starter].shine == "Shiny" && currTrainers[tKey].mons[currTrainers[tKey].starter].form == "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' (Shiny).png' : mImgURL = mImgURL
-                    currTrainers[tKey].mons[currTrainers[tKey].starter].shine == "Shiny" && currTrainers[tKey].mons[currTrainers[tKey].starter].form != "" ? mImgURL ='./chars/mons/'+ currTrainers[tKey].mons[currTrainers[tKey].starter].name+' '+currTrainers[tKey].mons[currTrainers[tKey].starter].form+' (Shiny).png' : mImgURL = mImgURL
+                    if (loopActiveMon.currHP == undefined) {loopActiveMon.currHP = loopActiveMon.hp}
+                    let tImgURL='./chars/ppl/'+ loopTrainer.name+'.png'
+                    let imgURLPrefix = './chars/mons/'+ loopActiveMon.name
+                    let imgURLForm = ""
+                    let imgURLShine = ""
+                    if (loopActiveMon.form != "") {imgURLForm = ' '+loopActiveMon.form}
+                    if (loopActiveMon.shine == "Shiny") {imgURLShine = ' (Shiny)'}
+                    let mImgURL=imgURLPrefix+imgURLForm+imgURLShine+'.png'
 
+                    let loopActiveMonQueueState = 'alive'
+                    let loopActiveMonOnClick = () =>{}
+                    let loopActiveMonEffectiveness = <></>
                     if (tKey == activeTrainers[0]) {
-                        trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
-                                        <div className='flexCol active'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                                        <Tooltip anchorSelect={"#"+currTrainers[tKey].starter}>
-                                            <div className='flexCol'>
-                                                {currTrainers[tKey].mons[currTrainers[tKey].starter].name}
-                                                <div className='flexRow'>
-                                                    <img src={"/icons/"+dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type1 + ".png"} className='typeImg'/>
-                                                    {dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type2 + ".png"} className='typeImg'/>:<></>}
-                                                </div>
-                                            </div>
-                                        </Tooltip>
-                                        <div id={currTrainers[tKey].starter} className='flexCol active'>
-                                            <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
-                                            / 
-                                            {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
-                                        </div>
-                                    </div>)
+                        loopActiveMonQueueState = 'active'
                     }
-                    else if (currTrainers[tKey].mons[currTrainers[tKey].starter].currHP <= 0) {
-                        trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
-                                        <div className='flexCol defeated'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                                        <Tooltip anchorSelect={"#"+currTrainers[tKey].starter}>
-                                            <div className='flexCol'>
-                                                {currTrainers[tKey].mons[currTrainers[tKey].starter].name}
-                                                <div className='flexRow'>
-                                                    <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type1 + ".png"} className='typeImg'/>
-                                                    {dex.mons[currTrainers[tKey].starter].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].starter].type2 + ".png"} className='typeImg'/>:<></>}
-                                                    {effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[currTrainers[tKey].starter].type1,dex.mons[currTrainers[tKey].starter].type2) ? <div className='active circle'></div>:<></>}
-                                                </div>
-                                            </div>
-                                        </Tooltip>
-                                        <div id={currTrainers[tKey].starter} className='flexCol defeated'>
-                                            <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
-                                            / 
-                                            {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
-                                        </div>
-                                    </div>)
-                                    console.log(activeTrainers[0])
+                    else if (loopActiveMon.currHP <= 0) {
+                        loopActiveMonQueueState = 'defeated'
+                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) ? <div className='active circle'></div> : <></>
                     }
                     else {
-                        trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={() => {act(tKey)}}>
-                                        <div className='flexCol alive'><img src={tImgURL}></img>{currTrainers[tKey].name}</div>
-                                        <Tooltip anchorSelect={"#"+currTrainers[tKey].starter}>
+                        loopActiveMonOnClick = () => {act(tKey)}
+                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) ? <div className='active circle'></div> : <></>
+                        effective(dex.mons[currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].name + currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].form].type1,dex.mons[currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].name + currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].form].type2,dex.mons[loopActiveMon.name + loopActiveMon.form].type1,dex.mons[loopActiveMon.name + loopActiveMon.form].type2) ? <div className='active circle'></div>:<></>
+                    }
+
+
+                        trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
+                                        <div className={'flexCol ' + loopActiveMonQueueState}><img src={tImgURL}></img>{loopTrainer.name}</div>
+                                        <Tooltip anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
                                             <div className='flexCol'>
-                                                {currTrainers[tKey].mons[currTrainers[tKey].starter].name}
+                                                {loopActiveMon.name}
                                                 <div className='flexRow'>
-                                                    <img src={"/icons/"+dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type1 + ".png"} className='typeImg'/>
-                                                    {dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type2 != "" ? <img src={"/icons/"+dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type2 + ".png"} className='typeImg'/>:<></>}
-                                                    {effective(dex.mons[currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].name + currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].form].type1,dex.mons[currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].name + currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].form].type2,dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type1,dex.mons[currTrainers[tKey].mons[currTrainers[tKey].starter].name + currTrainers[tKey].mons[currTrainers[tKey].starter].form].type2) ? <div className='active circle'></div>:<></>}
+                                                    <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + ".png"} className='typeImg'/>
+                                                    {dex.mons[loopActiveMon.name +loopActiveMon.form].type2 != "" ? <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type2 + ".png"} className='typeImg'/>:<></>}
+                                                    {loopActiveMonEffectiveness}
                                                 </div>
                                             </div>
                                         </Tooltip>
-                                        <div id={currTrainers[tKey].starter} className='flexCol alive'>
-                                            <img src={mImgURL}></img>L{currTrainers[tKey].mons[currTrainers[tKey].starter].lvl}: {currTrainers[tKey].mons[currTrainers[tKey].starter].currHP}
+                                        <div id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState}>
+                                            <img src={mImgURL}></img>L{loopActiveMon.lvl}: {loopActiveMon.currHP}
                                             / 
-                                            {currTrainers[tKey].mons[currTrainers[tKey].starter].hp}
-                                    </div>
-                    </div>)
-                    }
+                                            {loopActiveMon.hp}
+                                        </div>
+                                    </div>)
+                    
                 }
             }
             catch {
-                if (!isLoading) console.log("There was an error loading "+tKey+". They have no mon assigned to them under the key "+currTrainers[tKey].starter)
-                    console.log(currTrainers[tKey].mons)
+                if (!isLoading) console.log("There was an error loading "+tKey+". They have no mon assigned to them under the key "+loopTrainer.starter)
+                    console.log(loopTrainer.mons)
                 //menu[1]("Main-Menu")
             }
             index++
