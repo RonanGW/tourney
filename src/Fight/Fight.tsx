@@ -37,13 +37,13 @@ BP: number; //Available BP for this trainer (Game Currency)
 mons: any //Object containing all mon data for this trainer
 };
 
-let toRender = false //Representation of current render
+let toRender = false //Flag to force a re-render
 
 let dex: any = {}
 fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = tmp)
 //Returns the content of the Fight Menu
 function Fight({menu, trainers}: Fight) {
-    const [isLoading, setIsLoading] = useState(true); //Loading state to prevent errors while mon data is being generated.
+    const [isLoading, setIsLoading] = useState(true); //Loading state to prevent errors while data is being generated.
     const [currTrainers, setCurrTrainers] = useState(Object.fromEntries((((Object.entries<trainer>(trainers[0])) //Filtered duplicate of trainer data modified to indicate the modifiable nature of this menu and onlly include 8 random selections
                                                                         .filter((t) => t[1].state == "Unlocked"))
                                                                         .sort(() => 0.5 - Math.random()))
@@ -51,7 +51,7 @@ function Fight({menu, trainers}: Fight) {
     const [activeTrainers, setActiveTrainers] = useState<string[]>(shuffleArray(Object.keys(currTrainers))) //Array of Keys of the trainers still able to fight
     const [fullCards, setFullCards] = useState(combineLists) //The content to render
 
-    const types: any = {
+    const types: any = { //List of all possible types a mon can have. Used both for display and effectiveness calculator
         "Bug": ["Grass","Psychic","Dark"],
         "Dark": ["Psychic","Ghost"],
         "Dragon": ["Dragon"],
@@ -73,19 +73,21 @@ function Fight({menu, trainers}: Fight) {
         "Water": ["Fire","Ground","Rock"]
     };
 
+    //Initial data loading
     if (isLoading){
         let result: any = {}
 
         Promise.all(Object.keys(currTrainers).map((key) => {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 fetch('/Savedata/'+key+'.json')
-                .then((response) => {resolve(response.json())})});}))
-                    .then((values) => {values.map((y: any) => {result[y.name] = y})})
-                    .then(() => {
-                        toRender = true
-                        setCurrTrainers(result)
-                        setIsLoading(false);
-                        });
+                .then((response) => {resolve(response.json())})});
+        }))
+        .then((values) => {values.map((y: any) => {result[y.name] = y})})
+        .then(() => {
+            toRender = true
+            setCurrTrainers(result)
+            setIsLoading(false);
+        });
     }
     //This useEffect is set to re-render manually when the trigger is set to true
     //Also functions as a primary debugging function for seeing the most up to date changes
@@ -113,38 +115,42 @@ function Fight({menu, trainers}: Fight) {
     //Generate the content to be displayed in the Fight menu
     function combineLists(): JSX.Element {
         return (
-         <div key={Math.random()}
-          className='flexRow'
-          style={{justifyContent:"space-between",marginLeft:"10vw",marginRight:"10vw",height:"75vh"}}>
-             <div className='flexCol' style={{justifyContent:"space-between"}}>
-                 {setTrainerCards(true)}
-             </div>
-             <div>
-                {activeTrainers.length <= 1 ? 
-                    <><div className='flexCol active'>
-                        <img src={'./chars/ppl/'+ currTrainers[activeTrainers[0]].name+'.png'}>
-                        </img>
-                        {currTrainers[activeTrainers[0]].name} is victorius!
-                    </div>
-                    <button onClick={() => {menu[1]("Main-Menu")
-                        let i = 1
-                        Object.keys(currTrainers).forEach((trainer: any) => {
-                          const timeoutId = window.setTimeout(() => {
-                            let tmp = currTrainers[trainer]
-                            tmp.mons[tmp.starter].currHP = undefined
-                            const blob = new Blob([JSON.stringify(tmp)], { type: 'application/json' });
-                            FileSaver.saveAs(blob, trainer +".json");
-                          }, 500*i)
-                          i++
-                        })
-
-                    }}>Back Main Menu</button></>:<></>
-                }
-             </div>
-             <div className='flexCol' style={{justifyContent:"space-between"}}>
-                 {setTrainerCards(false)}
-             </div>
-         </div>)
+            <div key={Math.random()} className='flexRow'
+                style={{justifyContent:"space-between",marginLeft:"10vw",marginRight:"10vw",height:"75vh"}}>
+                <div className='flexCol' style={{justifyContent:"space-between"}}>
+                    {setTrainerCards(true)}
+                </div>
+                <div>
+                    {activeTrainers.length <= 1 ? 
+                    <>
+                        <div className='flexCol active'>
+                            <img src={'./chars/ppl/'+ currTrainers[activeTrainers[0]].name+'.png'} />
+                            {currTrainers[activeTrainers[0]].name} is victorius!
+                        </div>
+                        <button 
+                            onClick={() => {
+                                menu[1]("Main-Menu")
+                                let i = 1
+                                Object.keys(currTrainers).forEach((trainer: any) => {
+                                    const timeoutId = window.setTimeout(() => {
+                                        let tmp = currTrainers[trainer]
+                                        tmp.mons[tmp.starter].currHP = undefined
+                                        const blob = new Blob([JSON.stringify(tmp)], { type: 'application/json' });
+                                        FileSaver.saveAs(blob, trainer +".json");
+                                    }, 500*i)
+                                    i++
+                        })}}>
+                            Back Main Menu
+                        </button>
+                    </>:
+                    <></>
+                    }
+                </div>
+                <div className='flexCol' style={{justifyContent:"space-between"}}>
+                    {setTrainerCards(false)}
+                </div>
+            </div>
+        )
      }
 
     //Creates a list of trainers, enabling different visuals and functions depending on the trainer's current fight state
@@ -154,61 +160,59 @@ function Fight({menu, trainers}: Fight) {
         
         //For each trainer in play, determine which action to apply to the card based on turn and status
         for (const tKey in currTrainers) {
-            let loopTrainer = currTrainers[tKey]
-            let loopActiveMon = loopTrainer.mons[loopTrainer.starter]
+            let loopTrainer = currTrainers[tKey] //Shorthand variable for the trainer being handled by each loop
+            let loopActiveMon = loopTrainer.mons[loopTrainer.starter] //Shorthand variable for the trainer's active mon
             try {
+                //Loop through each trainer in the current trainers list and Create a fight card for them .
                 if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
-                    if (loopActiveMon.currHP == undefined) {loopActiveMon.currHP = loopActiveMon.hp}
-                    let tImgURL='./chars/ppl/'+ loopTrainer.name+'.png'
-                    let imgURLPrefix = './chars/mons/'+ loopActiveMon.name
-                    let imgURLForm = ""
-                    let imgURLShine = ""
+                    if (loopActiveMon.currHP == undefined) {loopActiveMon.currHP = loopActiveMon.hp} // Set the trainer's currHP if they do not have that variable
+                    let tImgURL='./chars/ppl/'+ loopTrainer.name+'.png' //Shorthand variable for the trainer img
+                    //Calulate the shorthand variable for the mon img
+                    let imgURLPrefix = './chars/mons/'+ loopActiveMon.name, imgURLForm = "", imgURLShine = "" 
                     if (loopActiveMon.form != "") {imgURLForm = ' '+loopActiveMon.form}
                     if (loopActiveMon.shine == "Shiny") {imgURLShine = ' (Shiny)'}
                     let mImgURL=imgURLPrefix+imgURLForm+imgURLShine+'.png'
 
-                    let loopActiveMonQueueState = 'alive'
-                    let loopActiveMonOnClick = () =>{}
-                    let loopActiveMonEffectiveness = <></>
-                    if (tKey == activeTrainers[0]) {
+                    //Calculate the shorthand variables for the items that are different depending card conditions: css tag, onclick ffunction, mon tooltip
+                    let loopActiveMonQueueState = 'alive', loopActiveMonOnClick = () =>{}, loopActiveMonEffectiveness = <></>
+                    if (tKey == activeTrainers[0]) { //The trainer who's turn it is
                         loopActiveMonQueueState = 'active'
                     }
-                    else if (loopActiveMon.currHP <= 0) {
+                    else if (loopActiveMon.currHP <= 0) {//Trainer who is defeated and is no loger in the queue
                         loopActiveMonQueueState = 'defeated'
                         loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) ? <div className='active circle'></div> : <></>
                     }
-                    else {
+                    else { //Trainer who is still in the tourney, but it is not their turn
                         loopActiveMonOnClick = () => {act(tKey)}
                         loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) ? <div className='active circle'></div> : <></>
                         effective(dex.mons[currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].name + currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].form].type1,dex.mons[currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].name + currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].form].type2,dex.mons[loopActiveMon.name + loopActiveMon.form].type1,dex.mons[loopActiveMon.name + loopActiveMon.form].type2) ? <div className='active circle'></div>:<></>
                     }
 
 
-                        trainers.push(<div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
-                                        <div className={'flexCol ' + loopActiveMonQueueState}><img src={tImgURL}></img>{loopTrainer.name}</div>
-                                        <Tooltip anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
-                                            <div className='flexCol'>
-                                                {loopActiveMon.name}
-                                                <div className='flexRow'>
-                                                    <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + ".png"} className='typeImg'/>
-                                                    {dex.mons[loopActiveMon.name +loopActiveMon.form].type2 != "" ? <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type2 + ".png"} className='typeImg'/>:<></>}
-                                                    {loopActiveMonEffectiveness}
-                                                </div>
-                                            </div>
-                                        </Tooltip>
-                                        <div id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState}>
-                                            <img src={mImgURL}></img>L{loopActiveMon.lvl}: {loopActiveMon.currHP}
-                                            / 
-                                            {loopActiveMon.hp}
+                    trainers.push(
+                        <div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
+                            <div className={'flexCol ' + loopActiveMonQueueState}><img src={tImgURL}></img>{loopTrainer.name}</div>
+                                <Tooltip anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
+                                    <div className='flexCol'>
+                                        {loopActiveMon.name}
+                                        <div className='flexRow'>
+                                            <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + ".png"} className='typeImg'/>
+                                            {dex.mons[loopActiveMon.name +loopActiveMon.form].type2 != "" ? <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type2 + ".png"} className='typeImg'/>:<></>}
+                                            {loopActiveMonEffectiveness}
                                         </div>
-                                    </div>)
+                                    </div>
+                                </Tooltip>
+                                <div id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState}>
+                                    <img src={mImgURL}></img>L{loopActiveMon.lvl}: {loopActiveMon.currHP}
+                                    / 
+                                    {loopActiveMon.hp}
+                                </div>
+                                </div>)
                     
                 }
             }
             catch {
                 if (!isLoading) console.log("There was an error loading "+tKey+". They have no mon assigned to them under the key "+loopTrainer.starter)
-                    console.log(loopTrainer.mons)
-                //menu[1]("Main-Menu")
             }
             index++
         }

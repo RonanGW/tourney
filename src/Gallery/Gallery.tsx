@@ -205,8 +205,8 @@ function Gallery({menu, trainers}: Gallery) {
                 <div className="Gallery-info-panel">
                     {trainer.state == "Unlocked" ? 
                         <div>
-                            <p>Region: {trainer.region}</p>
-                            <p>Trainer Class: {trainer.class}</p>
+                            <div><u>Region</u><div>{trainer.region}</div></div>
+                            <div><u>Trainer Class</u><div>{trainer.class}</div></div>
                             <p>Wins: {trainer.w}</p>
                             <p>Losses: {trainer.l}</p>
                             <p>BP: {trainer.BP}</p>
@@ -231,7 +231,7 @@ function Gallery({menu, trainers}: Gallery) {
                                 <img src={"/icons/"+dex.mons[selectedMon.name + selectedMon.form].type1 + ".png"} className='typeImg'/>
                                   {dex.mons[selectedMon.name + selectedMon.form].type2 != "" ?
                                   <img src={"/icons/"+dex.mons[selectedMon.name + selectedMon.form].type2 + ".png"} className='typeImg'/> :
-                                  <></>}
+                                  undefined}
                                 </div>
                                 <p>XP: {selectedMon.xp}</p>
                                 <p>HP: {selectedMon.hp}</p>
