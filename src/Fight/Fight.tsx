@@ -180,13 +180,12 @@ function Fight({menu, trainers}: Fight) {
                     }
                     else if (loopActiveMon.currHP <= 0) {//Trainer who is defeated and is no loger in the queue
                         loopActiveMonQueueState = 'defeated'
-                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) ? <div className='active circle'></div> : <></>
+                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) > 1 ? <div className='active circle'></div> : <></>
                     }
                     else { //Trainer who is still in the tourney, but it is not their turn
                         loopActiveMonOnClick = () => {act(tKey)}
-                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) ? <div className='active circle'></div> : <></>
-                        effective(dex.mons[currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].name + currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].form].type1,dex.mons[currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].name + currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter].form].type2,dex.mons[loopActiveMon.name + loopActiveMon.form].type1,dex.mons[loopActiveMon.name + loopActiveMon.form].type2) ? <div className='active circle'></div>:<></>
-                    }
+                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) > 1 ? <div className='active circle'></div> : <></>
+                        }
 
 
                     trainers.push(
@@ -240,14 +239,14 @@ function Fight({menu, trainers}: Fight) {
         setActiveTrainers(remainingKeys)
     }
 
-    function effective(attackerType1: string, attackerType2: string, defenderType1: string, defenderType2: string): boolean {
-        if (types[attackerType1].includes(defenderType1)) {console.log("Super Effective");return true}
-        else if (types[attackerType1].includes(defenderType2)) {console.log("Super Effective");return true}
+    function effective(attackerType1: string, attackerType2: string, defenderType1: string, defenderType2: string): number {
+        if (types[attackerType1].includes(defenderType1)) {console.log("Super Effective");return 2}
+        else if (types[attackerType1].includes(defenderType2)) {console.log("Super Effective");return 2}
         else if (types[attackerType2] != undefined && types[attackerType2] != "") {
-            if (types[attackerType2].includes(defenderType1)) {console.log("Super Effective");return true}
-            else if (types[attackerType2].includes(defenderType2)) {console.log("Super Effective");return true}
+            if (types[attackerType2].includes(defenderType1)) {console.log("Super Effective");return 2}
+            else if (types[attackerType2].includes(defenderType2)) {console.log("Super Effective");return 2}
         }
-        return false
+        return 1
     }
     
     //Cause a target to lose some of their current HP
@@ -260,7 +259,7 @@ function Fight({menu, trainers}: Fight) {
         let defenderType2 = "noType"
         if (dex.mons[tData[trainer].starter].type2 != undefined && dex.mons[tData[trainer].starter].type2 != "") {defenderType2 = dex.mons[tData[trainer].starter].type2}
 
-        if (effective(attackerType1,attackerType2,defenderType1,defenderType2)) {dmgMultiplier = 2}
+        dmgMultiplier = dmgMultiplier * effective(attackerType1,attackerType2,defenderType1,defenderType2)
 
        let result = tData[trainer].mons[tData[trainer].starter].currHP - (diff.lvl * dmgMultiplier) //Calculates loss of HP
        console.log("Attack dealt " +diff.lvl * dmgMultiplier+ "dmg")
