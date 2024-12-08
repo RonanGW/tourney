@@ -70,7 +70,26 @@ function Fight({menu, trainers}: Fight) {
         "Psychic": ["Fighting","Poison"],
         "Rock": ["Fire","Ice","Flying","Bug"],
         "Steel": ["Ice","Rock","Steel"],
-        "Water": ["Fire","Ground","Rock"]
+        "Water": ["Fire","Ground","Rock"],
+        "Bug-R": ["Grass","Fighting","Ground"],
+        "Dark-R": ["Psychic","Ghost","Dark"],
+        "Dragon-R": ["Fire","Water","Grass","Electric"],
+        "Electric-R": ["Electric","Flying","Steel"],
+        "Fairy-R": ["Fighting","Bug","Dragon","Dark"],
+        "Fighting-R": ["Bug","Rock","Dark"],
+        "Fire-R": ["Fire","Grass","Ice","Bug","Steel","Fairy"],
+        "Flying-R": ["Grass","Fighting","Ground","Bug"],
+        "Ghost-R": ["Normal","Fighting","Poison","Bug"],
+        "Grass-R": ["Water","Grass","Electric","Ground"],
+        "Ground-R": ["Electric","Poison","Rock"],
+        "Ice-R": ["Ice"],
+        "Normal-R": ["Ghost"],
+        "Null-R": [],
+        "Poison-R": ["Grass","Fighting","Poison","Bug","Fairy"],
+        "Psychic-R": ["Fighting","Pyschic"],
+        "Rock-R": ["Normal","Fire","Poison","Flying"],
+        "Steel-R": ["Normal","Grass","Ice","Flying","Psychic","Bug","Rock","Dragon","Steel","Fairy"],
+        "Water-R": ["Fire","Water","Ice","Steel"]
     };
 
     //Initial data loading
@@ -180,12 +199,12 @@ function Fight({menu, trainers}: Fight) {
                     }
                     else if (loopActiveMon.currHP <= 0) {//Trainer who is defeated and is no loger in the queue
                         loopActiveMonQueueState = 'defeated'
-                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) > 1 ? <div className='active circle'></div> : <></>
+                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) > 1 ? <div className='active circle'></div> : effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) < 1 ? <div className='defeated circle'></div> : <></>
                     }
                     else { //Trainer who is still in the tourney, but it is not their turn
                         loopActiveMonOnClick = () => {act(tKey)}
-                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) > 1 ? <div className='active circle'></div> : <></>
-                        }
+                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) > 1 ? <div className='active circle'></div> : effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) < 1 ? <div className='defeated circle'></div> : <></>
+                    }
 
 
                     trainers.push(
@@ -240,13 +259,25 @@ function Fight({menu, trainers}: Fight) {
     }
 
     function effective(attackerType1: string, attackerType2: string, defenderType1: string, defenderType2: string): number {
-        if (types[attackerType1].includes(defenderType1)) {console.log("Super Effective");return 2}
-        else if (types[attackerType1].includes(defenderType2)) {console.log("Super Effective");return 2}
+        let multiplier = 1
+        if (types[attackerType1].includes(defenderType1)) {multiplier = multiplier * 2}
+        else if (types[attackerType1].includes(defenderType2)) {multiplier = multiplier * 2}
         else if (types[attackerType2] != undefined && types[attackerType2] != "") {
-            if (types[attackerType2].includes(defenderType1)) {console.log("Super Effective");return 2}
-            else if (types[attackerType2].includes(defenderType2)) {console.log("Super Effective");return 2}
+            if (types[attackerType2].includes(defenderType1)) {multiplier = multiplier * 2}
+            else if (types[attackerType2].includes(defenderType2)) {multiplier = multiplier * 2}
         }
-        return 1
+
+        if (types[defenderType1+"-R"].includes(attackerType1)) {multiplier = multiplier/2}
+        else if (types[defenderType1+"-R"].includes(attackerType2)) {multiplier = multiplier/2}
+        else if (types[defenderType2] != undefined && types[defenderType2] != "") {
+            if (types[defenderType2+"-R"].includes(attackerType1)) {multiplier = multiplier/2}
+            else if (types[defenderType2+"-R"].includes(attackerType2)) {multiplier = multiplier/2}
+        }
+
+        //if (multiplier > 1) {console.log("Super Effective!")}
+        //else if (multiplier < 1) {console.log("Not Effective!")}
+
+        return multiplier
     }
     
     //Cause a target to lose some of their current HP
@@ -260,9 +291,10 @@ function Fight({menu, trainers}: Fight) {
         if (dex.mons[tData[trainer].starter].type2 != undefined && dex.mons[tData[trainer].starter].type2 != "") {defenderType2 = dex.mons[tData[trainer].starter].type2}
 
         dmgMultiplier = dmgMultiplier * effective(attackerType1,attackerType2,defenderType1,defenderType2)
+        console.log("dmgMulltiplier: " + dmgMultiplier)
 
-       let result = tData[trainer].mons[tData[trainer].starter].currHP - (diff.lvl * dmgMultiplier) //Calculates loss of HP
-       console.log("Attack dealt " +diff.lvl * dmgMultiplier+ "dmg")
+       let result = tData[trainer].mons[tData[trainer].starter].currHP - (Math.ceil(diff.lvl * dmgMultiplier)) //Calculates loss of HP
+       console.log("Attack dealt " +Math.ceil(diff.lvl * dmgMultiplier)+ "dmg")
        // HP would go out of bounds, bring it back to the edge of bounds
        if (result <= 0) {result = 0}
        else if (result > tData[trainer].mons[tData[trainer].starter].hp) { 
