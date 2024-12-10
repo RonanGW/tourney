@@ -247,13 +247,13 @@ function Gallery({menu, trainers}: Gallery) {
             <div className='Gallery-sortBlock'>
               <div className='filter-block'>
                 {<MultiSelect value={selectedStates} onChange={(e) => {renderMons = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
-    placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}
+    filter placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}
                 {<MultiSelect value={selectedTypes} onChange={(e) => {renderMons = true;setSelectedTypes(e.value)}} options={types} optionLabel="name" display="chip"
-    placeholder="Type" maxSelectedLabels={selectedTypes.length} className="filter md:filter" />}
+    filter placeholder="Type" maxSelectedLabels={selectedTypes.length} className="filter md:filter" />}
                 {<MultiSelect value={selectedRegions} onChange={(e) => {renderMons = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
-    placeholder="Region" maxSelectedLabels={selectedRegions.length} className="filter md:filter" />}
+    filter placeholder="Region" maxSelectedLabels={selectedRegions.length} className="filter md:filter" />}
                 {<MultiSelect value={selectedShines} onChange={(e) => {renderMons = true;setSelectedShines(e.value)}} options={shines} optionLabel="name" display="chip"
-            placeholder="Shine" maxSelectedLabels={selectedShines.length} className="filter md:filter" />}
+    filter placeholder="Shine" maxSelectedLabels={selectedShines.length} className="filter md:filter" />}
               </div>
               <div className="Card-block">
                   {cards}
@@ -273,11 +273,11 @@ function Gallery({menu, trainers}: Gallery) {
             <div>
               <div className='filter'>
                 {<MultiSelect value={selectedStates} onChange={(e) => {renderTrainers = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
-    placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}
+    filter placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}
                 {<MultiSelect value={selectedRegions} onChange={(e) => {renderTrainers = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
-    placeholder="Regions" maxSelectedLabels={selectedRegions.length} className="filter md:filter" />}
+    filter placeholder="Regions" maxSelectedLabels={selectedRegions.length} className="filter md:filter" />}
                 {<MultiSelect value={selectedClasses} onChange={(e) => {renderTrainers = true;setSelectedClasses(e.value)}} options={classes} optionLabel="name" display="chip"
-    placeholder="Classes" maxSelectedLabels={selectedClasses.length} className="filter md:filter" />}
+    filter placeholder="Classes" maxSelectedLabels={selectedClasses.length} className="filter md:filter" />}
               </div>
               <div className="Card-block">
                 {cards}
