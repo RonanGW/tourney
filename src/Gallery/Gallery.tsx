@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { MultiSelect } from 'primereact/multiselect';
+import Select from 'react-select'
 import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
 import FileSaver from 'file-saver';
@@ -246,14 +246,10 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div className='Gallery-sortBlock'>
               <div className='filter-block'>
-                {<MultiSelect value={selectedStates} onChange={(e) => {renderMons = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
-    filter placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}
-                {<MultiSelect value={selectedTypes} onChange={(e) => {renderMons = true;setSelectedTypes(e.value)}} options={types} optionLabel="name" display="chip"
-    filter placeholder="Type" maxSelectedLabels={selectedTypes.length} className="filter md:filter" />}
-                {<MultiSelect value={selectedRegions} onChange={(e) => {renderMons = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
-    filter placeholder="Region" maxSelectedLabels={selectedRegions.length} className="filter md:filter" />}
-                {<MultiSelect value={selectedShines} onChange={(e) => {renderMons = true;setSelectedShines(e.value)}} options={shines} optionLabel="name" display="chip"
-    filter placeholder="Shine" maxSelectedLabels={selectedShines.length} className="filter md:filter" />}
+              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={states} className="filter md:filter" />}
+              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={types} className="filter md:filter" />}
+              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={regions} className="filter md:filter" />}
+              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={shines} className="filter md:filter" />}
               </div>
               <div className="Card-block">
                   {cards}
@@ -262,6 +258,27 @@ function Gallery({menu, trainers}: Gallery) {
         </div>
   }
   
+
+  //{<MultiSelect value={selectedStates} onChange={(e) => {renderMons = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
+ // filter placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}
+ //             {<MultiSelect value={selectedTypes} onChange={(e) => {renderMons = true;setSelectedTypes(e.value)}} options={types} optionLabel="name" display="chip"
+ // filter placeholder="Type" maxSelectedLabels={selectedTypes.length} className="filter md:filter" />}
+ //             {<MultiSelect value={selectedRegions} onChange={(e) => {renderMons = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
+ // filter placeholder="Region" maxSelectedLabels={selectedRegions.length} className="filter md:filter" />}
+ //             {<MultiSelect value={selectedShines} onChange={(e) => {renderMons = true;setSelectedShines(e.value)}} options={shines} optionLabel="name" display="chip"
+ // filter placeholder="Shine" maxSelectedLabels={selectedShines.length} className="filter md:filter" />}
+
+
+
+ // {<MultiSelect value={selectedStates} onChange={(e) => {renderTrainers = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
+ // filter placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}
+ //             {<MultiSelect value={selectedRegions} onChange={(e) => {renderTrainers = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
+//  filter placeholder="Regions" maxSelectedLabels={selectedRegions.length} className="filter md:filter" />}
+////              {<MultiSelect value={selectedClasses} onChange={(e) => {renderTrainers = true;setSelectedClasses(e.value)}} options={classes} optionLabel="name" display="chip"
+//  filter placeholder="Classes" maxSelectedLabels={selectedClasses.length} className="filter md:filter" />}
+
+
+
   //Returns the Gallery object, which would allow users to view trainer details and make purchases 
   return (
     <div className="Gallery">
@@ -272,12 +289,9 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div>
               <div className='filter'>
-                {<MultiSelect value={selectedStates} onChange={(e) => {renderTrainers = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
-    filter placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}
-                {<MultiSelect value={selectedRegions} onChange={(e) => {renderTrainers = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
-    filter placeholder="Regions" maxSelectedLabels={selectedRegions.length} className="filter md:filter" />}
-                {<MultiSelect value={selectedClasses} onChange={(e) => {renderTrainers = true;setSelectedClasses(e.value)}} options={classes} optionLabel="name" display="chip"
-    filter placeholder="Classes" maxSelectedLabels={selectedClasses.length} className="filter md:filter" />}
+              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={states} className="p-multiselect" />}
+              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={regions} className="p-multiselect" />}
+              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={classes} className="p-multiselect" />}
               </div>
               <div className="Card-block">
                 {cards}

@@ -59,13 +59,20 @@ button {
   margin: 8px;
   
   padding: 7px 30px 7px 12px;
-  overflow: hidden;
   gap: 7px;
   min-height: 45px;
 }
 
 .p-multiselect-panel {
   background-color: #77D5D5;
+  overflow: hidden;
+  width: 20px;
+}
+
+.p-multiselect-panel-checkbox {
+  height: 16px;
+  width: 16px;
+  overflow: hidden;
 }
 
 .p-multiselect-checkbox {
