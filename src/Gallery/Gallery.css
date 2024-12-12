@@ -50,7 +50,7 @@ button {
   color: black;
 }
 
-.p-multiselect {
+.multiselect__control {
   background-color: rgb(141, 223, 223);
   border: solid blue;
   width: 256px;
@@ -64,9 +64,16 @@ button {
   min-height: 45px;
 }
 
-.p-multiselect-container {
+.multiselect__value-container {}
+.multiselect__indicators {}
+.multiselect__option {}
+
+.multiselect__menu {}
+.multiselect__menu-list {}
+
+.multiselect__option {
   background-color: greenyellow;
-  color: black;
+  color: rgb(0, 0, 0);
   border-style: solid;
   border-color: greenyellow;
   box-sizing: border-box;
@@ -81,18 +88,6 @@ button {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-height: 200px;
   overflow-x: hidden;
-}
-
-.p-multiselect-token {
-  display: inline-flex;
-  align-items: center;
-  background-color: #C5D3F5;
-  border-style: solid;
-  border-color: #4D6AAD;
-  border-radius: 20%;
-  font-size: 14px;
-  padding: 3px 8px;
-  border-radius: 5px;
 }
 
 .Gallery-vertical-panel {
