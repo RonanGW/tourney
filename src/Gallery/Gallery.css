@@ -31,12 +31,6 @@ button {
   min-height: 70vh;
 }
 
-.filter {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
 
 
 .filter-block {
@@ -48,9 +42,16 @@ button {
   box-sizing: border-box;
 }
 
+.filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: black;
+}
+
 .p-multiselect {
   background-color: rgb(141, 223, 223);
-  color: black;
   border: solid blue;
   width: 256px;
   height: 5vh;
@@ -63,29 +64,11 @@ button {
   min-height: 45px;
 }
 
-.p-multiselect-panel {
-  background-color: #77D5D5;
-  overflow: hidden;
-  width: 20px;
-}
-
-.p-multiselect-panel-checkbox {
-  height: 16px;
-  width: 16px;
-  overflow: hidden;
-}
-
-.p-multiselect-checkbox {
-  height: 16px;
-  width: 16px;
-  overflow: hidden;
-}
-
-.p-multiselect-item {
-  background-color: #C5D3F5;
+.p-multiselect-container {
+  background-color: greenyellow;
   color: black;
   border-style: solid;
-  border-color: blue;
+  border-color: greenyellow;
   box-sizing: border-box;
   flex-flow: wrap;
   top: 100%;
@@ -97,7 +80,6 @@ button {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-height: 200px;
-  overflow-y: auto;
   overflow-x: hidden;
 }
 

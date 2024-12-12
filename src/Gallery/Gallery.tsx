@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Select from 'react-select'
+import Select, { StylesConfig } from 'react-select'
 import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
 import FileSaver from 'file-saver';
@@ -246,10 +246,10 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div className='Gallery-sortBlock'>
               <div className='filter-block'>
-              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={states} className="filter md:filter" />}
-              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={types} className="filter md:filter" />}
-              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={regions} className="filter md:filter" />}
-              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={shines} className="filter md:filter" />}
+              {<Select isMulti onChange={(e) => {renderMons = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states}/>}
+              {<Select isMulti onChange={(e) => {renderMons = true;setSelectedTypes([...new Set(Object.entries(e).map(item => item[1].value))])}} options={types}/>}
+              {<Select isMulti onChange={(e) => {renderMons = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/>}
+              {<Select isMulti onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} options={shines}/>}
               </div>
               <div className="Card-block">
                   {cards}
@@ -289,9 +289,9 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div>
               <div className='filter'>
-              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={states} className="p-multiselect" />}
-              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={regions} className="p-multiselect" />}
-              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([])}} options={classes} className="p-multiselect" />}
+              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states} />}
+              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/>}
+              {<Select isMulti onChange={(e) => {renderTrainers = true;setSelectedClasses([...new Set(Object.entries(e).map(item => item[1].value))])}} options={classes}/>}
               </div>
               <div className="Card-block">
                 {cards}
