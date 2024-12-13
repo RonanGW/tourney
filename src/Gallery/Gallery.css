@@ -31,8 +31,6 @@ button {
   min-height: 70vh;
 }
 
-
-
 .filter-block {
   display: flex;
   flex-direction: row;
@@ -50,45 +48,110 @@ button {
   color: black;
 }
 
+
+
+.multiselect__clear-indicator {
+  background-color: goldenrod
+}
+
+.multiselect__container {
+  background-color: indigo
+}
+
 .multiselect__control {
   background-color: rgb(141, 223, 223);
   border: solid blue;
+  color: blue;
   width: 256px;
   height: 5vh;
   border-width: thick;
   border-radius: 5%;
   margin: 8px;
-  
-  padding: 7px 30px 7px 12px;
-  gap: 7px;
-  min-height: 45px;
-}
-
-.multiselect__value-container {}
-.multiselect__indicators {}
-.multiselect__option {}
-
-.multiselect__menu {}
-.multiselect__menu-list {}
-
-.multiselect__option {
-  background-color: greenyellow;
-  color: rgb(0, 0, 0);
-  border-style: solid;
-  border-color: greenyellow;
-  box-sizing: border-box;
-  flex-flow: wrap;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  margin-top: 5px;
-  padding: 5px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-height: 200px;
   overflow-x: hidden;
 }
+
+.multiselect__dropdown-indicator {
+  background-color: teal
+}
+
+.multiselect__group {
+  background-color: salmon
+}
+
+.multiselect__group-heading {
+  background-color: darkorange
+}
+
+.multiselect__indicators-container {
+  background-color: violet
+}
+
+.multiselect__indicators-separator {
+  background-color: brown
+}
+
+.multiselect__input {
+  background-color: rgb(100, 62, 191);
+  color: rgb(152, 230, 174)
+}
+
+.multiselect__loading-indicator {
+  background-color: yellow
+}
+
+.multiselect__loading-message {
+  background-color: navy
+}
+
+.multiselect__menu {
+  background-color: saddlebrown
+}
+
+.multiselect__menu-list {
+  background-color: aqua
+}
+
+.multiselect__menu-portal {
+  background-color: hotpink
+}
+
+.multiselect__multi-value {
+  background-color: rgb(24, 137, 24)
+}
+
+.multiselect__multi-value-label {
+  background-color: rgb(181, 9, 181)
+}
+
+.multiselect__multi-value-remove {
+  background-color: tomato
+}
+
+.multiselect__no-options-message {
+  background-color: whitesmoke
+}
+
+.multiselect__option {
+  background-color: khaki;
+  border: solid blue;
+}
+
+.multiselect__placeholder {
+  background-color: rebeccapurple
+}
+
+.multiselect__single-value {
+  background-color: rgb(214, 42, 42)
+}
+
+.multiselect__value-container {
+  background-color: greenyellow
+}
+
+.multiselect__indicators {
+  background-color: fuchsia
+}
+
 
 .Gallery-vertical-panel {
   display: flex;

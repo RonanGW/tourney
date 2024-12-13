@@ -246,10 +246,10 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div className='Gallery-sortBlock'>
               <div className='filter-block'>
-              {<Select isMulti classNamePrefix="multiselect" onChange={(e) => {renderMons = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states}/>}
-              {<Select isMulti classNamePrefix="multiselect" onChange={(e) => {renderMons = true;setSelectedTypes([...new Set(Object.entries(e).map(item => item[1].value))])}} options={types}/>}
-              {<Select isMulti classNamePrefix="multiselect" onChange={(e) => {renderMons = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/>}
-              {<Select isMulti classNamePrefix="multiselect" onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} options={shines}/>}
+              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states}/>}
+              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedTypes([...new Set(Object.entries(e).map(item => item[1].value))])}} options={types}/>}
+              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/>}
+              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} options={shines}/>}
               </div>
               <div className="Card-block">
                   {cards}
@@ -289,9 +289,9 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div>
               <div className='filter'>
-              {<Select isMulti classNamePrefix="multiselect" onChange={(e) => {renderTrainers = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states} />}
-              {<Select isMulti classNamePrefix="multiselect" onChange={(e) => {renderTrainers = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/>}
-              {<Select isMulti classNamePrefix="multiselect" onChange={(e) => {renderTrainers = true;setSelectedClasses([...new Set(Object.entries(e).map(item => item[1].value))])}} options={classes}/>}
+              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderTrainers = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states} />}
+              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderTrainers = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/>}
+              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderTrainers = true;setSelectedClasses([...new Set(Object.entries(e).map(item => item[1].value))])}} options={classes}/>}
               </div>
               <div className="Card-block">
                 {cards}
