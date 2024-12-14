@@ -46,20 +46,29 @@ button {
   align-items: start;
   justify-content: center;
   color: black;
+  z-index:901;
 }
 
+.filter-wrap {
+  width: 256px;
+  height: 64px;
+  margin: 8px;
+}
 
 .multiselect__control {
   border: solid thick blue;
+  background-color: #77D5D5;
   width: 256px;
   height: 64px;
   border-radius: 5%;
   margin: 8px;
+  position: fixed;
   overflow: hidden;
 }
 
 .multiselect__control:hover {
   height: fit-content;
+  z-index:902;
 }
 
 .multiselect__value-container {
