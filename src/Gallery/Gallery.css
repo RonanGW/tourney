@@ -1,5 +1,5 @@
 button {
-  background-color: rgb(158, 189, 189);
+  background-color: #77D5D5;
   color: black;
   border-style: solid;
   border-color: blue;
@@ -43,36 +43,108 @@ button {
 .filter {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   color: black;
 }
 
 
-
-.multiselect__clear-indicator {
-  background-color: goldenrod
-}
-
-.multiselect__container {
-  background-color: indigo
-}
-
 .multiselect__control {
-  background-color: rgb(141, 223, 223);
-  border: solid blue;
-  color: blue;
+  border: solid thick blue;
   width: 256px;
-  height: 5vh;
-  border-width: thick;
+  height: 64px;
   border-radius: 5%;
   margin: 8px;
-  overflow-x: hidden;
+  overflow: hidden;
+}
+
+.multiselect__control:hover {
+  height: fit-content;
+}
+
+.multiselect__value-container {
+  background-color: #77D5D5;
+  border-left: solid thick blue;
+  border-top: solid thick blue;
+  border-bottom: solid thick blue;
+  display: flex;
+  flex-direction: row;
+}
+
+.multiselect__multi-value {
+  background-color: #fb8585;
+  border: solid thick blue;
+  border-radius: 5%;
+  width: fit-content;
+  height: 40px;
+  font-size: 24px;
+}
+
+
+
+.multiselect__multi-value__label {
+  background-color: #83EA83;
+  padding: 400px;
+}
+
+.multiselect__multi-value__remove {
+  background-color: #fb8585;
+}
+
+
+
+
+
+
+
+.multiselect__indicators {
+  background-color: darkcyan;
+  border-right: solid thick blue;
+  border-top: solid thick blue;
+  border-bottom: solid thick blue;
+  color: #83EA83;
+  width: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+
+.multiselect__indicator-separator {
+  display: none;
 }
 
 .multiselect__dropdown-indicator {
-  background-color: teal
+  background-color: #83EA83;
+  height: 32px;
+  margin: 0px;
 }
+
+.multiselect__clear-indicator {
+  background-color: #fb8585;
+  height: 32px;
+  margin: 0px;
+}
+  
+.multiselect__container {
+  background-color: indigo;
+}
+
+.css-tj5bde-Svg {
+  color: black;
+}
+
+.multiselect__placeholder {
+  background-color: #77D5D5;
+  color: black;
+}
+
+
+
+
+
+
+
 
 .multiselect__group {
   background-color: salmon
@@ -86,9 +158,7 @@ button {
   background-color: violet
 }
 
-.multiselect__indicators-separator {
-  background-color: brown
-}
+
 
 .multiselect__input {
   background-color: rgb(100, 62, 191);
@@ -115,17 +185,8 @@ button {
   background-color: hotpink
 }
 
-.multiselect__multi-value {
-  background-color: rgb(24, 137, 24)
-}
 
-.multiselect__multi-value-label {
-  background-color: rgb(181, 9, 181)
-}
 
-.multiselect__multi-value-remove {
-  background-color: tomato
-}
 
 .multiselect__no-options-message {
   background-color: whitesmoke
@@ -133,24 +194,16 @@ button {
 
 .multiselect__option {
   background-color: khaki;
-  border: solid blue;
 }
 
-.multiselect__placeholder {
-  background-color: rebeccapurple
-}
+
 
 .multiselect__single-value {
   background-color: rgb(214, 42, 42)
 }
 
-.multiselect__value-container {
-  background-color: greenyellow
-}
 
-.multiselect__indicators {
-  background-color: fuchsia
-}
+
 
 
 .Gallery-vertical-panel {

@@ -44,39 +44,39 @@ fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = 
 // Gallery Menu
 function Gallery({menu, trainers}: Gallery) {
   const trainerObjects: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
-  const regions = [...new Set([...new Set(trainerObjects.map(item => item[1].region))].map(item => {return {value: item, label: item, name: item}}))];
-  const classes = [...new Set([...new Set(trainerObjects.map(item => item[1].class))].map(item => {return {value: item, label: item, name: item}}))];
+  const regions = [...new Set([...new Set(trainerObjects.map(item => item[1].region))].map(item => {return {value: item, label: item}}))];
+  const classes = [...new Set([...new Set(trainerObjects.map(item => item[1].class))].map(item => {return {value: item, label: item}}))];
   const types = [
-    { value: 'Bug', label: 'Bug', name: 'Bug'},
-    { value: 'Dark', label: 'Dark', name: 'Dark'},
-    { value: 'Dragon', label: 'Dragon', name: 'Dragon'},
-    { value: 'Electric', label: 'Electric', name: 'Electric'},
-    { value: 'Fairy', label: 'Fairy', name: 'Fairy'},
-    { value: 'Fighting', label: 'Fighting', name: 'Fighting'},
-    { value: 'Fire', label: 'Fire', name: 'Fire'},
-    { value: 'Flying', label: 'Flying', name: 'Flying'},
-    { value: 'Ghost', label: 'Ghost', name: 'Ghost'},
-    { value: 'Grass', label: 'Grass', name: 'Grass'},
-    { value: 'Ground', label: 'Ground', name: 'Ground'},
-    { value: 'Ice', label: 'Ice', name: 'Ice'},
-    { value: 'Normal', label: 'Normal', name: 'Normal'},
-    { value: 'Null', label: 'Null', name: 'Null'},
-    { value: 'Poison', label: 'Poison', name: 'Poison'},
-    { value: 'Psychic', label: 'Psychic', name: 'Psychic'},
-    { value: 'Rock', label: 'Rock', name: 'Rock'},
-    { value: 'Steel', label: 'Steel', name: 'Steel'},
-    { value: 'Water', label: 'Water', name: 'Water'},
+    { value: 'Bug', label: 'Bug'},
+    { value: 'Dark', label: 'Dark'},
+    { value: 'Dragon', label: 'Dragon'},
+    { value: 'Electric', label: 'Electric'},
+    { value: 'Fairy', label: 'Fairy'},
+    { value: 'Fighting', label: 'Fighting'},
+    { value: 'Fire', label: 'Fire'},
+    { value: 'Flying', label: 'Flying'},
+    { value: 'Ghost', label: 'Ghost'},
+    { value: 'Grass', label: 'Grass'},
+    { value: 'Ground', label: 'Ground'},
+    { value: 'Ice', label: 'Ice'},
+    { value: 'Normal', label: 'Normal'},
+    { value: 'Null', label: 'Null'},
+    { value: 'Poison', label: 'Poison'},
+    { value: 'Psychic', label: 'Psychic'},
+    { value: 'Rock', label: 'Rock'},
+    { value: 'Steel', label: 'Steel'},
+    { value: 'Water', label: 'Water'},
   ];
   const shines = [
-    { value: '', label: '', name: 'Normal'},
-    { value: 'Shiny', label: 'Shiny', name: 'Shiny'},
-    { value: 'Albino', label: 'Albino', name: 'Albino'},
-    { value: 'Melanistic', label: 'Melanistic', name: 'Melanistic'},
+    { value: '', label: 'Normal'},
+    { value: 'Shiny', label: 'Shiny'},
+    { value: 'Albino', label: 'Albino'},
+    { value: 'Melanistic', label: 'Melanistic'},
   ]
   const states = [
-    { value: 'Unlocked', label: 'Unlocked', name: 'Unlocked'},
-    { value: 'Available', label: 'Available', name: 'Available'},
-    { value: 'Locked', label: 'Locked', name: 'Locked'}
+    { value: 'Unlocked', label: 'Unlocked'},
+    { value: 'Available', label: 'Available'},
+    { value: 'Locked', label: 'Locked'}
   ]
 
     const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value));
