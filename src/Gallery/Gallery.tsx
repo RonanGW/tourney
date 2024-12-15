@@ -38,14 +38,16 @@ interface trainer {
 
 let renderTrainers = false //Representation of current render
 let renderMons = false //Representation of current render
-let dex: any = {}
-fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = tmp)
+let dex: any = {};fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = tmp)//Storing dex info for mondata to reference more detail not stored in individual mon data. This is to reduce duplicate info such as region be duplicated for each individual mon for each trainer or the same info being copied for each mon's shine state
 
 // Gallery Menu
 function Gallery({menu, trainers}: Gallery) {
   const trainerObjects: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
+  //Collect all regions for filters
   const regions = [...new Set([...new Set(trainerObjects.map(item => item[1].region))].map(item => {return {value: item, label: item}}))];
+  //Collect all classes for filters
   const classes = [...new Set([...new Set(trainerObjects.map(item => item[1].class))].map(item => {return {value: item, label: item}}))];
+  //List possible types for filters
   const types = [
     { value: 'Bug', label: 'Bug'},
     { value: 'Dark', label: 'Dark'},
@@ -67,23 +69,25 @@ function Gallery({menu, trainers}: Gallery) {
     { value: 'Steel', label: 'Steel'},
     { value: 'Water', label: 'Water'},
   ];
+  //List possible shines for filters
   const shines = [
     { value: '', label: 'Normal'},
     { value: 'Shiny', label: 'Shiny'},
     { value: 'Albino', label: 'Albino'},
     { value: 'Melanistic', label: 'Melanistic'},
   ]
+  //List possible fates for filters
   const states = [
     { value: 'Unlocked', label: 'Unlocked'},
     { value: 'Available', label: 'Available'},
     { value: 'Locked', label: 'Locked'}
   ]
 
-    const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value));
-    const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value));
-    const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value));
-    const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value));
-    const [selectedStates, setSelectedStates] = useState(["Unlocked","Available"]); // Actively displayed trainer & mon statuses
+    const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value)); //Actively displayed trainer & mon home regions
+    const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value)); //Actively displayed trainer classes
+    const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value)); //Actively displayed mon types
+    const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value)); //Actively displayed mon shines
+    const [selectedStates, setSelectedStates] = useState(["Unlocked","Available"]); // Actively displayed trainer & mon states
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
     const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999}) //Current Mon to display inside trainer screen
@@ -177,6 +181,20 @@ function Gallery({menu, trainers}: Gallery) {
         mon.state="Unlocked"
         trainer.BP = trainer.BP - dex.mons[mon.name + mon.form].cost
           trainer.mons[mon.name + mon.form + mon.shine.toLowerCase()] = mon
+
+        for (const key in trainer.mons) {
+          //console.log(dex.mons[trainer.mons[key].name + trainer.mons[key].form].unlocker)
+          if (trainer.mons[key].state == "Hidden") {
+            if (trainer.mons[key].shine == mon.shine) {
+              if (dex.mons[trainer.mons[key].name + trainer.mons[key].form].unlocker == mon.name + mon.form + mon.shine.toLowerCase()) {
+                trainer.mons[key].state = "Locked"
+              }
+            }
+            else if (trainer.mons[key].name + trainer.mons[key].form == mon.name + mon.form) {
+              trainer.mons[key].state = "Locked"
+            }
+          }
+        }
 
         const timeoutId = window.setTimeout(() => {
           const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
