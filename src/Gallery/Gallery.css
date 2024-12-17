@@ -56,7 +56,7 @@ button {
 }
 
 .multiselect__control {
-  border: solid thick blue;
+  border: solid 5px blue;
   background-color: #77D5D5;
   width: 256px;
   height: 64px;
@@ -73,16 +73,17 @@ button {
 
 .multiselect__value-container {
   background-color: #77D5D5;
-  border-left: solid thick blue;
-  border-top: solid thick blue;
-  border-bottom: solid thick blue;
+  border-left: solid 5px blue;
+  border-top: solid 5px blue;
+  border-bottom: solid 5px blue;
   display: flex;
+  min-height: 74px;
   flex-direction: row;
 }
 
 .multiselect__multi-value {
   background-color: #fb8585;
-  border: solid thick blue;
+  border: solid 5px blue;
   border-radius: 5%;
   width: fit-content;
   height: 40px;
@@ -108,9 +109,9 @@ button {
 
 .multiselect__indicators {
   background-color: darkcyan;
-  border-right: solid thick blue;
-  border-top: solid thick blue;
-  border-bottom: solid thick blue;
+  border-right: solid 5px blue;
+  border-top: solid 5px blue;
+  border-bottom: solid 5px blue;
   color: #83EA83;
   width: 32px;
   display: flex;

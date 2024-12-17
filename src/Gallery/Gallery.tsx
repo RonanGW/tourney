@@ -161,13 +161,16 @@ function Gallery({menu, trainers}: Gallery) {
           let mons = Object.entries<any>(trainerData.mons); //Turns the passed trainers mons object into an array
           //Loop through each mon and if their status is active, create a card for them and add it to the display list.
           for (let [tkey,value] of mons) {
-            //console.log(value.name + value.form + ": " + dex.mons[value.name + value.form].region)
-            // && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))
-              selectedStates.includes(value.state) && selectedShines.includes(value.shine) && selectedRegions.includes(dex.mons[value.name + value.form].region) && (selectedTypes.includes(dex.mons[value.name + value.form].type1) || selectedTypes.includes(dex.mons[value.name + value.form].type2))? newCards.push(
-                <div onClick={() => {setSelectedMon(value)}}>
-                    <MonCard mon={value}></MonCard>
-                </div>
-              ) : <></>
+            selectedStates.includes(value.state) && 
+            selectedShines.includes(value.shine) && 
+            selectedRegions.includes(dex.mons[value.name + value.form].region) && 
+            (selectedTypes.includes(dex.mons[value.name + value.form].type1) || 
+              selectedTypes.includes(dex.mons[value.name + value.form].type2)) ? 
+            newCards.push(
+              <div onClick={() => {setSelectedMon(value)}}>
+                  <MonCard mon={value}></MonCard>
+              </div>
+            ) : <></>
             }
             setSelectedMon(trainerData.mons[trainerData.starter])
         }, 500)
@@ -182,8 +185,8 @@ function Gallery({menu, trainers}: Gallery) {
         trainer.BP = trainer.BP - dex.mons[mon.name + mon.form].cost
           trainer.mons[mon.name + mon.form + mon.shine.toLowerCase()] = mon
 
+        //Loops through each mon to see if will become available after leveling this mon, therefore making the looped mon visible, but locked
         for (const key in trainer.mons) {
-          //console.log(dex.mons[trainer.mons[key].name + trainer.mons[key].form].unlocker)
           if (trainer.mons[key].state == "Hidden") {
             if (trainer.mons[key].shine == mon.shine) {
               if (dex.mons[trainer.mons[key].name + trainer.mons[key].form].unlocker == mon.name + mon.form + mon.shine.toLowerCase()) {
@@ -195,7 +198,7 @@ function Gallery({menu, trainers}: Gallery) {
             }
           }
         }
-
+        //Save changes
         const timeoutId = window.setTimeout(() => {
           const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
           FileSaver.saveAs(blob, trainer.name +".json");
@@ -264,10 +267,10 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div className='Gallery-sortBlock'>
               <div className='filter-block'>
-              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states}/>}
-              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedTypes([...new Set(Object.entries(e).map(item => item[1].value))])}} options={types}/>}
-              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/>}
-              {<Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} options={shines}/>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states}/></div>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedTypes([...new Set(Object.entries(e).map(item => item[1].value))])}} options={types}/></div>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/></div>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} options={shines}/></div>}
               </div>
               <div className="Card-block">
                   {cards}
