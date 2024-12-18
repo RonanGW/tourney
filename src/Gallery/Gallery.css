@@ -52,14 +52,44 @@ button {
 .filter-wrap {
   width: 256px;
   height: 64px;
-  margin: 8px;
+  margin: 16px;
+}
+
+.css-t3ipsp-control {
+  width: 256px;
+  background-color: #77D5D5;
+  border-left: solid 5px blue;
+  border-top: solid 5px blue;
+  border-bottom: solid 5px blue;
+}
+
+.css-13cymwt-control {
+  width: 256px;
+  background-color: #77D5D5;
+  border-left: solid 5px blue;
+  border-top: solid 5px blue;
+  border-bottom: solid 5px blue;
+}
+
+.multiselect__control--is-focused {
+  width: 256px;
+  background-color: #77D5D5;
+  border-left: solid 5px blue;
+  border-top: solid 5px blue;
+  border-bottom: solid 5px blue;
+}
+
+.multiselect__control--menu-is-open {
+  width: 256px;
+  background-color: #77D5D5;
+  border-left: solid 5px blue;
+  border-top: solid 5px blue;
+  border-bottom: solid 5px blue;
 }
 
 .multiselect__control {
-  border: solid 5px blue;
-  background-color: #77D5D5;
   width: 256px;
-  height: 64px;
+  height: 74px;
   border-radius: 5%;
   margin: 8px;
   position: fixed;
@@ -90,8 +120,6 @@ button {
   font-size: 24px;
 }
 
-
-
 .multiselect__multi-value__label {
   background-color: #83EA83;
   padding: 400px;
@@ -100,12 +128,6 @@ button {
 .multiselect__multi-value__remove {
   background-color: #fb8585;
 }
-
-
-
-
-
-
 
 .multiselect__indicators {
   background-color: darkcyan;
@@ -148,73 +170,6 @@ button {
   background-color: #77D5D5;
   color: black;
 }
-
-
-
-
-
-
-
-
-.multiselect__group {
-  background-color: salmon
-}
-
-.multiselect__group-heading {
-  background-color: darkorange
-}
-
-.multiselect__indicators-container {
-  background-color: violet
-}
-
-
-
-.multiselect__input {
-  background-color: rgb(100, 62, 191);
-  color: rgb(152, 230, 174)
-}
-
-.multiselect__loading-indicator {
-  background-color: yellow
-}
-
-.multiselect__loading-message {
-  background-color: navy
-}
-
-.multiselect__menu {
-  background-color: saddlebrown
-}
-
-.multiselect__menu-list {
-  background-color: aqua
-}
-
-.multiselect__menu-portal {
-  background-color: hotpink
-}
-
-
-
-
-.multiselect__no-options-message {
-  background-color: whitesmoke
-}
-
-.multiselect__option {
-  background-color: khaki;
-}
-
-
-
-.multiselect__single-value {
-  background-color: rgb(214, 42, 42)
-}
-
-
-
-
 
 .Gallery-vertical-panel {
   display: flex;

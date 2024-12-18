@@ -23,16 +23,16 @@
 }
 
 .active {
-  width: 128px;
+  width: 160px;
   background-color: #83EA83;
 }
 
 .alive {
-  width: 128px;
+  width: 160px;
   background-color: #77D5D5;
 }
 
 .defeated {
-  width: 128px;
+  width: 160px;
   background-color: #fb8585;
 }
