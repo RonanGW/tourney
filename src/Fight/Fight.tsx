@@ -237,6 +237,18 @@ function Fight({menu, trainers}: Fight) {
         return trainers
     }
 
+    function turnQueueDisplay() {
+        let queue = []
+
+        for (const i in activeTrainers) { 
+            queue.push(<img src={'./chars/ppl/'+ activeTrainers[i] +'.png'} className='queueCard'></img>)
+        }
+
+        return <div className='queue'>
+            {queue}
+        </div>
+    }
+
     //Processes the action a trainer can take when it is their turn as well as the consequences
     function act(target: string) {
         //Multipurpose value which contains both modified tData [0] & whether the attack resullted in a defeat or not [1]
@@ -350,6 +362,7 @@ function Fight({menu, trainers}: Fight) {
     <div>
         <div className="Fight-header">
             <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
+            {turnQueueDisplay()}
         </div>
         {isLoading ? (
         <p>Loading...</p> 

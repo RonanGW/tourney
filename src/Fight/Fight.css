@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     min-height: 10vh;
     padding: 5px;
   }
@@ -9,10 +10,21 @@
 .fightCard {
   font-size: clamp(16px,1vw,24px);
   white-space: nowrap;
-  border-style: solid;
-  border-color: black;
-  border-width: thick;
+  border: solid thick blue;
   color: black;
+  border-radius: 5%;
+}
+
+.queue {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.queueCard {
+  width: 96px;
+  height: 96px;
+  background-color: #77D5D5;
+  border: solid 1px blue;
   border-radius: 5%;
 }
 
