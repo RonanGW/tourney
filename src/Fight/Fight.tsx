@@ -239,9 +239,11 @@ function Fight({menu, trainers}: Fight) {
 
     function turnQueueDisplay() {
         let queue = []
-
+        let index = 0
         for (const i in activeTrainers) { 
-            queue.push(<img src={'./chars/ppl/'+ activeTrainers[i] +'.png'} className='queueCard'></img>)
+            queue.push(<img src={'./chars/ppl/'+ activeTrainers[i] +'.png'} className='queueCard' style={{
+                transform: "translateX(" + (index*30) + "%)"}}></img>);
+                index++
         }
 
         return <div className='queue'>
