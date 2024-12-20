@@ -210,22 +210,30 @@ function Fight({menu, trainers}: Fight) {
                     trainers.push(
                         <div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
                             <div className={'flexCol ' + loopActiveMonQueueState}><img src={tImgURL}></img>{loopTrainer.name}</div>
-                                <Tooltip anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
-                                    <div className='flexCol'>
-                                        {loopActiveMon.name}
-                                        <div className='flexRow'>
-                                            <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + ".png"} className='typeImg'/>
-                                            {dex.mons[loopActiveMon.name +loopActiveMon.form].type2 != "" ? <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type2 + ".png"} className='typeImg'/>:<></>}
-                                            {loopActiveMonEffectiveness}
+                            <Tooltip anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
+                                <div className='flexCol'>
+                                    {loopActiveMon.name}
+                                    <div className='flexRow'>
+                                        <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + ".png"} className='typeImg'/>
+                                        {dex.mons[loopActiveMon.name +loopActiveMon.form].type2 != "" ? <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type2 + ".png"} className='typeImg'/>:<></>}
+                                        {loopActiveMonEffectiveness}
+                                    </div>
+                                </div>
+                            </Tooltip>
+                            <div id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState}>
+                                <img src={mImgURL}></img>
+                                <div className='stat-shorthand'>
+                                    L{loopActiveMon.lvl}
+                                    <div className='healthbar-container'>
+                                        <div className="healthbar" style={{backgroundColor: 'red'}}>
+                                            <div className="healthbar" style={{backgroundColor: 'green',width: (loopActiveMon.currHP/loopActiveMon.hp)*100+"%"}}>
+                                                {(loopActiveMon.currHP/100)*100}/{loopActiveMon.hp}
+                                            </div>
                                         </div>
                                     </div>
-                                </Tooltip>
-                                <div id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState}>
-                                    <img src={mImgURL}></img>L{loopActiveMon.lvl}: {loopActiveMon.currHP}
-                                    / 
-                                    {loopActiveMon.hp}
                                 </div>
-                                </div>)
+                            </div>
+                        </div>)
                     
                 }
             }

@@ -8,7 +8,7 @@
   }
 
 .fightCard {
-  font-size: clamp(16px,1vw,24px);
+  font-size: clamp(20px,1vw,24px);
   white-space: nowrap;
   border: solid thick blue;
   color: black;
@@ -43,6 +43,11 @@
   height: 8px;
 }
 
+.stat-shorthand {
+  display: flex;
+  flex-direction: row;
+}
+
 .active {
   width: 160px;
   background-color: #83EA83;
@@ -56,4 +61,13 @@
 .defeated {
   width: 160px;
   background-color: #fb8585;
+}
+
+.healthbar-container {
+  margin: 5px;
+  width: 160px;
+}
+
+.healthbar {
+  border-radius: 20%;
 }
