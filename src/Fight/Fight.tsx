@@ -225,11 +225,10 @@ function Fight({menu, trainers}: Fight) {
                                 <div className='stat-shorthand'>
                                     L{loopActiveMon.lvl}
                                     <div className='healthbar-container'>
-                                        <div className="healthbar" style={{backgroundColor: 'red'}}>
-                                            <div className="healthbar" style={{backgroundColor: 'green',width: (loopActiveMon.currHP/loopActiveMon.hp)*100+"%"}}>
-                                                {(loopActiveMon.currHP/100)*100}/{loopActiveMon.hp}
-                                            </div>
+                                        <div className="healthbar">
+                                            <div className="healthbar" style={{backgroundColor: 'green',width: (loopActiveMon.currHP/loopActiveMon.hp)*100+"%"}} />
                                         </div>
+                                        <div className='healthbar-text'>{(loopActiveMon.currHP/100)*100}/{loopActiveMon.hp}</div>
                                     </div>
                                 </div>
                             </div>

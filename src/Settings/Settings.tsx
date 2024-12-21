@@ -68,7 +68,8 @@ function resetSave(data: any) {
             lvl: 1,
             xp: 0,
             hp: 1,
-            atk: 1
+            atk: 1,
+            spd: 1
         }
       //Intialize the shiny version of each mon for each trainer
       data.mons[monKey].name == trainer.starter && data.mons[monKey].form == trainer.starterForm ? monState = "Locked" : monState = "Hidden"
@@ -80,7 +81,8 @@ function resetSave(data: any) {
           lvl: 1,
           xp: 0,
           hp: 1,
-          atk: 1
+          atk: 1,
+          spd: 1
       }
     })
   });

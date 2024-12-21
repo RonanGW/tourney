@@ -64,10 +64,25 @@
 }
 
 .healthbar-container {
+  position: relative;
   margin: 5px;
-  width: 160px;
+  height: 30px;
+  width: 140px;
+  z-index: 0;
 }
 
 .healthbar {
-  border-radius: 20%;
+  position: absolute;
+  width: 120px;
+  background-color: red;
+  height: 30px;
+  border-radius: 20px;
+}
+
+.healthbar-text {
+  height: 30px;
+  width: 120px;
+  position: absolute;
+  justify-content: center;
+  z-index: 1;
 }
