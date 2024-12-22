@@ -90,7 +90,7 @@ function Gallery({menu, trainers}: Gallery) {
     const [selectedStates, setSelectedStates] = useState(["Unlocked","Available"]); // Actively displayed trainer & mon states
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
-    const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999}) //Current Mon to display inside trainer screen
+    const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999}) //Current Mon to display inside trainer screen
 
     //This useEffect is set to re-render manually when the trigger is set to true
     //Also functions as a primary debugging function for seeing the most up to date changes
@@ -111,7 +111,7 @@ function Gallery({menu, trainers}: Gallery) {
   // Reset's the display to the starting Gallery Screen
   function switchToMainScreen() {
     menu[1]("Gallery"); //setMenu function for the menu state defined & passed by parent object
-    setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,cost:999})
+    setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999})
     setCards(filterTrainerCards());
   }
 
@@ -257,6 +257,7 @@ function Gallery({menu, trainers}: Gallery) {
                                 <p>XP: {selectedMon.xp}</p>
                                 <p>HP: {selectedMon.hp}</p>
                                 <p>Atk: {selectedMon.atk}</p>
+                                <p>Spd: {selectedMon.spd}</p>
                             </div> :
                             selectedMon.state == "Available" ?
                                 <button onClick={() => {purchaseMon(trainer, selectedMon)}}>Purchase for {dex.mons[selectedMon.name + selectedMon.form].cost}BP</button> :

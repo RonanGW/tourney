@@ -122,12 +122,14 @@ function Fight({menu, trainers}: Fight) {
     
     //Shuffle an array of strings in a random order
     function shuffleArray(array: string[]) {
+        console.log(array)
         for (var i = array.length - 1; i >= 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var temp = array[i];
             array[i] = array[j];
             array[j] = temp;
         }
+        console.log(array)
         return array
     }
 
@@ -209,7 +211,7 @@ function Fight({menu, trainers}: Fight) {
 
                     trainers.push(
                         <div className='flexRow fightCard' style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
-                            <div className={'flexCol ' + loopActiveMonQueueState}><img src={tImgURL}></img>{loopTrainer.name}</div>
+                            <div className={'flexCol ' + loopActiveMonQueueState}><img src={tImgURL} className='trainerImg'/>{loopTrainer.name}</div>
                             <Tooltip anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
                                 <div className='flexCol'>
                                     {loopActiveMon.name}
@@ -221,9 +223,9 @@ function Fight({menu, trainers}: Fight) {
                                 </div>
                             </Tooltip>
                             <div id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState}>
-                                <img src={mImgURL}></img>
+                                <img src={mImgURL}/>
                                 <div className='stat-shorthand'>
-                                    L{loopActiveMon.lvl}
+                                    {"L"+loopActiveMon.lvl + ": "}
                                     <div className='healthbar-container'>
                                         <div className="healthbar">
                                             <div className="healthbar" style={{backgroundColor: 'green',width: (loopActiveMon.currHP/loopActiveMon.hp)*100+"%"}} />
@@ -249,7 +251,7 @@ function Fight({menu, trainers}: Fight) {
         let index = 0
         for (const i in activeTrainers) { 
             queue.push(<img src={'./chars/ppl/'+ activeTrainers[i] +'.png'} className='queueCard' style={{
-                transform: "translateX(" + (index*30) + "%)"}}></img>);
+                transform: "translateX(" + (index*40) + "%)"}}></img>);
                 index++
         }
 
@@ -269,7 +271,7 @@ function Fight({menu, trainers}: Fight) {
             remainingKeys = remainingKeys.filter((tKey) => tKey != target)
         }
         if (remainingKeys.length <= 2) {
-            remainingKeys = shuffleArray(Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0))
+            remainingKeys = Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0).sort((a,b) => {console.log(currTrainers[a]);return currTrainers[a].mons[currTrainers[a].starter].spd - currTrainers[b].mons[currTrainers[b].starter].spd})
             if (remainingKeys.length == 1) {
                 tData[0] = win(tData[0], activeTrainers[0])
             }            

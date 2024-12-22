@@ -9,6 +9,7 @@
 
 .fightCard {
   font-size: clamp(20px,1vw,24px);
+  font-weight: 700;
   white-space: nowrap;
   border: solid thick blue;
   color: black;
@@ -46,6 +47,8 @@
 .stat-shorthand {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  margin-left: 5px;
 }
 
 .active {
@@ -61,6 +64,16 @@
 .defeated {
   width: 160px;
   background-color: #fb8585;
+}
+
+.trainerImg {
+  height: 160px;
+  width: 160px;
+}
+
+.monImg {
+  height: 160px;
+  width: 160px;
 }
 
 .healthbar-container {
