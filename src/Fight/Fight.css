@@ -13,8 +13,19 @@
   white-space: nowrap;
   border: solid thick blue;
   color: black;
-  border-radius: 5%;
+  border-radius: 5px;
   box-shadow: 10px 10px 10px rgba(255, 255, 255, 0.091);
+}
+
+
+.fightCard-left {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.fightCard-right {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .queue {
@@ -28,7 +39,7 @@
   height: 96px;
   background-color: #77D5D5;
   border: solid 1px blue;
-  border-radius: 20%;
+  border-radius: 25px;
   box-shadow: 5px 5px 5px rgba(255, 255, 255, 0.091);
   z-index: 0;
   position: relative;
