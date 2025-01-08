@@ -12,6 +12,7 @@
   font-weight: 700;
   white-space: nowrap;
   border: solid thick blue;
+  background-color: #77D5D5;
   color: black;
   border-radius: 5px;
   box-shadow: 10px 10px 10px rgba(255, 255, 255, 0.091);
@@ -97,7 +98,7 @@
 
 .healthbar {
   position: absolute;
-  width: 120px;
+  width: 100px;
   background-color: red;
   height: 30px;
   border-radius: 20px;
@@ -105,7 +106,7 @@
 
 .healthbar-text {
   height: 30px;
-  width: 120px;
+  width: 100px;
   position: absolute;
   justify-content: center;
   z-index: 1;

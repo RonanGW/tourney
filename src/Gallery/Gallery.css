@@ -113,7 +113,7 @@ button {
 
 .multiselect__multi-value {
   background-color: #fb8585;
-  border: solid 5px blue;
+  border: solid 3px blue;
   border-radius: 5%;
   width: fit-content;
   height: 40px;
@@ -187,6 +187,7 @@ button {
 .Card-block {
   height: 75vh;
   display: flex;
+  margin-top: 10px;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: start;
@@ -226,7 +227,7 @@ button {
   border-width: thick;
   border-radius: 5%;
   width: 256px;
-  height: 500px;
+  height: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
