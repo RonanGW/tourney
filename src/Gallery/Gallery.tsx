@@ -28,6 +28,7 @@ interface trainer {
   name: string; //The display name of the trainer
   state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
   starter: string; //The active starting mon of the trainer
+  team: string[];
   region: string; //Home region of this trainer. (Used primarily for sorting)
   class: string; //This trainer's class. (Used primarily for sorting)
   w: number; //Total number of tourney wins for this trainer

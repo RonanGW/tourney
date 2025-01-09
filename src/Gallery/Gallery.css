@@ -79,6 +79,10 @@ button {
   border-bottom: solid 5px blue;
 }
 
+.multiselect__menu {
+  color: black;
+}
+
 .multiselect__control--menu-is-open {
   width: 256px;
   background-color: #77D5D5;
@@ -188,6 +192,8 @@ button {
   height: 75vh;
   display: flex;
   margin-top: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: start;

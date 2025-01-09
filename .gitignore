@@ -27,3 +27,4 @@ yarn-error.log*
 /public/icons/
 /public/dex.json
 /src/trainers.json
+/src/DevStorage

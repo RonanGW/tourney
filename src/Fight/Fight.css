@@ -7,6 +7,12 @@
     padding: 5px;
   }
 
+.trainerBlock {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+
 .fightCard {
   font-size: clamp(20px,1vw,24px);
   font-weight: 700;
@@ -33,6 +39,12 @@
   display: flex;
   flex-direction: row-reverse;
   position: relative;
+}
+
+.monQueue {
+  display: flex;
+  align-items: end;
+  height: fit-content
 }
 
 .queueCard {

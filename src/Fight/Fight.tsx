@@ -28,6 +28,7 @@ interface trainer {
 name: string; //The display name of the trainer
 state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
 starter: string; //The active starting mon of the trainer
+team: string[];
 starterForm: string; //The active starting mon's form
 region: string; //Home region of this trainer. (Used primarily for sorting)
 class: string; //This trainer's class. (Used primarily for sorting)
@@ -84,7 +85,7 @@ function Fight({menu, trainers}: Fight) {
         "Ground-R": ["Electric","Poison","Rock"],
         "Ice-R": ["Ice"],
         "Normal-R": ["Ghost"],
-        "Null-R": [],
+        "Null-R": ["Pyschic"],
         "Poison-R": ["Grass","Fighting","Poison","Bug","Fairy"],
         "Psychic-R": ["Fighting","Pyschic"],
         "Rock-R": ["Normal","Fire","Poison","Flying"],
@@ -210,7 +211,16 @@ function Fight({menu, trainers}: Fight) {
 
 
                     trainers.push(
-                        <div className={'flexRow fightCard fightCard-left fightCard-right'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
+                        <div className={'flexRow trainerBlock'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
+                        <div id={loopTrainer.name.replace(/\s+/g, '')} className={"monQueue " + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}>
+                            {"<"}
+                                <div className='flexCol'>
+                                <img src={mImgURL}/>
+                                <button>Switch</button>
+                                </div>
+                            {">"}
+                        </div>
+                        <div className={' fightCard fightCard-left fightCard-right'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
                             <div className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}><img src={tImgURL} className='trainerImg'/>{loopTrainer.name}</div>
                             <Tooltip anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
                                 <div className='flexCol'>
@@ -234,6 +244,7 @@ function Fight({menu, trainers}: Fight) {
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div>)
                     
                 }
