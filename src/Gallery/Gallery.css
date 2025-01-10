@@ -204,6 +204,11 @@ button {
   scrollbar-width: thin
 }
 
+.partyBlock {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .char-card {
   background-color: #77D5D5;
   color: black;

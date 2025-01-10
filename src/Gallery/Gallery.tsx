@@ -92,6 +92,7 @@ function Gallery({menu, trainers}: Gallery) {
     const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
     const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999}) //Current Mon to display inside trainer screen
+    const [party, setParty] = useState([<></>]); //PartyButtons
 
     //This useEffect is set to re-render manually when the trigger is set to true
     //Also functions as a primary debugging function for seeing the most up to date changes
@@ -104,6 +105,7 @@ function Gallery({menu, trainers}: Gallery) {
       }
       else if (renderMons) {
         setCards(filterMonCards(currTrainer))
+        setParty(genPartyButtons)
         menu[1]("Gallery-Trainer"); //setMenu function for the menu state defined & passed by parent object
         renderMons = false
       }
@@ -179,6 +181,16 @@ function Gallery({menu, trainers}: Gallery) {
       return newCards
   }
 
+  function genPartyButtons(): JSX.Element[] {
+    let buttons: JSX.Element[] = []
+
+      for (let mon of currTrainer.team) {
+        buttons.push(<img style={{width: "72px", height: "72px"}} onClick={() => {setSelectedMon(currTrainer.mons[mon])}} src={'./chars/mons/'+ dex.mons[mon].name.toLowerCase()+'.png'}/>)
+      }
+
+    return  buttons
+  }
+
   //Unlocks an availabe mon for a given trainer in exchange for BP
   function purchaseMon(trainer: trainer, mon: mon): void {
       if (trainer.BP >= dex.mons[mon.name + mon.form].cost) {
@@ -232,8 +244,10 @@ function Gallery({menu, trainers}: Gallery) {
                             <p>Wins: {trainer.w}</p>
                             <p>Losses: {trainer.l}</p>
                             <p>BP: {trainer.BP}</p>
+                            <p><u>Party</u></p>
+                            <div className='flexRow partyBlock'>{party}</div>
                         </div> :
-                        <p>Play a round to unlock the next trainer!</p>
+                        <p>Play a round to unlock the next trainer!</p> 
                     }
                 </div>
             </div>
