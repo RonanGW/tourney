@@ -27,7 +27,6 @@ interface mon {
 interface trainer {
   name: string; //The display name of the trainer
   state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
-  starter: string; //The active starting mon of the trainer
   team: string[];
   region: string; //Home region of this trainer. (Used primarily for sorting)
   class: string; //This trainer's class. (Used primarily for sorting)
@@ -175,7 +174,7 @@ function Gallery({menu, trainers}: Gallery) {
               </div>
             ) : <></>
             }
-            setSelectedMon(trainerData.mons[trainerData.starter])
+            setSelectedMon(trainerData.mons[trainerData.team[0]])
         }, 500)
 
       return newCards
@@ -185,7 +184,9 @@ function Gallery({menu, trainers}: Gallery) {
     let buttons: JSX.Element[] = []
 
       for (let mon of currTrainer.team) {
-        buttons.push(<img style={{width: "72px", height: "72px"}} onClick={() => {setSelectedMon(currTrainer.mons[mon])}} src={'./chars/mons/'+ dex.mons[mon].name.toLowerCase()+'.png'}/>)
+        let monForm = currTrainer.mons[mon].form ? ' ' + currTrainer.mons[mon].form : ''
+        let monShine = currTrainer.mons[mon].shine ? ' (Shiny)' : ''
+        buttons.push(<img style={{width: "72px", height: "72px"}} onClick={() => {setSelectedMon(currTrainer.mons[mon])}} src={'./chars/mons/'+ dex.mons[currTrainer.mons[mon].name].name.toLowerCase()+ monForm + monShine +'.png'}/>)
       }
 
     return  buttons
@@ -221,7 +222,7 @@ function Gallery({menu, trainers}: Gallery) {
   }
 
   function setStarter(trainer: trainer, mon: mon):void {
-    trainer.starter = selectedMon.name + selectedMon.form + selectedMon.shine.toLowerCase()
+    trainer.team[0] = selectedMon.name + selectedMon.form + selectedMon.shine.toLowerCase()
 
     const timeoutId = window.setTimeout(() => {
       const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
@@ -258,7 +259,7 @@ function Gallery({menu, trainers}: Gallery) {
                         <div className="Gallery-info-panel">
                             { selectedMon.state == "Unlocked" ?
                             <div>
-                                {(selectedMon.name + selectedMon.form + selectedMon.shine.toLowerCase())== trainer.starter ?
+                                {(selectedMon.name + selectedMon.form + selectedMon.shine.toLowerCase())== trainer.team[0] ?
                                  <div>{trainer.name}'s starter</div>:
                                  <button onClick={() =>{setStarter(trainer,selectedMon)}}>Set as starter</button>
                                  }
