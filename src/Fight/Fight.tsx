@@ -27,7 +27,6 @@ interface mon {
 interface trainer {
 name: string; //The display name of the trainer
 state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
-starter: string; //The active starting mon of the trainer
 team: string[];
 starterForm: string; //The active starting mon's form
 region: string; //Home region of this trainer. (Used primarily for sorting)
@@ -156,7 +155,7 @@ function Fight({menu, trainers}: Fight) {
                                 Object.keys(currTrainers).forEach((trainer: any) => {
                                     const timeoutId = window.setTimeout(() => {
                                         let tmp = currTrainers[trainer]
-                                        tmp.mons[tmp.starter].currHP = undefined
+                                        tmp.mons[tmp.team[0]].currHP = undefined
                                         const blob = new Blob([JSON.stringify(tmp)], { type: 'application/json' });
                                         FileSaver.saveAs(blob, trainer +".json");
                                     }, 500*i)
@@ -182,9 +181,9 @@ function Fight({menu, trainers}: Fight) {
         
         //For each trainer in play, determine which action to apply to the card based on turn and status
         for (const tKey in currTrainers) {
-            let loopTrainer = currTrainers[tKey] //Shorthand variable for the trainer being handled by each loop
-            let loopActiveMon = loopTrainer.mons[loopTrainer.starter] //Shorthand variable for the trainer's active mon
             try {
+                let loopTrainer = currTrainers[tKey] //Shorthand variable for the trainer being handled by each loop
+                let loopActiveMon = loopTrainer.mons[loopTrainer.team[0]] //Shorthand variable for the trainer's active mon
                 //Loop through each trainer in the current trainers list and Create a fight card for them .
                 if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
                     if (loopActiveMon.currHP == undefined) {loopActiveMon.currHP = loopActiveMon.hp} // Set the trainer's currHP if they do not have that variable
@@ -202,11 +201,11 @@ function Fight({menu, trainers}: Fight) {
                     }
                     else if (loopActiveMon.currHP <= 0) {//Trainer who is defeated and is no loger in the queue
                         loopActiveMonQueueState = 'defeated'
-                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) > 1 ? <div className='active circle'></div> : effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) < 1 ? <div className='defeated circle'></div> : <></>
+                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].team[0]].type1,dex.mons[currTrainers[activeTrainers[0]].team[0]].type2,dex.mons[loopTrainer.team[0]].type1,dex.mons[loopTrainer.team[0]].type2) > 1 ? <div className='active circle'></div> : effective(dex.mons[currTrainers[activeTrainers[0]].team[0]].type1,dex.mons[currTrainers[activeTrainers[0]].team[0]].type2,dex.mons[loopTrainer.team[0]].type1,dex.mons[loopTrainer.team[0]].type2) < 1 ? <div className='defeated circle'></div> : <></>
                     }
                     else { //Trainer who is still in the tourney, but it is not their turn
                         loopActiveMonOnClick = () => {act(tKey)}
-                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) > 1 ? <div className='active circle'></div> : effective(dex.mons[currTrainers[activeTrainers[0]].starter].type1,dex.mons[currTrainers[activeTrainers[0]].starter].type2,dex.mons[loopTrainer.starter].type1,dex.mons[loopTrainer.starter].type2) < 1 ? <div className='defeated circle'></div> : <></>
+                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].team[0]].type1,dex.mons[currTrainers[activeTrainers[0]].team[0]].type2,dex.mons[loopTrainer.team[0]].type1,dex.mons[loopTrainer.team[0]].type2) > 1 ? <div className='active circle'></div> : effective(dex.mons[currTrainers[activeTrainers[0]].team[0]].type1,dex.mons[currTrainers[activeTrainers[0]].team[0]].type2,dex.mons[loopTrainer.team[0]].type1,dex.mons[loopTrainer.team[0]].type2) < 1 ? <div className='defeated circle'></div> : <></>
                     }
 
 
@@ -250,7 +249,7 @@ function Fight({menu, trainers}: Fight) {
                 }
             }
             catch {
-                if (!isLoading) console.log("There was an error loading "+tKey+". They have no mon assigned to them under the key "+loopTrainer.starter)
+                if (!isLoading) console.log("There was an error loading "+tKey+". They have no mon assigned to them under the key "+currTrainers[tKey].team[0])
             }
             index++
         }
@@ -274,7 +273,7 @@ function Fight({menu, trainers}: Fight) {
     //Processes the action a trainer can take when it is their turn as well as the consequences
     function act(target: string) {
         //Multipurpose value which contains both modified tData [0] & whether the attack resullted in a defeat or not [1]
-        let tData = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].starter])
+        let tData = hp(currTrainers,target,currTrainers[activeTrainers[0]].mons[currTrainers[activeTrainers[0]].team[0]])
         let remainingKeys = activeTrainers.filter((tKey) => tKey != activeTrainers[0])
         
         //If target was defeated, set for removal from turn queue
@@ -282,7 +281,7 @@ function Fight({menu, trainers}: Fight) {
             remainingKeys = remainingKeys.filter((tKey) => tKey != target)
         }
         if (remainingKeys.length <= 2) {
-            remainingKeys = Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].starter].currHP > 0).sort((a,b) => {console.log(currTrainers[a]);return currTrainers[a].mons[currTrainers[a].starter].spd - currTrainers[b].mons[currTrainers[b].starter].spd})
+            remainingKeys = Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].team[0]].currHP > 0).sort((a,b) => {console.log(currTrainers[a]);return currTrainers[a].mons[currTrainers[a].team[0]].spd - currTrainers[b].mons[currTrainers[b].team[0]].spd})
             if (remainingKeys.length == 1) {
                 tData[0] = win(tData[0], activeTrainers[0])
             }            
@@ -320,27 +319,27 @@ function Fight({menu, trainers}: Fight) {
         let attackerType1 = dex.mons[diff.name + diff.form].type1
         let attackerType2 = "noType"
         if (dex.mons[diff.name + diff.form].type2 != undefined && dex.mons[diff.name + diff.form].type2 != "") {attackerType2 = dex.mons[diff.name + diff.form].type2}
-        let defenderType1 = dex.mons[tData[trainer].starter].type1
+        let defenderType1 = dex.mons[tData[trainer].team[0]].type1
         let defenderType2 = "noType"
-        if (dex.mons[tData[trainer].starter].type2 != undefined && dex.mons[tData[trainer].starter].type2 != "") {defenderType2 = dex.mons[tData[trainer].starter].type2}
+        if (dex.mons[tData[trainer].team[0]].type2 != undefined && dex.mons[tData[trainer].team[0]].type2 != "") {defenderType2 = dex.mons[tData[trainer].team[0]].type2}
 
         dmgMultiplier = dmgMultiplier * effective(attackerType1,attackerType2,defenderType1,defenderType2)
         console.log("dmgMulltiplier: " + dmgMultiplier)
 
-       let result = tData[trainer].mons[tData[trainer].starter].currHP - (Math.ceil(diff.lvl * dmgMultiplier)) //Calculates loss of HP
+       let result = tData[trainer].mons[tData[trainer].team[0]].currHP - (Math.ceil(diff.lvl * dmgMultiplier)) //Calculates loss of HP
        console.log("Attack dealt " +Math.ceil(diff.lvl * dmgMultiplier)+ "dmg")
        // HP would go out of bounds, bring it back to the edge of bounds
        if (result <= 0) {result = 0}
-       else if (result > tData[trainer].mons[tData[trainer].starter].hp) { 
-            result = tData[trainer].mons[tData[trainer].starter].hp
+       else if (result > tData[trainer].mons[tData[trainer].team[0]].hp) { 
+            result = tData[trainer].mons[tData[trainer].team[0]].hp
        }
        // Set current hp to calculated result
-       tData[trainer].mons[tData[trainer].starter].currHP = result
+       tData[trainer].mons[tData[trainer].team[0]].currHP = result
 
        //If target is defeated, give the attacker xp and the target an hp buff
        if (result == 0) {
-        tData[trainer].mons[tData[trainer].starter].hp = tData[trainer].mons[tData[trainer].starter].hp + 1
-        tData = xp(tData,activeTrainers[0],tData[trainer].mons[tData[trainer].starter].lvl)
+        tData[trainer].mons[tData[trainer].team[0]].hp = tData[trainer].mons[tData[trainer].team[0]].hp + 1
+        tData = xp(tData,activeTrainers[0],tData[trainer].mons[tData[trainer].team[0]].lvl)
         return [tData,true]
        }
        else {return [tData,false]}
@@ -348,29 +347,29 @@ function Fight({menu, trainers}: Fight) {
 
     //Causes mon to gain xp and levelup if threshod is met
     function xp(tData: any, trainer: string, diff: number) {
-        let result = currTrainers[trainer].mons[currTrainers[trainer].starter].xp + diff //Calculates XP gained
+        let result = currTrainers[trainer].mons[currTrainers[trainer].team[0]].xp + diff //Calculates XP gained
         let lvlUp = false //Assumed levelup threshold not met unless otherwise specified below
-        result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? lvlUp = true : lvlUp = false
+        result >= currTrainers[trainer].mons[currTrainers[trainer].team[0]].lvl ? lvlUp = true : lvlUp = false
         //If mon should level up, increase the, taking off the amount that would level them up once and increment their level
         if (lvlUp) {
-            tData[trainer].mons[tData[trainer].starter].xp = result - currTrainers[trainer].mons[currTrainers[trainer].starter].lvl
-            tData[trainer].mons[tData[trainer].starter].lvl = tData[trainer].mons[tData[trainer].starter].lvl + 1
-            if (tData[trainer].mons[tData[trainer].starter].lvl >= 2) {
+            tData[trainer].mons[tData[trainer].team[0]].xp = result - currTrainers[trainer].mons[currTrainers[trainer].team[0]].lvl
+            tData[trainer].mons[tData[trainer].team[0]].lvl = tData[trainer].mons[tData[trainer].team[0]].lvl + 1
+            if (tData[trainer].mons[tData[trainer].team[0]].lvl >= 2) {
                 for (const mKey in tData[trainer].mons) {
-                    if (tData[trainer].mons[mKey].shine == "" && (dex.mons[tData[trainer].mons[mKey].name + tData[trainer].mons[mKey].form].unlocker) == tData[trainer].starter) {
+                    if (tData[trainer].mons[mKey].shine == "" && (dex.mons[tData[trainer].mons[mKey].name + tData[trainer].mons[mKey].form].unlocker) == tData[trainer].team[0]) {
                         tData[trainer].mons[mKey].state = "Available"
                     }
                     else if (tData[trainer].mons[mKey].shine == "Shiny" && 
-                                (tData[trainer].mons[mKey].name + tData[trainer].mons[mKey].form) == tData[trainer].starter) 
+                                (tData[trainer].mons[mKey].name + tData[trainer].mons[mKey].form) == tData[trainer].team[0]) 
                             {tData[trainer].mons[mKey].state = "Available"}
                 }
             }
         }
         else {
-            tData[trainer].mons[tData[trainer].starter].xp = diff
+            tData[trainer].mons[tData[trainer].team[0]].xp = diff
         }
         //If trainer can level up again, do so recursively until fully leveled up
-        result >= currTrainers[trainer].mons[currTrainers[trainer].starter].lvl ? tData = xp(tData,trainer,0) : lvlUp = false
+        result >= currTrainers[trainer].mons[currTrainers[trainer].team[0]].lvl ? tData = xp(tData,trainer,0) : lvlUp = false
         return tData // Returned modified data
      }
 
