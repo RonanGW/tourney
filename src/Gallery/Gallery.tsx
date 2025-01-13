@@ -92,6 +92,7 @@ function Gallery({menu, trainers}: Gallery) {
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
     const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999}) //Current Mon to display inside trainer screen
     const [party, setParty] = useState([<></>]); //PartyButtons
+    const [partySlotReplacers, setPartySlotReplacers] = useState(false)
 
     //This useEffect is set to re-render manually when the trigger is set to true
     //Also functions as a primary debugging function for seeing the most up to date changes
@@ -186,7 +187,9 @@ function Gallery({menu, trainers}: Gallery) {
       for (let mon of currTrainer.team) {
         let monForm = currTrainer.mons[mon].form ? ' ' + currTrainer.mons[mon].form : ''
         let monShine = currTrainer.mons[mon].shine ? ' (Shiny)' : ''
-        buttons.push(<img style={{width: "72px", height: "72px"}} onClick={() => {setSelectedMon(currTrainer.mons[mon])}} src={'./chars/mons/'+ dex.mons[currTrainer.mons[mon].name].name.toLowerCase()+ monForm + monShine +'.png'}/>)
+        buttons.push(<img style={{width: "72px", height: "72px"}} onClick={() => {setSelectedMon(currTrainer.mons[mon])}} 
+                          src={'./chars/mons/'+ dex.mons[currTrainer.mons[mon].name].name.toLowerCase()+ monForm + monShine +'.png'}
+                      />)
       }
 
     return  buttons
@@ -221,14 +224,16 @@ function Gallery({menu, trainers}: Gallery) {
       }
   }
 
-  function setStarter(trainer: trainer, mon: mon):void {
-    trainer.team[0] = selectedMon.name + selectedMon.form + selectedMon.shine.toLowerCase()
+  function changeTeam(trainer: trainer, mon: mon, slot: number):void {
+    let key = (mon.name + mon.form + mon.shine.toLowerCase())
+    slot < 0 ? trainer.team.splice(trainer.team.indexOf(key), 1) : trainer.team.length < 6 ? trainer.team.push(key) : trainer.team[slot] = key
 
     const timeoutId = window.setTimeout(() => {
       const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
       FileSaver.saveAs(blob, trainer.name +".json");
     }, 500)
 
+    setPartySlotReplacers(false)
   }
 
   //Sets the object to display the 'Trainer Page' content, which is the trainer selected, their details and all the mons they have that are unlocked or available next
@@ -257,11 +262,20 @@ function Gallery({menu, trainers}: Gallery) {
                     <div>
                         <MonCard mon={selectedMon}></MonCard>
                         <div className="Gallery-info-panel">
-                            { selectedMon.state == "Unlocked" ?
+                            {selectedMon.state == "Unlocked" ?
                             <div>
-                                {(selectedMon.name + selectedMon.form + selectedMon.shine.toLowerCase())== trainer.team[0] ?
-                                 <div>{trainer.name}'s starter</div>:
-                                 <button onClick={() =>{setStarter(trainer,selectedMon)}}>Set as starter</button>
+                                {trainer.team.includes(selectedMon.name + selectedMon.form + selectedMon.shine) ?
+                                  trainer.team.length > 1 ? <button onClick={() =>{changeTeam(trainer,selectedMon,-1)}}>Remove from team</button> : <></> :
+                                  trainer.team.length < 6 ? <button onClick={() =>{changeTeam(trainer,selectedMon,5)}}>Add to team</button> :
+                                  !partySlotReplacers ? <button onClick={() =>{setPartySlotReplacers(true)}}>Add to team</button> : 
+                                  !trainer.team.includes(selectedMon.name + selectedMon.form + selectedMon.shine) ? <div>
+                                  <button onClick={() => {changeTeam(trainer,selectedMon,0)}}>1</button>
+                                  <button onClick={() => {changeTeam(trainer,selectedMon,1)}}>2</button>
+                                  <button onClick={() => {changeTeam(trainer,selectedMon,2)}}>3</button>
+                                  <button onClick={() => {changeTeam(trainer,selectedMon,3)}}>4</button>
+                                  <button onClick={() => {changeTeam(trainer,selectedMon,4)}}>5</button>
+                                  <button onClick={() => {changeTeam(trainer,selectedMon,5)}}>6</button></div> :<></>
+
                                  }
                                 <p>Level: {selectedMon.lvl}</p>
                                 <div className='flexRow'>
