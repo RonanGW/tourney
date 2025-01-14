@@ -29,6 +29,7 @@ name: string; //The display name of the trainer
 state: string; //The state of this trainer, (i.e. Unlocked, Locked or Hidden)
 team: string[];
 starterForm: string; //The active starting mon's form
+attacker: number;
 region: string; //Home region of this trainer. (Used primarily for sorting)
 class: string; //This trainer's class. (Used primarily for sorting)
 w: number; //Total number of tourney wins for this trainer
@@ -182,8 +183,9 @@ function Fight({menu, trainers}: Fight) {
         //For each trainer in play, determine which action to apply to the card based on turn and status
         for (const tKey in currTrainers) {
             try {
+                if (currTrainers[tKey].attacker == undefined) {currTrainers[tKey].attacker = 0} // Set the trainer's currHP if they do not have that variable
                 let loopTrainer = currTrainers[tKey] //Shorthand variable for the trainer being handled by each loop
-                let loopActiveMon = loopTrainer.mons[loopTrainer.team[0]] //Shorthand variable for the trainer's active mon
+                let loopActiveMon = loopTrainer.mons[loopTrainer.team[loopTrainer.attacker]] //Shorthand variable for the trainer's active mon
                 //Loop through each trainer in the current trainers list and Create a fight card for them .
                 if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
                     if (loopActiveMon.currHP == undefined) {loopActiveMon.currHP = loopActiveMon.hp} // Set the trainer's currHP if they do not have that variable
@@ -212,12 +214,10 @@ function Fight({menu, trainers}: Fight) {
                     trainers.push(
                         <div className={'flexRow trainerBlock'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                         <div id={loopTrainer.name.replace(/\s+/g, '')} className={"monQueue " + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}>
-                            {"<"}
-                                <div className='flexCol'>
+                            <div className='flexCol'>
                                 <img src={mImgURL}/>
-                                <button>Switch</button>
-                                </div>
-                            {">"}
+                                {loopActiveMonQueueState == "active" ? <div><button onClick={() => {swapMon(tKey, false)}}>{"<"}</button><button onClick={() => {swapMon(tKey, true)}}>{">"}</button></div> : <></>}
+                            </div>
                         </div>
                         <div className={' fightCard fightCard-left fightCard-right'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
                             <div className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}><img src={tImgURL} className='trainerImg'/>{loopTrainer.name}</div>
@@ -311,6 +311,18 @@ function Fight({menu, trainers}: Fight) {
         //else if (multiplier < 1) {console.log("Not Effective!")}
 
         return multiplier
+    }
+
+    function swapMon(tKey: string, next: boolean) {
+        let t = currTrainers[tKey]
+        t.attacker = 5
+        let newAttackerIndex = t.attacker
+        next ? newAttackerIndex = newAttackerIndex + 1 : newAttackerIndex = newAttackerIndex - 1
+        newAttackerIndex  < 0 ? newAttackerIndex = 5 : newAttackerIndex > 5 ? newAttackerIndex = 0 : newAttackerIndex = newAttackerIndex
+        let tmpCurrTrainers = currTrainers
+        console.log(tmpCurrTrainers[tKey])
+        tmpCurrTrainers[tKey].attacker = newAttackerIndex
+        console.log(tmpCurrTrainers[tKey])
     }
     
     //Cause a target to lose some of their current HP
