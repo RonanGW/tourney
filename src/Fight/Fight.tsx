@@ -116,6 +116,7 @@ function Fight({menu, trainers}: Fight) {
         //console.log(activeTrainers)
 
         if (toRender) {
+            console.log(currTrainers)
             setFullCards(combineLists)
             toRender = false
         }
@@ -123,14 +124,14 @@ function Fight({menu, trainers}: Fight) {
     
     //Shuffle an array of strings in a random order
     function shuffleArray(array: string[]) {
-        console.log(array)
+        //console.log(array)
         for (var i = array.length - 1; i >= 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var temp = array[i];
             array[i] = array[j];
             array[j] = temp;
         }
-        console.log(array)
+        //console.log(array)
         return array
     }
 
@@ -180,6 +181,11 @@ function Fight({menu, trainers}: Fight) {
         let trainers: JSX.Element[] = []; //Placeholder to add to contet. Will be the return value.
         let index = 0 //For determining the hallf way point to split the content in the middle while still generating correctly and using the same function
         
+        console.log("-----------------")
+        console.log("-----------------")
+        console.log("-----------------")
+        console.log("-----------------")
+        console.log("-----------------")
         //For each trainer in play, determine which action to apply to the card based on turn and status
         for (const tKey in currTrainers) {
             try {
@@ -188,6 +194,8 @@ function Fight({menu, trainers}: Fight) {
                 let loopActiveMon = loopTrainer.mons[loopTrainer.team[loopTrainer.attacker]] //Shorthand variable for the trainer's active mon
                 //Loop through each trainer in the current trainers list and Create a fight card for them .
                 if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
+                    console.log("Loop validation for " + tKey + ">  ")
+                    console.log(loopTrainer)
                     if (loopActiveMon.currHP == undefined) {loopActiveMon.currHP = loopActiveMon.hp} // Set the trainer's currHP if they do not have that variable
                     let tImgURL='./chars/ppl/'+ loopTrainer.name+'.png' //Shorthand variable for the trainer img
                     //Calulate the shorthand variable for the mon img
@@ -216,7 +224,7 @@ function Fight({menu, trainers}: Fight) {
                         <div id={loopTrainer.name.replace(/\s+/g, '')} className={"monQueue " + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}>
                             <div className='flexCol'>
                                 <img src={mImgURL}/>
-                                {loopActiveMonQueueState == "active" ? <div><button onClick={() => {swapMon(tKey, false)}}>{"<"}</button><button onClick={() => {swapMon(tKey, true)}}>{">"}</button></div> : <></>}
+                                {loopActiveMonQueueState == "active" ? <div><button onClick={() => {swapMon(tKey, false)}}>{"<"}</button><button onClick={() => {swapMon(tKey, true);console.log(currTrainers[tKey])}}>{">"}</button></div> : <></>}
                             </div>
                         </div>
                         <div className={' fightCard fightCard-left fightCard-right'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
@@ -314,15 +322,14 @@ function Fight({menu, trainers}: Fight) {
     }
 
     function swapMon(tKey: string, next: boolean) {
-        let t = currTrainers[tKey]
-        t.attacker = 5
-        let newAttackerIndex = t.attacker
+        toRender = true
+        let newAttackerIndex = currTrainers[tKey].attacker
         next ? newAttackerIndex = newAttackerIndex + 1 : newAttackerIndex = newAttackerIndex - 1
         newAttackerIndex  < 0 ? newAttackerIndex = 5 : newAttackerIndex > 5 ? newAttackerIndex = 0 : newAttackerIndex = newAttackerIndex
+        newAttackerIndex > currTrainers[tKey].team.length - 1 ? newAttackerIndex = currTrainers[tKey].team.length - 1 : newAttackerIndex = newAttackerIndex
         let tmpCurrTrainers = currTrainers
-        console.log(tmpCurrTrainers[tKey])
         tmpCurrTrainers[tKey].attacker = newAttackerIndex
-        console.log(tmpCurrTrainers[tKey])
+        setCurrTrainers(tmpCurrTrainers)
     }
     
     //Cause a target to lose some of their current HP
@@ -336,10 +343,10 @@ function Fight({menu, trainers}: Fight) {
         if (dex.mons[tData[trainer].team[0]].type2 != undefined && dex.mons[tData[trainer].team[0]].type2 != "") {defenderType2 = dex.mons[tData[trainer].team[0]].type2}
 
         dmgMultiplier = dmgMultiplier * effective(attackerType1,attackerType2,defenderType1,defenderType2)
-        console.log("dmgMulltiplier: " + dmgMultiplier)
+        //console.log("dmgMulltiplier: " + dmgMultiplier)
 
        let result = tData[trainer].mons[tData[trainer].team[0]].currHP - (Math.ceil(diff.lvl * dmgMultiplier)) //Calculates loss of HP
-       console.log("Attack dealt " +Math.ceil(diff.lvl * dmgMultiplier)+ "dmg")
+       //console.log("Attack dealt " +Math.ceil(diff.lvl * dmgMultiplier)+ "dmg")
        // HP would go out of bounds, bring it back to the edge of bounds
        if (result <= 0) {result = 0}
        else if (result > tData[trainer].mons[tData[trainer].team[0]].hp) { 
