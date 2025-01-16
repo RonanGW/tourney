@@ -148,7 +148,7 @@ function Fight({menu, trainers}: Fight) {
                     <>
                         <div className='flexCol active'>
                             <img src={'./chars/ppl/'+ currTrainers[activeTrainers[0]].name+'.png'} />
-                            {currTrainers[activeTrainers[0]].name} is victorius!
+                            <p>{currTrainers[activeTrainers[0]].name} is victorius!</p>
                         </div>
                         <button 
                             onClick={() => {
@@ -180,12 +180,7 @@ function Fight({menu, trainers}: Fight) {
     function setTrainerCards(left: boolean): JSX.Element[] {
         let trainers: JSX.Element[] = []; //Placeholder to add to contet. Will be the return value.
         let index = 0 //For determining the hallf way point to split the content in the middle while still generating correctly and using the same function
-        
-        console.log("-----------------")
-        console.log("-----------------")
-        console.log("-----------------")
-        console.log("-----------------")
-        console.log("-----------------")
+
         //For each trainer in play, determine which action to apply to the card based on turn and status
         for (const tKey in currTrainers) {
             try {
@@ -194,8 +189,6 @@ function Fight({menu, trainers}: Fight) {
                 let loopActiveMon = loopTrainer.mons[loopTrainer.team[loopTrainer.attacker]] //Shorthand variable for the trainer's active mon
                 //Loop through each trainer in the current trainers list and Create a fight card for them .
                 if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
-                    console.log("Loop validation for " + tKey + ">  ")
-                    console.log(loopTrainer)
                     if (loopActiveMon.currHP == undefined) {loopActiveMon.currHP = loopActiveMon.hp} // Set the trainer's currHP if they do not have that variable
                     let tImgURL='./chars/ppl/'+ loopTrainer.name+'.png' //Shorthand variable for the trainer img
                     //Calulate the shorthand variable for the mon img
@@ -222,9 +215,16 @@ function Fight({menu, trainers}: Fight) {
                     trainers.push(
                         <div className={'flexRow trainerBlock'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
                         <div id={loopTrainer.name.replace(/\s+/g, '')} className={"monQueue " + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}>
-                            <div className='flexCol'>
-                                <img src={mImgURL}/>
-                                {loopActiveMonQueueState == "active" ? <div><button onClick={() => {swapMon(tKey, false)}}>{"<"}</button><button onClick={() => {swapMon(tKey, true);console.log(currTrainers[tKey])}}>{">"}</button></div> : <></>}
+                            <div className='flexCol' style={{width:"100%",display:"flex",alignItems:"center"}}>
+                                <div className='flexRow'>
+                                    <img src={mImgURL}/>
+                                {currTrainers[tKey].team[currTrainers[tKey].attacker + 1] != null ? <img src={'./chars/mons/'+currTrainers[tKey].mons[currTrainers[tKey].team[currTrainers[tKey].attacker + 1]].name+'.png'}></img>:
+                                currTrainers[tKey].team.length > 2 ? <img src={'./chars/mons/'+currTrainers[tKey].mons[currTrainers[tKey].team[0]].name+'.png'}></img> : ""}
+                                </div>
+                                {loopActiveMonQueueState == "active" ? <div style={{display:"flex",alignItems:"space-between"}}>
+                                                                        <button onClick={() => {swapMon(tKey, false)}}>{"<"}</button>
+                                                                        <button onClick={() => {swapMon(tKey, true)}}>{">"}</button>
+                                                                    </div> : <></>}
                             </div>
                         </div>
                         <div className={' fightCard fightCard-left fightCard-right'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
@@ -343,10 +343,8 @@ function Fight({menu, trainers}: Fight) {
         if (dex.mons[tData[trainer].team[0]].type2 != undefined && dex.mons[tData[trainer].team[0]].type2 != "") {defenderType2 = dex.mons[tData[trainer].team[0]].type2}
 
         dmgMultiplier = dmgMultiplier * effective(attackerType1,attackerType2,defenderType1,defenderType2)
-        //console.log("dmgMulltiplier: " + dmgMultiplier)
 
        let result = tData[trainer].mons[tData[trainer].team[0]].currHP - (Math.ceil(diff.lvl * dmgMultiplier)) //Calculates loss of HP
-       //console.log("Attack dealt " +Math.ceil(diff.lvl * dmgMultiplier)+ "dmg")
        // HP would go out of bounds, bring it back to the edge of bounds
        if (result <= 0) {result = 0}
        else if (result > tData[trainer].mons[tData[trainer].team[0]].hp) { 
