@@ -88,7 +88,7 @@ function Gallery({menu, trainers}: Gallery) {
     const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value)); //Actively displayed mon types
     const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value)); //Actively displayed mon shines
     const [selectedStates, setSelectedStates] = useState(["Unlocked","Available"]); // Actively displayed trainer & mon states
-    const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
+    const [cards, setCards] = useState(filterTrainerCards("none")); // Currently display "Cards"
     const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
     const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999}) //Current Mon to display inside trainer screen
     const [party, setParty] = useState([<></>]); //PartyButtons
@@ -100,7 +100,7 @@ function Gallery({menu, trainers}: Gallery) {
       // Update the document title using the browser API
 
       if (renderTrainers) {
-          setCards(filterTrainerCards())
+          setCards(filterTrainerCards("none"))
           renderTrainers = false
       }
       else if (renderMons) {
@@ -115,7 +115,7 @@ function Gallery({menu, trainers}: Gallery) {
   function switchToMainScreen() {
     menu[1]("Gallery"); //setMenu function for the menu state defined & passed by parent object
     setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999})
-    setCards(filterTrainerCards());
+    setCards(filterTrainerCards("none"));
   }
 
   // Resets the display to the selected trainer's details page
@@ -135,17 +135,24 @@ function Gallery({menu, trainers}: Gallery) {
   }
 
   // Returns an array of Trainer Cards to display using currently selected Filters
-  function filterTrainerCards(): JSX.Element[] {
+  function filterTrainerCards(sorted: string): JSX.Element[] {
     let newCards: JSX.Element[] = []; //Array to be filled with cards
     
+    let tmp = trainerObjects.map(x => x[1])
+
+    if (sorted == "BP") {
+      tmp = tmp.sort((a,b) => b.BP - a.BP)
+    }
+
     //Loop through each trainer and if their status is active, create a card for them and add it to the display list.
-    for (let [tkey,value] of trainerObjects) {
+    for (let value of tmp) {
       selectedStates.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class) ? newCards.push(
         <div key={Math.random()} onClick={() => switchToTrainerScreen(value)}>
             <CharCard trainer={value}></CharCard>
         </div>
       ) : <></>
     }
+
     return newCards
   }
 
@@ -341,6 +348,7 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div>
               <div className='filter'>
+                <button onClick={() => {setCards(filterTrainerCards("BP"))}}>Filter by BP</button>
               {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderTrainers = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states} /></div>}
               {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderTrainers = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/></div>}
               {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} onChange={(e) => {renderTrainers = true;setSelectedClasses([...new Set(Object.entries(e).map(item => item[1].value))])}} options={classes}/></div>}

@@ -112,8 +112,6 @@ function Fight({menu, trainers}: Fight) {
     //This useEffect is set to re-render manually when the trigger is set to true
     //Also functions as a primary debugging function for seeing the most up to date changes
     useEffect(() => {
-        //console.log("Active Trainers: ")
-        //console.log(activeTrainers)
 
         if (toRender) {
             console.log(currTrainers)
@@ -154,12 +152,19 @@ function Fight({menu, trainers}: Fight) {
                             onClick={() => {
                                 menu[1]("Main-Menu")
                                 let i = 1
+                                console.log("Win")
                                 Object.keys(currTrainers).forEach((trainer: any) => {
                                     const timeoutId = window.setTimeout(() => {
+                                        trainers[0][trainer].BP = currTrainers[trainer].BP
+                                        console.log(trainers[0])
+                                        
+                                        const mainBlob = new Blob([JSON.stringify(trainers[0])], { type: 'application/json' });
+                                        FileSaver.saveAs(mainBlob, "trainers.json");
+
                                         let tmp = currTrainers[trainer]
                                         tmp.mons[tmp.team[0]].currHP = undefined
-                                        const blob = new Blob([JSON.stringify(tmp)], { type: 'application/json' });
-                                        FileSaver.saveAs(blob, trainer +".json");
+                                        const trainerBlob = new Blob([JSON.stringify(tmp)], { type: 'application/json' });
+                                        FileSaver.saveAs(trainerBlob, trainer +".json");
                                     }, 500*i)
                                     i++
                         })}}>
@@ -184,9 +189,10 @@ function Fight({menu, trainers}: Fight) {
         //For each trainer in play, determine which action to apply to the card based on turn and status
         for (const tKey in currTrainers) {
             try {
-                if (currTrainers[tKey].attacker == undefined) {currTrainers[tKey].attacker = 0} // Set the trainer's currHP if they do not have that variable
-                let loopTrainer = currTrainers[tKey] //Shorthand variable for the trainer being handled by each loop
-                let loopActiveMon = loopTrainer.mons[loopTrainer.team[loopTrainer.attacker]] //Shorthand variable for the trainer's active mon
+                if (currTrainers[tKey].attacker == undefined) {currTrainers[tKey].attacker = 0} // Set the trainer's starting mon if they do not have that variable set yet.
+                let loopTrainer = currTrainers[tKey] //Shorthand variable for the trainer being handled by each loop.
+                let loopActiveMon = loopTrainer.mons[loopTrainer.team[loopTrainer.attacker]] //Shorthand variable for the trainer's active mon.
+
                 //Loop through each trainer in the current trainers list and Create a fight card for them .
                 if ((left && index < Object.keys(currTrainers).length / 2) || (!left && index > Object.keys(currTrainers).length / 2 - 1)) {
                     if (loopActiveMon.currHP == undefined) {loopActiveMon.currHP = loopActiveMon.hp} // Set the trainer's currHP if they do not have that variable
@@ -289,7 +295,7 @@ function Fight({menu, trainers}: Fight) {
             remainingKeys = remainingKeys.filter((tKey) => tKey != target)
         }
         if (remainingKeys.length <= 2) {
-            remainingKeys = Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].team[0]].currHP > 0).sort((a,b) => {console.log(currTrainers[a]);return currTrainers[a].mons[currTrainers[a].team[0]].spd - currTrainers[b].mons[currTrainers[b].team[0]].spd})
+            remainingKeys = Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].team[0]].currHP > 0).sort((a,b) => {return currTrainers[a].mons[currTrainers[a].team[0]].spd - currTrainers[b].mons[currTrainers[b].team[0]].spd})
             if (remainingKeys.length == 1) {
                 tData[0] = win(tData[0], activeTrainers[0])
             }            
