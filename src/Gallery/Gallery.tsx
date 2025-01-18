@@ -204,9 +204,10 @@ function Gallery({menu, trainers}: Gallery) {
 
   //Unlocks an availabe mon for a given trainer in exchange for BP
   function purchaseMon(trainer: trainer, mon: mon): void {
-      if (trainer.BP >= dex.mons[mon.name + mon.form].cost) {
+    console.log(trainers[0][trainer.name])
+      if (trainers[0][trainer.name].BP >= dex.mons[mon.name + mon.form].cost) {
         mon.state="Unlocked"
-        trainer.BP = trainer.BP - dex.mons[mon.name + mon.form].cost
+        trainers[0][trainer.name].BP = trainers[0][trainer.name].BP - dex.mons[mon.name + mon.form].cost
           trainer.mons[mon.name + mon.form + mon.shine.toLowerCase()] = mon
 
         //Loops through each mon to see if will become available after leveling this mon, therefore making the looped mon visible, but locked
@@ -226,6 +227,12 @@ function Gallery({menu, trainers}: Gallery) {
         const timeoutId = window.setTimeout(() => {
           const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
           FileSaver.saveAs(blob, trainer.name +".json");
+        }, 500)
+
+        //Save changes
+        const timeoutId2 = window.setTimeout(() => {
+          const blob = new Blob([JSON.stringify(trainers[0])], { type: 'application/json' });
+          FileSaver.saveAs(blob, "trainers.json");
         }, 500)
         
       }
@@ -256,7 +263,7 @@ function Gallery({menu, trainers}: Gallery) {
                             <div><u>Trainer Class</u><div>{trainer.class}</div></div>
                             <p>Wins: {trainer.w}</p>
                             <p>Losses: {trainer.l}</p>
-                            <p>BP: {trainer.BP}</p>
+                            <p>BP: {trainers[0][trainer.name].BP}</p>
                             <p><u>Party</u></p>
                             <div className='flexRow partyBlock'>{party}</div>
                         </div> :
