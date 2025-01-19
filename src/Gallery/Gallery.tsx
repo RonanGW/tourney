@@ -161,7 +161,6 @@ function Gallery({menu, trainers}: Gallery) {
     });
 
     let newCards: JSX.Element[] = []; //Array to be filled with cards
-
     const timeoutId = window.setTimeout(() => {
       let mons = Object.entries<any>(trainerData.mons); //Turns the passed trainers mons object into an array
       //Loop through each mon and if the filters match, create a card for them and add it to the display list.
@@ -193,7 +192,7 @@ function Gallery({menu, trainers}: Gallery) {
       let monForm = currTrainer.mons[mon].form ? ' ' + currTrainer.mons[mon].form : ''
       let monShine = currTrainer.mons[mon].shine ? ' (Shiny)' : ''
       buttons.push(<img style={{width: "72px", height: "72px"}} onClick={() => {setSelectedMon(currTrainer.mons[mon])}} 
-                        src={'./chars/mons/'+ dex.mons[currTrainer.mons[mon].name].name.toLowerCase()+ monForm + monShine +'.png'}
+                        src={'./chars/mons/'+ dex.mons[currTrainer.mons[mon].name + currTrainer.mons[mon].form].name.toLowerCase()+ monForm + monShine +'.png'}
                     />)
     }
 
