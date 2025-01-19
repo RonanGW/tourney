@@ -37,6 +37,11 @@ code {
   flex-direction: column;
 }
 
+.center {
+  align-items: center;
+  justify-content: center;
+}
+
 .typeImg {
   width: 128px;
   height: 32px;

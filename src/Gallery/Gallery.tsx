@@ -83,33 +83,33 @@ function Gallery({menu, trainers}: Gallery) {
     { value: 'Locked', label: 'Locked'}
   ]
 
-    const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value)); //Actively displayed trainer & mon home regions
-    const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value)); //Actively displayed trainer classes
-    const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value)); //Actively displayed mon types
-    const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value)); //Actively displayed mon shines
-    const [selectedStates, setSelectedStates] = useState(["Unlocked","Available"]); // Actively displayed trainer & mon states
-    const [cards, setCards] = useState(filterTrainerCards("none")); // Currently display "Cards"
-    const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
-    const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999}) //Current Mon to display inside trainer screen
-    const [party, setParty] = useState([<></>]); //PartyButtons
-    const [partySlotReplacers, setPartySlotReplacers] = useState(false)
+  const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value)); //Actively displayed trainer & mon home regions
+  const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value)); //Actively displayed trainer classes
+  const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value)); //Actively displayed mon types
+  const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value)); //Actively displayed mon shines
+  const [selectedStates, setSelectedStates] = useState(["Unlocked","Available"]); // Actively displayed trainer & mon states
+  const [cards, setCards] = useState(filterTrainerCards("none")); // Currently display "Cards"
+  const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
+  const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999}) //Current Mon to display inside trainer screen
+  const [party, setParty] = useState([<></>]); //PartyButtons
+  const [partySlotReplacers, setPartySlotReplacers] = useState(false)
 
-    //This useEffect is set to re-render manually when the trigger is set to true
-    //Also functions as a primary debugging function for seeing the most up to date changes
-    useEffect(() => {
-      // Update the document title using the browser API
+  //This useEffect is set to re-render manually when the trigger is set to true
+  //Also functions as a primary debugging function for seeing the most up to date changes
+  useEffect(() => {
+    // Update the document title using the browser API
 
-      if (renderTrainers) {
-          setCards(filterTrainerCards("none"))
-          renderTrainers = false
-      }
-      else if (renderMons) {
-        setCards(filterMonCards(currTrainer))
-        setParty(genPartyButtons)
-        menu[1]("Gallery-Trainer"); //setMenu function for the menu state defined & passed by parent object
-        renderMons = false
-      }
-    });
+    if (renderTrainers) {
+        setCards(filterTrainerCards("none"))
+        renderTrainers = false
+    }
+    else if (renderMons) {
+      setCards(filterMonCards(currTrainer))
+      setParty(genPartyButtons)
+      menu[1]("Gallery-Trainer"); //setMenu function for the menu state defined & passed by parent object
+      renderMons = false
+    }
+  });
 
   // Reset's the display to the starting Gallery Screen
   function switchToMainScreen() {
@@ -121,31 +121,26 @@ function Gallery({menu, trainers}: Gallery) {
   // Resets the display to the selected trainer's details page
   function switchToTrainerScreen(trainer: any) {
     fetch('/Savedata/'+trainer.name+'.json')
-      .then(response => {return response.json()})
-        .then((tmp) => {
-          renderMons = true
-          setCurrTrainer(tmp)
-          setCards(filterMonCards(tmp));
-        });
-  }
-
-  // Resets the display to the selected mon's details page
-  function switchToMonScreen(mon: mon) {
-    menu[1]("Mon"); //setMenu function for the menu state defined & passed by parent object
+    .then(response => {return response.json()})
+    .then((tdata) => {
+      renderMons = true
+      setCurrTrainer(tdata)
+      setCards(filterMonCards(tdata));
+    });
   }
 
   // Returns an array of Trainer Cards to display using currently selected Filters
   function filterTrainerCards(sorted: string): JSX.Element[] {
     let newCards: JSX.Element[] = []; //Array to be filled with cards
-    
-    let tmp = trainerObjects.map(x => x[1])
+    let tObjectsNoKeys = trainerObjects.map(x => x[1]) // Filters keys out of trainerObjects to make data an array of objects instead an array of entries
 
+    //Sorts Trainer Objects by BP to put trainers with the most BP at the top.
     if (sorted == "BP") {
-      tmp = tmp.sort((a,b) => b.BP - a.BP)
+      tObjectsNoKeys = tObjectsNoKeys.sort((a,b) => b.BP - a.BP)
     }
 
-    //Loop through each trainer and if their status is active, create a card for them and add it to the display list.
-    for (let value of tmp) {
+    //Loop through each trainer and if the filters match, create a card for them and add it to the display list.
+    for (let value of tObjectsNoKeys) {
       selectedStates.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class) ? newCards.push(
         <div key={Math.random()} onClick={() => switchToTrainerScreen(value)}>
             <CharCard trainer={value}></CharCard>
@@ -160,51 +155,53 @@ function Gallery({menu, trainers}: Gallery) {
   function filterMonCards(trainer: any): JSX.Element[] {
     let trainerData: any
     fetch('/Savedata/'+trainer.name+'.json')
-      .then(response => {return response.json()})
-        .then((tmp) => {
-          trainerData = tmp
-        });
+    .then(response => {return response.json()})
+    .then((tData) => {
+      trainerData = tData
+    });
 
-        let newCards: JSX.Element[] = []; //Array to be filled with cards
+    let newCards: JSX.Element[] = []; //Array to be filled with cards
 
-        const timeoutId = window.setTimeout(() => {
-          let mons = Object.entries<any>(trainerData.mons); //Turns the passed trainers mons object into an array
-          //Loop through each mon and if their status is active, create a card for them and add it to the display list.
-          for (let [tkey,value] of mons) {
-            selectedStates.includes(value.state) && 
-            selectedShines.includes(value.shine) && 
-            selectedRegions.includes(dex.mons[value.name + value.form].region) && 
-            (selectedTypes.includes(dex.mons[value.name + value.form].type1) || 
-              selectedTypes.includes(dex.mons[value.name + value.form].type2)) ? 
-            newCards.push(
-              <div onClick={() => {setSelectedMon(value)}}>
-                  <MonCard mon={value}></MonCard>
-              </div>
-            ) : <></>
-            }
-            setSelectedMon(trainerData.mons[trainerData.team[0]])
-        }, 500)
+    const timeoutId = window.setTimeout(() => {
+      let mons = Object.entries<any>(trainerData.mons); //Turns the passed trainers mons object into an array
+      //Loop through each mon and if the filters match, create a card for them and add it to the display list.
+      for (let [tkey,value] of mons) {
+        selectedStates.includes(value.state) && 
+        selectedShines.includes(value.shine) && 
+        selectedRegions.includes(dex.mons[value.name + value.form].region) && 
+        (selectedTypes.includes(dex.mons[value.name + value.form].type1) || 
+        selectedTypes.includes(dex.mons[value.name + value.form].type2)) ? 
+          newCards.push(
+            <div onClick={() => {setSelectedMon(value)}}>
+                <MonCard mon={value}></MonCard>
+            </div>
+          ) : <></>
+        }
+      setSelectedMon(trainerData.mons[trainerData.team[0]])
+    }, 500)
 
-      return newCards
+    return newCards
   }
 
+  //Returns array of clickable images on the trainer stats card to indicate the trainers current team
   function genPartyButtons(): JSX.Element[] {
     let buttons: JSX.Element[] = []
 
-      for (let mon of currTrainer.team) {
-        let monForm = currTrainer.mons[mon].form ? ' ' + currTrainer.mons[mon].form : ''
-        let monShine = currTrainer.mons[mon].shine ? ' (Shiny)' : ''
-        buttons.push(<img style={{width: "72px", height: "72px"}} onClick={() => {setSelectedMon(currTrainer.mons[mon])}} 
-                          src={'./chars/mons/'+ dex.mons[currTrainer.mons[mon].name].name.toLowerCase()+ monForm + monShine +'.png'}
-                      />)
-      }
+    //Loop through each keay included in the currTrainers team
+    for (let mon of currTrainer.team) {
+      //Calc image file name
+      let monForm = currTrainer.mons[mon].form ? ' ' + currTrainer.mons[mon].form : ''
+      let monShine = currTrainer.mons[mon].shine ? ' (Shiny)' : ''
+      buttons.push(<img style={{width: "72px", height: "72px"}} onClick={() => {setSelectedMon(currTrainer.mons[mon])}} 
+                        src={'./chars/mons/'+ dex.mons[currTrainer.mons[mon].name].name.toLowerCase()+ monForm + monShine +'.png'}
+                    />)
+    }
 
     return  buttons
   }
 
   //Unlocks an availabe mon for a given trainer in exchange for BP
   function purchaseMon(trainer: trainer, mon: mon): void {
-    console.log(trainers[0][trainer.name])
       if (trainers[0][trainer.name].BP >= dex.mons[mon.name + mon.form].cost) {
         mon.state="Unlocked"
         trainers[0][trainer.name].BP = trainers[0][trainer.name].BP - dex.mons[mon.name + mon.form].cost
@@ -299,9 +296,9 @@ function Gallery({menu, trainers}: Gallery) {
                                   undefined}
                                 </div>
                                 <p>XP: {selectedMon.xp}</p>
-                                <p>HP: {selectedMon.hp}</p>
-                                <p>Atk: {selectedMon.atk}</p>
-                                <p>Spd: {selectedMon.spd}</p>
+                                <div className='flexRow center'><p>HP: {selectedMon.hp}</p>{trainer.BP > 0 ? <button>+1</button>:<></>}</div>
+                                <div className='flexRow center'><p>Atk: {selectedMon.atk}</p>{trainer.BP > 0 ? <button>+1</button>:<></>}</div>
+                                <div className='flexRow center'><p>Spd: {selectedMon.spd}</p>{trainer.BP > 0 ? <button>+1</button>:<></>}</div>
                             </div> :
                             selectedMon.state == "Available" ?
                                 <button onClick={() => {purchaseMon(trainer, selectedMon)}}>Purchase for {dex.mons[selectedMon.name + selectedMon.form].cost}BP</button> :
