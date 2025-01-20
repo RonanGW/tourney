@@ -42,11 +42,11 @@ let dex: any = {};fetch('/dex.json').then(response => {return response.json()}).
 
 // Gallery Menu
 function Gallery({menu, trainers}: Gallery) {
-  const trainerObjects: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
+  const allTrainers: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
   //Collect all regions for filters
-  const regions = [...new Set([...new Set(trainerObjects.map(item => item[1].region))].map(item => {return {value: item, label: item}}))];
+  const regions = [...new Set([...new Set(allTrainers.map(item => item[1].region))].map(item => {return {value: item, label: item}}))];
   //Collect all classes for filters
-  const classes = [...new Set([...new Set(trainerObjects.map(item => item[1].class))].map(item => {return {value: item, label: item}}))];
+  const classes = [...new Set([...new Set(allTrainers.map(item => item[1].class))].map(item => {return {value: item, label: item}}))];
   //List possible types for filters
   const types = [
     { value: 'Bug', label: 'Bug'},
@@ -132,7 +132,7 @@ function Gallery({menu, trainers}: Gallery) {
   // Returns an array of Trainer Cards to display using currently selected Filters
   function filterTrainerCards(sorted: string): JSX.Element[] {
     let newCards: JSX.Element[] = []; //Array to be filled with cards
-    let tObjectsNoKeys = trainerObjects.map(x => x[1]) // Filters keys out of trainerObjects to make data an array of objects instead an array of entries
+    let tObjectsNoKeys = allTrainers.map(x => x[1]) // Filters keys out of allTrainers to make data an array of objects instead an array of entries
 
     //Sorts Trainer Objects by BP to put trainers with the most BP at the top.
     if (sorted == "BP") {
@@ -234,6 +234,28 @@ function Gallery({menu, trainers}: Gallery) {
       }
   }
 
+  function buffStat(trainer: trainer, mon: mon, stat: string) {
+    trainers[0][trainer.name].BP = trainers[0][trainer.name].BP - 1
+    console.log(stat)
+    console.log(trainer.mons[mon.name + mon.form + mon.shine])
+    trainer.mons[mon.name + mon.form + mon.shine][stat] =  trainer.mons[mon.name + mon.form + mon.shine][stat] + 1
+
+    console.log(trainer.mons[mon.name + mon.form + mon.shine][stat])
+
+
+    //Save changes
+    const timeoutId = window.setTimeout(() => {
+      const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
+      FileSaver.saveAs(blob, trainer.name +".json");
+    }, 500)
+
+    //Save changes
+    const timeoutId2 = window.setTimeout(() => {
+      const blob = new Blob([JSON.stringify(trainers[0])], { type: 'application/json' });
+      FileSaver.saveAs(blob, "trainers.json");
+    }, 500)
+  }
+
   function changeTeam(trainer: trainer, mon: mon, slot: number):void {
     let key = (mon.name + mon.form + mon.shine.toLowerCase())
     slot < 0 ? trainer.team.splice(trainer.team.indexOf(key), 1) : trainer.team.length < 6 ? trainer.team.push(key) : trainer.team[slot] = key
@@ -295,9 +317,9 @@ function Gallery({menu, trainers}: Gallery) {
                                   undefined}
                                 </div>
                                 <p>XP: {selectedMon.xp}</p>
-                                <div className='flexRow center'><p>HP: {selectedMon.hp}</p>{trainer.BP > 0 ? <button>+1</button>:<></>}</div>
-                                <div className='flexRow center'><p>Atk: {selectedMon.atk}</p>{trainer.BP > 0 ? <button>+1</button>:<></>}</div>
-                                <div className='flexRow center'><p>Spd: {selectedMon.spd}</p>{trainer.BP > 0 ? <button>+1</button>:<></>}</div>
+                                <div className='flexRow center'><p>HP: {selectedMon.hp}</p>{trainer.BP > 0 ? <button onClick={() => {buffStat(trainer,selectedMon,"hp")}}>+1</button>:<></>}</div>
+                                <div className='flexRow center'><p>Atk: {selectedMon.atk}</p>{trainer.BP > 0 ? <button onClick={() => {buffStat(trainer,selectedMon,"atk")}}>+1</button>:<></>}</div>
+                                <div className='flexRow center'><p>Spd: {selectedMon.spd}</p>{trainer.BP > 0 ? <button onClick={() => {buffStat(trainer,selectedMon,"spd")}}>+1</button>:<></>}</div>
                             </div> :
                             selectedMon.state == "Available" ?
                                 <button onClick={() => {purchaseMon(trainer, selectedMon)}}>Purchase for {dex.mons[selectedMon.name + selectedMon.form].cost}BP</button> :
