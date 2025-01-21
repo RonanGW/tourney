@@ -228,8 +228,8 @@ function Fight({menu, trainers}: Fight) {
                                 currTrainers[tKey].team.length > 2 ? <img src={'./chars/mons/'+currTrainers[tKey].mons[currTrainers[tKey].team[0]].name+'.png'}></img> : ""}
                                 </div>
                                 {loopActiveMonQueueState == "active" ? <div style={{display:"flex",alignItems:"space-between"}}>
-                                                                        <button onClick={() => {swapMon(tKey, false)}}>{"<"}</button>
-                                                                        <button onClick={() => {swapMon(tKey, true)}}>{">"}</button>
+                                                                        {currTrainers[tKey].team.length > 2 ? <button onClick={() => {swapMon(tKey, false)}}>{"<"}</button> : <></>}
+                                                                        {currTrainers[tKey].team.length > 1 ? <button onClick={() => {swapMon(tKey, true)}}>{">"}</button> : <></>}
                                                                     </div> : <></>}
                             </div>
                         </div>
@@ -294,7 +294,7 @@ function Fight({menu, trainers}: Fight) {
         if (tData[1]) {
             remainingKeys = remainingKeys.filter((tKey) => tKey != target)
         }
-        if (remainingKeys.length <= 2) {
+        if (remainingKeys.length <= 1) {
             remainingKeys = Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].team[0]].currHP > 0).sort((a,b) => {return currTrainers[a].mons[currTrainers[a].team[0]].spd - currTrainers[b].mons[currTrainers[b].team[0]].spd})
             if (remainingKeys.length == 1) {
                 tData[0] = win(tData[0], activeTrainers[0])
