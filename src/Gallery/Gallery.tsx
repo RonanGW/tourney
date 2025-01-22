@@ -127,6 +127,8 @@ function Gallery({menu, trainers}: Gallery) {
       setCurrTrainer(tdata)
       setCards(filterMonCards(tdata));
     });
+    setSelectedRegions(Object.entries(regions).map(item => item[1].value))
+    setSelectedStates(Object.entries(states).map(item => item[1].value))
   }
 
   // Returns an array of Trainer Cards to display using currently selected Filters
