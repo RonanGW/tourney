@@ -388,13 +388,13 @@ function Gallery({menu, trainers}: Gallery) {
          menu[0] == "Gallery-Trainer" ? 
           <div>
             <div className="Gallery-header">
-              <button onClick={switchToMainScreen}>Back to Gallery Main Screen</button>
+              <button onClick={() => {switchToMainScreen()}}>Back to Gallery Main Screen</button>
             </div>
               {TrainerPage(currTrainer)}
           </div> :  
           <div>
             <div className="Gallery-header">
-              <button onClick={switchToMainScreen}>Back to Gallery Main Screen</button>
+              <button onClick={() => {switchToMainScreen()}}>Back to Gallery Main Screen</button>
             </div> 
             <div>Oops. Something broke :/</div>
           </div>
