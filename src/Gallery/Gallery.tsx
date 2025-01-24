@@ -127,8 +127,6 @@ function Gallery({menu, trainers}: Gallery) {
       setCurrTrainer(tdata)
       setCards(filterMonCards(tdata));
     });
-    setSelectedRegions(Object.entries(regions).map(item => item[1].value))
-    setSelectedStates(Object.entries(states).map(item => item[1].value))
   }
 
   // Returns an array of Trainer Cards to display using currently selected Filters
@@ -332,10 +330,10 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div className='Gallery-sortBlock'>
               <div className='filter-block'>
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} placeholder="States" onChange={(e) => {renderMons = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states}/></div>}
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} placeholder="Types" onChange={(e) => {renderMons = true;setSelectedTypes([...new Set(Object.entries(e).map(item => item[1].value))])}} options={types}/></div>}
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} placeholder="Regions" onChange={(e) => {renderMons = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/></div>}
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} placeholder="Shines" onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} options={shines}/></div>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedStates.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="States" onChange={(e) => {renderMons = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states}/></div>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedTypes.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="Types" onChange={(e) => {renderMons = true;setSelectedTypes([...new Set(Object.entries(e).map(item => item[1].value))])}} options={types}/></div>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedRegions.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="Regions" onChange={(e) => {renderMons = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/></div>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedShines.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="Shines" onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} options={shines}/></div>}
               </div>
               <div className="Card-block">
                   {cards}
@@ -376,9 +374,9 @@ function Gallery({menu, trainers}: Gallery) {
             <div>
               <div className='filter'>
                 <button onClick={() => {setCards(filterTrainerCards("BP"))}}>Filter by BP</button>
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} placeholder="States" onChange={(e) => {renderTrainers = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states} /></div>}
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} placeholder="Regions" onChange={(e) => {renderTrainers = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/></div>}
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" closeMenuOnSelect={false} placeholder="Classes" onChange={(e) => {renderTrainers = true;setSelectedClasses([...new Set(Object.entries(e).map(item => item[1].value))])}} options={classes}/></div>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedStates.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="States" onChange={(e) => {renderTrainers = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states} /></div>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedRegions.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="Regions" onChange={(e) => {renderTrainers = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/></div>}
+              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedClasses.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="Classes" onChange={(e) => {renderTrainers = true;setSelectedClasses([...new Set(Object.entries(e).map(item => item[1].value))])}} options={classes}/></div>}
               </div>
               <div className="Card-block">
                 {cards}
