@@ -330,10 +330,46 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div className='Gallery-sortBlock'>
               <div className='filter-block'>
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedStates.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="States" onChange={(e) => {renderMons = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} options={states}/></div>}
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedTypes.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="Types" onChange={(e) => {renderMons = true;setSelectedTypes([...new Set(Object.entries(e).map(item => item[1].value))])}} options={types}/></div>}
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedRegions.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="Regions" onChange={(e) => {renderMons = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} options={regions}/></div>}
-              {<div className='filter-wrap'><Select isMulti classNamePrefix="multiselect" defaultValue={selectedShines.map((val) => {return {label: val, value: val}})} closeMenuOnSelect={false} placeholder="Shines" onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} options={shines}/></div>}
+              {<div className='filter-wrap'><Select isMulti 
+                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                  classNamePrefix="multiselect" 
+                  defaultValue={selectedStates.map((val) => {return {label: val, value: val}})} 
+                  closeMenuOnSelect={false} 
+                  placeholder="States" 
+                  onChange={(e) => {renderMons = true;setSelectedStates([...new Set(Object.entries(e).map(item => item[1].value))])}} 
+                  options={states}/>
+                </div>}
+              {<div className='filter-wrap'><Select isMulti 
+                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                  classNamePrefix="multiselect" 
+                  defaultValue={selectedTypes.map((val) => {return {label: val, value: val}})} 
+                  closeMenuOnSelect={false} 
+                  placeholder="Types" 
+                  onChange={(e) => {renderMons = true;setSelectedTypes([...new Set(Object.entries(e).map(item => item[1].value))])}} 
+                  options={types}/>
+                </div>}
+              {<div className='filter-wrap'><Select isMulti 
+                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                  classNamePrefix="multiselect" 
+                  defaultValue={selectedRegions.map((val) => {return {label: val, value: val}})} 
+                  closeMenuOnSelect={false} 
+                  placeholder="Regions" 
+                  onChange={(e) => {renderMons = true;setSelectedRegions([...new Set(Object.entries(e).map(item => item[1].value))])}} 
+                  options={regions}/>
+                </div>}
+              {<div className='filter-wrap'><Select isMulti 
+                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                  classNamePrefix="multiselect" 
+                  defaultValue={selectedShines.map((val) => {return {label: val, value: val}})} 
+                  closeMenuOnSelect={false} 
+                  placeholder="Shines" 
+                  onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} 
+                  options={shines}/>
+                </div>}
               </div>
               <div className="Card-block">
                   {cards}
@@ -375,7 +411,8 @@ function Gallery({menu, trainers}: Gallery) {
               <div className='filter'>
                 <button onClick={() => {setCards(filterTrainerCards("BP"))}}>Filter by BP</button>
               {<div className='filter-wrap'><Select isMulti 
-                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}), }}
+                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
+                           control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
                   classNamePrefix="multiselect" 
                   defaultValue={selectedStates.map((val) => {return {label: val, value: val}})} 
                   closeMenuOnSelect={false} 
@@ -384,7 +421,8 @@ function Gallery({menu, trainers}: Gallery) {
                   options={states}/>
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
-                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}), }}
+                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
                   classNamePrefix="multiselect" 
                   defaultValue={selectedRegions.map((val) => {return {label: val, value: val}})} 
                   closeMenuOnSelect={false} 
@@ -393,7 +431,8 @@ function Gallery({menu, trainers}: Gallery) {
                   options={regions}/>
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
-                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}), }}
+                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
                   classNamePrefix="multiselect" 
                   defaultValue={selectedClasses.map((val) => {return {label: val, value: val}})} 
                   closeMenuOnSelect={false} 
