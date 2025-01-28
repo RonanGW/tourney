@@ -332,7 +332,7 @@ function Gallery({menu, trainers}: Gallery) {
               <div className='filter-block'>
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"scroll",}) }}
                   classNamePrefix="multiselect" 
                   defaultValue={selectedStates.map((val) => {return {label: val, value: val}})} 
                   closeMenuOnSelect={false} 
@@ -342,7 +342,7 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"scroll",}) }}
                   classNamePrefix="multiselect" 
                   defaultValue={selectedTypes.map((val) => {return {label: val, value: val}})} 
                   closeMenuOnSelect={false} 
@@ -352,7 +352,7 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"scroll",}) }}
                   classNamePrefix="multiselect" 
                   defaultValue={selectedRegions.map((val) => {return {label: val, value: val}})} 
                   closeMenuOnSelect={false} 
@@ -362,7 +362,7 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"scroll",}) }}
                   classNamePrefix="multiselect" 
                   defaultValue={selectedShines.map((val) => {return {label: val, value: val}})} 
                   closeMenuOnSelect={false} 
@@ -412,7 +412,7 @@ function Gallery({menu, trainers}: Gallery) {
                 <button onClick={() => {setCards(filterTrainerCards("BP"))}}>Filter by BP</button>
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                           control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                           control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"scroll",}) }}
                   classNamePrefix="multiselect" 
                   defaultValue={selectedStates.map((val) => {return {label: val, value: val}})} 
                   closeMenuOnSelect={false} 
@@ -422,7 +422,7 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"scroll",}) }}
                   classNamePrefix="multiselect" 
                   defaultValue={selectedRegions.map((val) => {return {label: val, value: val}})} 
                   closeMenuOnSelect={false} 
@@ -432,7 +432,7 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',}) }}
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"scroll",}) }}
                   classNamePrefix="multiselect" 
                   defaultValue={selectedClasses.map((val) => {return {label: val, value: val}})} 
                   closeMenuOnSelect={false} 
