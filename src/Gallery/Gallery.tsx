@@ -332,7 +332,9 @@ function Gallery({menu, trainers}: Gallery) {
               <div className='filter-block'>
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",scrollbarWidth: "thin","&:hover": {overflow:"scroll"}}),
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
+                                                            "&:hover": {overflow:"scroll",scrollbarWidth: "thin",paddingRight:"0px",paddingBottom:"0px"}
+                                                            }),
                             indicatorsContainer: (baseStyles, state) => ({...baseStyles,display: "flex",alignSelf: "flex-start",top:"0",position:"sticky"}),
                             clearIndicator: (baseStyles, state) => ({...baseStyles,color:'black'}),
                             dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
@@ -346,7 +348,9 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",scrollbarWidth: "thin","&:hover": {overflow:"scroll"}}),
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
+                                                            "&:hover": {overflow:"scroll",scrollbarWidth: "thin",paddingRight:"0px",paddingBottom:"0px"}
+                                                            }),
                             indicatorsContainer: (baseStyles, state) => ({...baseStyles,display: "flex",alignSelf: "flex-start",top:"0",position:"sticky"}),
                             clearIndicator: (baseStyles, state) => ({...baseStyles,color:'black'}),
                             dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
@@ -360,7 +364,9 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",scrollbarWidth: "thin","&:hover": {overflow:"scroll"}}),
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
+                                                            "&:hover": {overflow:"scroll",scrollbarWidth: "thin",paddingRight:"0px",paddingBottom:"0px"}
+                                                            }),
                             indicatorsContainer: (baseStyles, state) => ({...baseStyles,display: "flex",alignSelf: "flex-start",top:"0",position:"sticky"}),
                             clearIndicator: (baseStyles, state) => ({...baseStyles,color:'black'}),
                             dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
@@ -374,7 +380,9 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",scrollbarWidth: "thin","&:hover": {overflow:"scroll"}}),
+                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
+                                                              "&:hover": {overflow:"scroll",scrollbarWidth: "thin",paddingRight:"0px",paddingBottom:"0px"}
+                                                              }),
                             indicatorsContainer: (baseStyles, state) => ({...baseStyles,display: "flex",alignSelf: "flex-start",top:"0",position:"sticky"}),
                             clearIndicator: (baseStyles, state) => ({...baseStyles,color:'black'}),
                             dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
@@ -428,7 +436,9 @@ function Gallery({menu, trainers}: Gallery) {
                 <button onClick={() => {setCards(filterTrainerCards("BP"))}}>Filter by BP</button>
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                           control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",scrollbarWidth: "thin","&:hover": {overflow:"scroll"}}),
+                           control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
+                                                            "&:hover": {overflow:"scroll",scrollbarWidth: "thin",paddingRight:"0px",paddingBottom:"0px"}
+                                                            }),
                            indicatorsContainer: (baseStyles, state) => ({...baseStyles,display: "flex",alignSelf: "flex-start",top:"0",position:"sticky"}),
                            clearIndicator: (baseStyles, state) => ({...baseStyles,color:'black'}),
                            dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
@@ -441,8 +451,10 @@ function Gallery({menu, trainers}: Gallery) {
                   options={states}/>
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
-                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",scrollbarWidth: "thin","&:hover": {overflow:"scroll"}}),
+                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5'}),
+                  control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
+                                                   "&:hover": {overflow:"scroll",scrollbarWidth: "thin",paddingRight:"0px",paddingBottom:"0px"}
+                                                   }),
                             indicatorsContainer: (baseStyles, state) => ({...baseStyles,display: "flex",alignSelf: "flex-start",top:"0",position:"sticky"}),
                             clearIndicator: (baseStyles, state) => ({...baseStyles,color:'black'}),
                             dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
@@ -456,7 +468,9 @@ function Gallery({menu, trainers}: Gallery) {
                 </div>}
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",scrollbarWidth: "thin","&:hover": {overflow:"scroll"}}),
+                           control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
+                                                              "&:hover": {overflow:"scroll",scrollbarWidth: "thin",paddingRight:"0px",paddingBottom:"0px"}
+                                                            }),
                             indicatorsContainer: (baseStyles, state) => ({...baseStyles,display: "flex",alignSelf: "flex-start",top:"0",position:"sticky"}),
                             clearIndicator: (baseStyles, state) => ({...baseStyles,color:'black'}),
                             dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
