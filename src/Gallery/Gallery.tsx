@@ -388,7 +388,7 @@ function Gallery({menu, trainers}: Gallery) {
                             dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
                           }}
                   classNamePrefix="multiselect" 
-                  defaultValue={selectedShines.map((val) => {return {label: val, value: val}})} 
+                  defaultValue={selectedShines.map((val) => {return {label: val == "" ? "Normal" : val, value: val}})} 
                   closeMenuOnSelect={false} 
                   placeholder="Shines" 
                   onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} 
