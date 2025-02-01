@@ -119,6 +119,11 @@ button {
   margin: 10px;
 }
 
+.SearchBar {
+  width: 15vw;
+  background-color: white;
+}
+
 .Unlocked {
   filter: contrast(100%) brightness(100%);
 }

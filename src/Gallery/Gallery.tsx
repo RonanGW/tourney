@@ -3,6 +3,7 @@ import Select, { StylesConfig } from 'react-select'
 import CharCard from './TrainerPage/CharCard'
 import MonCard from './MonPage/MonCard'
 import FileSaver from 'file-saver';
+import TextField from "@mui/material/TextField";
 import './Gallery.css'
 //Interface to pass state variables created by parent object
 interface Gallery {
@@ -82,7 +83,8 @@ function Gallery({menu, trainers}: Gallery) {
     { value: 'Available', label: 'Available'},
     { value: 'Locked', label: 'Locked'}
   ]
-
+  
+  const [inputText, setInputText] = useState("");
   const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value)); //Actively displayed trainer & mon home regions
   const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value)); //Actively displayed trainer classes
   const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value)); //Actively displayed mon types
@@ -111,9 +113,19 @@ function Gallery({menu, trainers}: Gallery) {
     }
   });
 
+  let inputHandler = (e: any) => {
+    //convert input text to lower case
+
+    var lowerCase = e.target.value.toLowerCase();
+
+    setInputText(lowerCase);
+
+  };
+
   // Reset's the display to the starting Gallery Screen
   function switchToMainScreen() {
     menu[1]("Gallery"); //setMenu function for the menu state defined & passed by parent object
+    setInputText("")
     setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999})
     setCards(filterTrainerCards("none"));
   }
@@ -124,6 +136,7 @@ function Gallery({menu, trainers}: Gallery) {
     .then(response => {return response.json()})
     .then((tdata) => {
       renderMons = true
+      setInputText("")
       setCurrTrainer(tdata)
       setCards(filterMonCards(tdata));
     });
@@ -138,10 +151,17 @@ function Gallery({menu, trainers}: Gallery) {
     if (sorted == "BP") {
       tObjectsNoKeys = tObjectsNoKeys.sort((a,b) => b.BP - a.BP)
     }
+    else if (sorted == "Name") {
+      tObjectsNoKeys = tObjectsNoKeys.sort(function(a, b) {
+        var textA = a.name.toUpperCase();
+        var textB = b.name.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    })
+    }
 
     //Loop through each trainer and if the filters match, create a card for them and add it to the display list.
     for (let value of tObjectsNoKeys) {
-      selectedStates.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class) ? newCards.push(
+      value.name.toLowerCase().includes(inputText) && selectedStates.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class) ? newCards.push(
         <div key={Math.random()} onClick={() => switchToTrainerScreen(value)}>
             <CharCard trainer={value}></CharCard>
         </div>
@@ -165,6 +185,7 @@ function Gallery({menu, trainers}: Gallery) {
       let mons = Object.entries<any>(trainerData.mons); //Turns the passed trainers mons object into an array
       //Loop through each mon and if the filters match, create a card for them and add it to the display list.
       for (let [tkey,value] of mons) {
+        value.name.toLowerCase().includes(inputText) && 
         selectedStates.includes(value.state) && 
         selectedShines.includes(value.shine) && 
         selectedRegions.includes(dex.mons[value.name + value.form].region) && 
@@ -330,6 +351,18 @@ function Gallery({menu, trainers}: Gallery) {
             </div>
             <div className='Gallery-sortBlock'>
               <div className='filter-block'>
+                <div className='flexCol'>
+              <div 
+                  className='SearchBar'>
+              <TextField
+                  id="outlined-basic"
+                  onChange={(e) => {renderMons = true;inputHandler(e)}}
+                  variant="outlined"
+                  fullWidth
+                  label="Search"
+                />
+                </div>
+                <div className='flexRow'>
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
                             control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
@@ -395,6 +428,8 @@ function Gallery({menu, trainers}: Gallery) {
                   options={shines}/>
                 </div>}
               </div>
+              </div>
+              </div>
               <div className="Card-block">
                   {cards}
               </div>
@@ -432,8 +467,23 @@ function Gallery({menu, trainers}: Gallery) {
               <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
             </div>
             <div>
-              <div className='filter'>
-                <button onClick={() => {setCards(filterTrainerCards("BP"))}}>Filter by BP</button>
+            <div className='filter'>
+              <div className='flexCol'>
+                <div 
+                  className='SearchBar'>
+              <TextField
+                  id="outlined-basic"
+                  onChange={(e) => {renderTrainers = true;inputHandler(e)}}
+                  variant="outlined"
+                  fullWidth
+                  label="Search"
+                />
+                </div>
+                <div className='flexRow'>
+                <button onClick={() => {setCards(filterTrainerCards("BP"))}}>Sort by BP</button>
+                <button onClick={() => {setCards(filterTrainerCards("Name"))}}>Sort A-Z</button>
+                </div>
+                </div>
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
                            control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
