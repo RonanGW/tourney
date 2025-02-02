@@ -185,7 +185,7 @@ function Gallery({menu, trainers}: Gallery) {
       let mons = Object.entries<any>(trainerData.mons); //Turns the passed trainers mons object into an array
       //Loop through each mon and if the filters match, create a card for them and add it to the display list.
       for (let [tkey,value] of mons) {
-        value.name.toLowerCase().includes(inputText) && 
+        (inputText == "" || (value.state == "Unlocked" && value.name.toLowerCase().includes(inputText))) && 
         selectedStates.includes(value.state) && 
         selectedShines.includes(value.shine) && 
         selectedRegions.includes(dex.mons[value.name + value.form].region) && 
