@@ -106,7 +106,7 @@ function Gallery({menu, trainers}: Gallery) {
         renderTrainers = false
     }
     else if (renderMons) {
-      setCards(filterMonCards(currTrainer))
+      setCards(filterMonCards(currTrainer,""))
       setParty(genPartyButtons)
       menu[1]("Gallery-Trainer"); //setMenu function for the menu state defined & passed by parent object
       renderMons = false
@@ -138,7 +138,7 @@ function Gallery({menu, trainers}: Gallery) {
       renderMons = true
       setInputText("")
       setCurrTrainer(tdata)
-      setCards(filterMonCards(tdata));
+      setCards(filterMonCards(tdata,""));
     });
   }
 
@@ -172,7 +172,7 @@ function Gallery({menu, trainers}: Gallery) {
   }
 
   // Returns an array of Mon Cards to display using currently selected Filters
-  function filterMonCards(trainer: any): JSX.Element[] {
+  function filterMonCards(trainer: any, sorted: string): JSX.Element[] {
     let trainerData: any
     fetch('/Savedata/'+trainer.name+'.json')
     .then(response => {return response.json()})
@@ -180,10 +180,18 @@ function Gallery({menu, trainers}: Gallery) {
       trainerData = tData
     });
 
+
+
     let newCards: JSX.Element[] = []; //Array to be filled with cards
     const timeoutId = window.setTimeout(() => {
       let mons = Object.entries<any>(trainerData.mons); //Turns the passed trainers mons object into an array
       //Loop through each mon and if the filters match, create a card for them and add it to the display list.
+
+      
+    if (sorted == "lvl") {
+      mons = mons.sort((a: any,b: any) => b[1].lvl - a[1].lvl)
+    }
+
       for (let [tkey,value] of mons) {
         (inputText == "" || (value.state == "Unlocked" && value.name.toLowerCase().includes(inputText))) && 
         selectedStates.includes(value.state) && 
@@ -350,10 +358,10 @@ function Gallery({menu, trainers}: Gallery) {
                     </div>}
             </div>
             <div className='Gallery-sortBlock'>
-              <div className='filter-block'>
-                <div className='flexCol'>
-              <div 
-                  className='SearchBar'>
+              <div className='filter-block='>
+                <div className='flexRow'>
+              <div className='flexCol'>
+              <div className='SearchBar'>
               <TextField
                   id="outlined-basic"
                   onChange={(e) => {renderMons = true;inputHandler(e)}}
@@ -362,7 +370,9 @@ function Gallery({menu, trainers}: Gallery) {
                   label="Search"
                 />
                 </div>
-                <div className='flexRow'>
+                <button onClick={() => {setCards(filterMonCards(currTrainer,"lvl"))}}>Sort by Lvl</button>
+                </div>
+                  <div className='flexCol'>
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
                             control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
@@ -395,6 +405,8 @@ function Gallery({menu, trainers}: Gallery) {
                   onChange={(e) => {renderMons = true;setSelectedTypes([...new Set(Object.entries(e).map(item => item[1].value))])}} 
                   options={types}/>
                 </div>}
+                </div>
+                <div className='flexCol'>
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
                             control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
@@ -427,7 +439,7 @@ function Gallery({menu, trainers}: Gallery) {
                   onChange={(e) => {renderMons = true;setSelectedShines([...new Set(Object.entries(e).map(item => item[1].value))])}} 
                   options={shines}/>
                 </div>}
-              </div>
+                </div>
               </div>
               </div>
               <div className="Card-block">
