@@ -196,9 +196,9 @@ function Gallery({menu, trainers}: Gallery) {
         (inputText == "" || (value.state == "Unlocked" && value.name.toLowerCase().includes(inputText))) && 
         selectedStates.includes(value.state) && 
         selectedShines.includes(value.shine) && 
-        selectedRegions.includes(dex.mons[value.name + value.form].region) && 
-        (selectedTypes.includes(dex.mons[value.name + value.form].type1) || 
-        selectedTypes.includes(dex.mons[value.name + value.form].type2)) ? 
+        (value.state!="Unlocked" || selectedRegions.includes(dex.mons[value.name + value.form].region)) && 
+        (value.state!="Unlocked" || (selectedTypes.includes(dex.mons[value.name + value.form].type1) || 
+        selectedTypes.includes(dex.mons[value.name + value.form].type2))) ? 
           newCards.push(
             <div onClick={() => {setSelectedMon(value)}}>
                 <MonCard mon={value}></MonCard>
