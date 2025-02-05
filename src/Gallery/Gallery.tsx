@@ -161,7 +161,10 @@ function Gallery({menu, trainers}: Gallery) {
 
     //Loop through each trainer and if the filters match, create a card for them and add it to the display list.
     for (let value of tObjectsNoKeys) {
-      value.name.toLowerCase().includes(inputText) && selectedStates.includes(value.state) && selectedRegions.includes(value.region) && selectedClasses.includes(value.class) ? newCards.push(
+      value.name.toLowerCase().includes(inputText) && 
+      selectedStates.includes(value.state) && 
+      (value.state!="Unlocked" || selectedRegions.includes(value.region)) && 
+      (value.state!="Unlocked" || selectedClasses.includes(value.class)) ? newCards.push(
         <div key={Math.random()} onClick={() => switchToTrainerScreen(value)}>
             <CharCard trainer={value}></CharCard>
         </div>
@@ -191,11 +194,20 @@ function Gallery({menu, trainers}: Gallery) {
     if (sorted == "lvl") {
       mons = mons.sort((a: any,b: any) => b[1].lvl - a[1].lvl)
     }
+    else if (sorted == "hp") {
+      mons = mons.sort((a: any,b: any) => b[1].hp - a[1].hp)
+    }
+    else if (sorted == "atk") {
+      mons = mons.sort((a: any,b: any) => b[1].atk - a[1].atk)
+    }
+    else if (sorted == "spd") {
+      mons = mons.sort((a: any,b: any) => b[1].spd - a[1].spd)
+    }
 
       for (let [tkey,value] of mons) {
         (inputText == "" || (value.state == "Unlocked" && value.name.toLowerCase().includes(inputText))) && 
         selectedStates.includes(value.state) && 
-        selectedShines.includes(value.shine) && 
+        (value.state!="Unlocked" || selectedShines.includes(value.shine)) && 
         (value.state!="Unlocked" || selectedRegions.includes(dex.mons[value.name + value.form].region)) && 
         (value.state!="Unlocked" || (selectedTypes.includes(dex.mons[value.name + value.form].type1) || 
         selectedTypes.includes(dex.mons[value.name + value.form].type2))) ? 
@@ -371,6 +383,9 @@ function Gallery({menu, trainers}: Gallery) {
                 />
                 </div>
                 <button onClick={() => {setCards(filterMonCards(currTrainer,"lvl"))}}>Sort by Lvl</button>
+                <button onClick={() => {setCards(filterMonCards(currTrainer,"hp"))}}>Sort by HP</button>
+                <button onClick={() => {setCards(filterMonCards(currTrainer,"atk"))}}>Sort by Atk</button>
+                <button onClick={() => {setCards(filterMonCards(currTrainer,"spd"))}}>Sort by Spd</button>
                 </div>
                   <div className='flexCol'>
               {<div className='filter-wrap'><Select isMulti 
