@@ -191,17 +191,29 @@ function Gallery({menu, trainers}: Gallery) {
       //Loop through each mon and if the filters match, create a card for them and add it to the display list.
 
       
-    if (sorted == "lvl") {
+    if (sorted == "lvlA") {
       mons = mons.sort((a: any,b: any) => b[1].lvl - a[1].lvl)
     }
-    else if (sorted == "hp") {
+    else if (sorted == "hpA") {
       mons = mons.sort((a: any,b: any) => b[1].hp - a[1].hp)
     }
-    else if (sorted == "atk") {
+    else if (sorted == "atkA") {
       mons = mons.sort((a: any,b: any) => b[1].atk - a[1].atk)
     }
-    else if (sorted == "spd") {
+    else if (sorted == "spdA") {
       mons = mons.sort((a: any,b: any) => b[1].spd - a[1].spd)
+    }
+    else if (sorted == "lvlD") {
+      mons = mons.sort((a: any,b: any) => a[1].lvl - b[1].lvl)
+    }
+    else if (sorted == "hpD") {
+      mons = mons.sort((a: any,b: any) => a[1].hp - b[1].hp)
+    }
+    else if (sorted == "atkD") {
+      mons = mons.sort((a: any,b: any) => a[1].atk - b[1].atk)
+    }
+    else if (sorted == "spdD") {
+      mons = mons.sort((a: any,b: any) => a[1].spd - b[1].spd)
     }
 
       for (let [tkey,value] of mons) {
@@ -382,10 +394,22 @@ function Gallery({menu, trainers}: Gallery) {
                   label="Search"
                 />
                 </div>
-                <button onClick={() => {setCards(filterMonCards(currTrainer,"lvl"))}}>Sort by Lvl</button>
-                <button onClick={() => {setCards(filterMonCards(currTrainer,"hp"))}}>Sort by HP</button>
-                <button onClick={() => {setCards(filterMonCards(currTrainer,"atk"))}}>Sort by Atk</button>
-                <button onClick={() => {setCards(filterMonCards(currTrainer,"spd"))}}>Sort by Spd</button>
+                <div className='flexRow'>
+                  <button onClick={() => {setCards(filterMonCards(currTrainer,"lvlA"))}}>Sort by Lvl▼</button>
+                  <button onClick={() => {setCards(filterMonCards(currTrainer,"lvlD"))}}>Sort by Lvl▲</button>
+                </div>
+                <div className='flexRow'>
+                  <button onClick={() => {setCards(filterMonCards(currTrainer,"hpA"))}}>Sort by HP▼</button>
+                  <button onClick={() => {setCards(filterMonCards(currTrainer,"hpD"))}}>Sort by HP▲</button>
+                </div>
+                <div className='flexRow'>
+                  <button onClick={() => {setCards(filterMonCards(currTrainer,"atkA"))}}>Sort by Atk▼</button>
+                  <button onClick={() => {setCards(filterMonCards(currTrainer,"atkD"))}}>Sort by Atk▲</button>
+                </div>
+                <div className='flexRow'>
+                  <button onClick={() => {setCards(filterMonCards(currTrainer,"spdA"))}}>Sort by Spd▼</button>
+                  <button onClick={() => {setCards(filterMonCards(currTrainer,"spdD"))}}>Sort by Spd▲</button>
+                </div>
                 </div>
                   <div className='flexCol'>
               {<div className='filter-wrap'><Select isMulti 
