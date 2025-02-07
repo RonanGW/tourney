@@ -114,7 +114,7 @@ function Fight({menu, trainers}: Fight) {
     useEffect(() => {
 
         if (toRender) {
-            console.log(currTrainers)
+            //console.log(currTrainers)
             setFullCards(combineLists)
             toRender = false
         }
@@ -153,13 +153,12 @@ function Fight({menu, trainers}: Fight) {
                                 menu[1]("Main-Menu")
                                 let i = 1
                                 console.log("Win")
+                                        
+
                                 Object.keys(currTrainers).forEach((trainer: any) => {
                                     const timeoutId = window.setTimeout(() => {
                                         trainers[0][trainer].BP = currTrainers[trainer].BP
                                         console.log(trainers[0])
-                                        
-                                        const mainBlob = new Blob([JSON.stringify(trainers[0])], { type: 'application/json' });
-                                        FileSaver.saveAs(mainBlob, "trainers.json");
 
                                         let tmp = currTrainers[trainer]
                                         tmp.mons[tmp.team[0]].currHP = undefined
@@ -167,7 +166,14 @@ function Fight({menu, trainers}: Fight) {
                                         FileSaver.saveAs(trainerBlob, trainer +".json");
                                     }, 500*i)
                                     i++
-                        })}}>
+                        })
+                        
+                        const timeoutId = window.setTimeout(() => {
+                            const mainBlob = new Blob([JSON.stringify(trainers[0])], { type: 'application/json' });
+                                FileSaver.saveAs(mainBlob, "trainers.json")
+                            }, 500*i);
+
+                        }}>
                             Back Main Menu
                         </button>
                     </>:
@@ -362,6 +368,7 @@ function Fight({menu, trainers}: Fight) {
        //If target is defeated, give the attacker xp and the target an hp buff
        if (result == 0) {
         tData[trainer].mons[tData[trainer].team[0]].hp = tData[trainer].mons[tData[trainer].team[0]].hp + 1
+        tData[trainer].BP = tData[trainer].BP + 8 - (Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].team[currTrainers[tKey].attacker]].currHP != 0)).length
         tData = xp(tData,activeTrainers[0],tData[trainer].mons[tData[trainer].team[0]].lvl)
         return [tData,true]
        }
@@ -397,7 +404,7 @@ function Fight({menu, trainers}: Fight) {
      }
 
      function win(tdata: any, trainer: string) {
-        tdata[trainer].BP = tdata[trainer].BP + 1
+        tdata[trainer].BP = tdata[trainer].BP + 8
         tdata[trainer].w = tdata[trainer].w + 1
         return tdata
      }
