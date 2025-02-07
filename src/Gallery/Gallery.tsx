@@ -148,14 +148,24 @@ function Gallery({menu, trainers}: Gallery) {
     let tObjectsNoKeys = allTrainers.map(x => x[1]) // Filters keys out of allTrainers to make data an array of objects instead an array of entries
 
     //Sorts Trainer Objects by BP to put trainers with the most BP at the top.
-    if (sorted == "BP") {
+    if (sorted == "BPA") {
       tObjectsNoKeys = tObjectsNoKeys.sort((a,b) => b.BP - a.BP)
     }
-    else if (sorted == "Name") {
+    else if (sorted == "NameA") {
       tObjectsNoKeys = tObjectsNoKeys.sort(function(a, b) {
         var textA = a.name.toUpperCase();
         var textB = b.name.toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    })
+    }
+    else if (sorted == "BPD") {
+      tObjectsNoKeys = tObjectsNoKeys.sort((a,b) => a.BP - a.BP)
+    }
+    else if (sorted == "NameD") {
+      tObjectsNoKeys = tObjectsNoKeys.sort(function(a, b) {
+        var textA = a.name.toUpperCase();
+        var textB = b.name.toUpperCase();
+        return (textB < textA) ? -1 : (textB > textA) ? 1 : 0;
     })
     }
 
@@ -530,10 +540,16 @@ function Gallery({menu, trainers}: Gallery) {
                   label="Search"
                 />
                 </div>
-                <div className='flexRow'>
-                <button onClick={() => {setCards(filterTrainerCards("BP"))}}>Sort by BP</button>
-                <button onClick={() => {setCards(filterTrainerCards("Name"))}}>Sort A-Z</button>
-                </div>
+                <div className='flexCol'>
+                  <div className='flexRow'>
+                    <button onClick={() => {setCards(filterTrainerCards("BPA"))}}>Sort by BP▼</button>
+                    <button onClick={() => {setCards(filterTrainerCards("BPD"))}}>Sort by BP▲</button>
+                  </div>
+                  <div className='flexRow'>
+                    <button onClick={() => {setCards(filterTrainerCards("NameA"))}}>Sort A-Z▼</button>
+                    <button onClick={() => {setCards(filterTrainerCards("NameD"))}}>Sort A-Z▲</button>
+                  </div>
+                  </div>
                 </div>
               {<div className='filter-wrap'><Select isMulti 
                   styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
