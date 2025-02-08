@@ -368,6 +368,7 @@ function Fight({menu, trainers}: Fight) {
        //If target is defeated, give the attacker xp and the target an hp buff
        if (result == 0) {
         tData[trainer].mons[tData[trainer].team[0]].hp = tData[trainer].mons[tData[trainer].team[0]].hp + 1
+        tData[activeTrainers[0]].BP += 1
         tData[trainer].BP = tData[trainer].BP + 8 - (Object.keys(currTrainers).filter((tKey) => currTrainers[tKey].mons[currTrainers[tKey].team[currTrainers[tKey].attacker]].currHP != 0)).length
         tData = xp(tData,activeTrainers[0],tData[trainer].mons[tData[trainer].team[0]].lvl)
         return [tData,true]
