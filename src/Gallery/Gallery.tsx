@@ -84,7 +84,7 @@ function Gallery({menu, trainers}: Gallery) {
     { value: 'Locked', label: 'Locked'}
   ]
   
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState(""); //Used to stored value for the search functions
   const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value)); //Actively displayed trainer & mon home regions
   const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value)); //Actively displayed trainer classes
   const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value)); //Actively displayed mon types
@@ -94,7 +94,7 @@ function Gallery({menu, trainers}: Gallery) {
   const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
   const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999}) //Current Mon to display inside trainer screen
   const [party, setParty] = useState([<></>]); //PartyButtons
-  const [partySlotReplacers, setPartySlotReplacers] = useState(false)
+  const [partySlotReplacers, setPartySlotReplacers] = useState(false) //Reveals hidden buttons if team is full
 
   //This useEffect is set to re-render manually when the trigger is set to true
   //Also functions as a primary debugging function for seeing the most up to date changes
