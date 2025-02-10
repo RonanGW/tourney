@@ -33,7 +33,7 @@ function App() {
       menu == "Fight" ?
         <Fight menu={[menu,setMenu]} trainers={[trainers, setTrainers]}></Fight> :
       menu == "Gallery" || menu == "Gallery-Trainer" ?
-        <Gallery menu={[menu,setMenu]} trainers={[trainers, setTrainers]}></Gallery> :
+        <Gallery menu={[menu,setMenu]} inheritedTrainerData={[trainers, setTrainers]}></Gallery> :
       menu == "Settings" ?
         <Settings menu={[menu,setMenu]} tdata={trainers}></Settings> :
       <div>Oops. Something broke :/</div>}

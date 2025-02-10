@@ -8,7 +8,7 @@ import './Gallery.css'
 //Interface to pass state variables created by parent object
 interface Gallery {
   menu: any[] // passes the current state (i.e. gallery menu) to this page so it can be undone. Value is [state<string>,setState()]
-  trainers: any[] // Current trainer data for populating most up to date character info. Value is [state<trainer>,setState()]
+  inheritedTrainerData: any[] // Current trainer data for populating most up to date character info. Value is [state<trainer>,setState()]
 }
 
 // Generic data structure for a 'mon'
@@ -42,12 +42,12 @@ let renderMons = false //Representation of current render
 let dex: any = {};fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = tmp)//Storing dex info for mondata to reference more detail not stored in individual mon data. This is to reduce duplicate info such as region be duplicated for each individual mon for each trainer or the same info being copied for each mon's shine state
 
 // Gallery Menu
-function Gallery({menu, trainers}: Gallery) {
-  const allTrainers: [string,trainer][]  = Object.entries(trainers[0]) // Trainer data as an array
+function Gallery({menu, inheritedTrainerData}: Gallery) {
+  const inheritedTrainerDataEntries: [string,trainer][]  = Object.entries(inheritedTrainerData[0]) // Trainer data as an array
   //Collect all regions for filters
-  const regions = [...new Set([...new Set(allTrainers.map(item => item[1].region))].map(item => {return {value: item, label: item}}))];
+  const regions = [...new Set([...new Set(inheritedTrainerDataEntries.map(item => item[1].region))].map(item => {return {value: item, label: item}}))];
   //Collect all classes for filters
-  const classes = [...new Set([...new Set(allTrainers.map(item => item[1].class))].map(item => {return {value: item, label: item}}))];
+  const classes = [...new Set([...new Set(inheritedTrainerDataEntries.map(item => item[1].class))].map(item => {return {value: item, label: item}}))];
   //List possible types for filters
   const types = [
     { value: 'Bug', label: 'Bug'},
@@ -91,8 +91,9 @@ function Gallery({menu, trainers}: Gallery) {
   const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value)); //Actively displayed mon shines
   const [selectedStates, setSelectedStates] = useState(["Unlocked","Available"]); // Actively displayed trainer & mon states
   const [cards, setCards] = useState(filterTrainerCards("none")); // Currently display "Cards"
-  const [currTrainer, setCurrTrainer] = useState(trainers[0]["red"]); //Current trainer to display
+  const [currTrainer, setCurrTrainer] = useState(inheritedTrainerData[0]["red"]); //Current trainer to display
   const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999}) //Current Mon to display inside trainer screen
+  const [loggedChanges, setLoggedChanges] = useState({})
   const [party, setParty] = useState([<></>]); //PartyButtons
   const [partySlotReplacers, setPartySlotReplacers] = useState(false) //Reveals hidden buttons if team is full
 
@@ -114,12 +115,7 @@ function Gallery({menu, trainers}: Gallery) {
   });
 
   let inputHandler = (e: any) => {
-    //convert input text to lower case
-
-    var lowerCase = e.target.value.toLowerCase();
-
-    setInputText(lowerCase);
-
+    setInputText(e.target.value.toLowerCase());
   };
 
   // Reset's the display to the starting Gallery Screen
@@ -145,24 +141,24 @@ function Gallery({menu, trainers}: Gallery) {
   // Returns an array of Trainer Cards to display using currently selected Filters
   function filterTrainerCards(sorted: string): JSX.Element[] {
     let newCards: JSX.Element[] = []; //Array to be filled with cards
-    let tObjectsNoKeys = allTrainers.map(x => x[1]) // Filters keys out of allTrainers to make data an array of objects instead an array of entries
+    let tObjectsNoKeys: any[] = Object.entries(inheritedTrainerData[0]).map(x => x[1]) // Filters keys out of inheritedTrainerDataEntries to make data an array of objects instead an array of entries
 
     //Sorts Trainer Objects by BP to put trainers with the most BP at the top.
     if (sorted == "BPA") {
-      tObjectsNoKeys = tObjectsNoKeys.sort((a,b) => b.BP - a.BP)
+      tObjectsNoKeys = tObjectsNoKeys.sort((a:any,b:any) => b.BP - a.BP)
     }
     else if (sorted == "NameA") {
-      tObjectsNoKeys = tObjectsNoKeys.sort(function(a, b) {
+      tObjectsNoKeys = tObjectsNoKeys.sort(function(a:any, b:any) {
         var textA = a.name.toUpperCase();
         var textB = b.name.toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     })
     }
     else if (sorted == "BPD") {
-      tObjectsNoKeys = tObjectsNoKeys.sort((a,b) => a.BP - a.BP)
+      tObjectsNoKeys = tObjectsNoKeys.sort((a:any,b:any) => a.BP - a.BP)
     }
     else if (sorted == "NameD") {
-      tObjectsNoKeys = tObjectsNoKeys.sort(function(a, b) {
+      tObjectsNoKeys = tObjectsNoKeys.sort(function(a:any, b:any) {
         var textA = a.name.toUpperCase();
         var textB = b.name.toUpperCase();
         return (textB < textA) ? -1 : (textB > textA) ? 1 : 0;
@@ -187,11 +183,7 @@ function Gallery({menu, trainers}: Gallery) {
   // Returns an array of Mon Cards to display using currently selected Filters
   function filterMonCards(trainer: any, sorted: string): JSX.Element[] {
     let trainerData: any
-    fetch('/Savedata/'+trainer.name+'.json')
-    .then(response => {return response.json()})
-    .then((tData) => {
-      trainerData = tData
-    });
+    trainerData = currTrainer
 
 
 
@@ -264,9 +256,9 @@ function Gallery({menu, trainers}: Gallery) {
 
   //Unlocks an availabe mon for a given trainer in exchange for BP
   function purchaseMon(trainer: trainer, mon: mon): void {
-      if (trainers[0][trainer.name].BP >= dex.mons[mon.name + mon.form].cost) {
+      if (inheritedTrainerData[0][trainer.name].BP >= dex.mons[mon.name + mon.form].cost) {
         mon.state="Unlocked"
-        trainers[0][trainer.name].BP = trainers[0][trainer.name].BP - dex.mons[mon.name + mon.form].cost
+        inheritedTrainerData[0][trainer.name].BP = inheritedTrainerData[0][trainer.name].BP - dex.mons[mon.name + mon.form].cost
           trainer.mons[mon.name + mon.form + mon.shine.toLowerCase()] = mon
 
         //Loops through each mon to see if will become available after leveling this mon, therefore making the looped mon visible, but locked
@@ -275,13 +267,18 @@ function Gallery({menu, trainers}: Gallery) {
             if (trainer.mons[key].shine == mon.shine) {
               if (dex.mons[trainer.mons[key].name + trainer.mons[key].form].unlocker == mon.name + mon.form + mon.shine.toLowerCase()) {
                 trainer.mons[key].state = "Locked"
+                renderMons = true
+                setCurrTrainer(currTrainer)
               }
             }
             else if (trainer.mons[key].name + trainer.mons[key].form == mon.name + mon.form) {
               trainer.mons[key].state = "Locked"
+              renderMons = true
+              setCurrTrainer(currTrainer)
             }
           }
         }
+
         //Save changes
         const timeoutId = window.setTimeout(() => {
           const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
@@ -290,7 +287,7 @@ function Gallery({menu, trainers}: Gallery) {
 
         //Save changes
         const timeoutId2 = window.setTimeout(() => {
-          const blob = new Blob([JSON.stringify(trainers[0])], { type: 'application/json' });
+          const blob = new Blob([JSON.stringify(inheritedTrainerData[0])], { type: 'application/json' });
           FileSaver.saveAs(blob, "trainers.json");
         }, 500)
         
@@ -298,7 +295,7 @@ function Gallery({menu, trainers}: Gallery) {
   }
 
   function buffStat(trainer: trainer, mon: mon, stat: string) {
-    trainers[0][trainer.name].BP = trainers[0][trainer.name].BP - 1
+    inheritedTrainerData[0][trainer.name].BP = inheritedTrainerData[0][trainer.name].BP - 1
     console.log(stat)
     console.log(trainer.mons[mon.name + mon.form + mon.shine])
     trainer.mons[mon.name + mon.form + mon.shine][stat] =  trainer.mons[mon.name + mon.form + mon.shine][stat] + 1
@@ -314,7 +311,7 @@ function Gallery({menu, trainers}: Gallery) {
 
     //Save changes
     const timeoutId2 = window.setTimeout(() => {
-      const blob = new Blob([JSON.stringify(trainers[0])], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify(inheritedTrainerData[0])], { type: 'application/json' });
       FileSaver.saveAs(blob, "trainers.json");
     }, 500)
   }
@@ -344,7 +341,7 @@ function Gallery({menu, trainers}: Gallery) {
                             <div><u>Trainer Class</u><div>{trainer.class}</div></div>
                             <p>Wins: {trainer.w}</p>
                             <p>Losses: {trainer.l}</p>
-                            <p>BP: {trainers[0][trainer.name].BP}</p>
+                            <p>BP: {inheritedTrainerData[0][trainer.name].BP}</p>
                             <p><u>Party</u></p>
                             <div className='flexRow partyBlock'>{party}</div>
                         </div> :
