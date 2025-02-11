@@ -182,57 +182,49 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
 
   // Returns an array of Mon Cards to display using currently selected Filters
   function filterMonCards(trainer: any, sorted: string): JSX.Element[] {
-    let trainerData: any
-    trainerData = currTrainer
-
-
-
     let newCards: JSX.Element[] = []; //Array to be filled with cards
-    const timeoutId = window.setTimeout(() => {
-      let mons = Object.entries<any>(trainerData.mons); //Turns the passed trainers mons object into an array
-      //Loop through each mon and if the filters match, create a card for them and add it to the display list.
-
+    let mons = Object.entries<any>(currTrainer.mons).map(x => x[1]); //Turns the passed trainers mons object into an array
       
     if (sorted == "lvlA") {
-      mons = mons.sort((a: any,b: any) => b[1].lvl - a[1].lvl)
+      mons = mons.sort((a: any,b: any) => b.lvl - a.lvl)
     }
     else if (sorted == "hpA") {
-      mons = mons.sort((a: any,b: any) => b[1].hp - a[1].hp)
+      mons = mons.sort((a: any,b: any) => b.hp - a.hp)
     }
     else if (sorted == "atkA") {
-      mons = mons.sort((a: any,b: any) => b[1].atk - a[1].atk)
+      mons = mons.sort((a: any,b: any) => b.atk - a.atk)
     }
     else if (sorted == "spdA") {
-      mons = mons.sort((a: any,b: any) => b[1].spd - a[1].spd)
+      mons = mons.sort((a: any,b: any) => b.spd - a.spd)
     }
     else if (sorted == "lvlD") {
-      mons = mons.sort((a: any,b: any) => a[1].lvl - b[1].lvl)
+      mons = mons.sort((a: any,b: any) => a.lvl - b.lvl)
     }
     else if (sorted == "hpD") {
-      mons = mons.sort((a: any,b: any) => a[1].hp - b[1].hp)
+      mons = mons.sort((a: any,b: any) => a.hp - b.hp)
     }
     else if (sorted == "atkD") {
-      mons = mons.sort((a: any,b: any) => a[1].atk - b[1].atk)
+      mons = mons.sort((a: any,b: any) => a.atk - b.atk)
     }
     else if (sorted == "spdD") {
-      mons = mons.sort((a: any,b: any) => a[1].spd - b[1].spd)
+      mons = mons.sort((a: any,b: any) => a.spd - b.spd)
     }
 
-      for (let [tkey,value] of mons) {
-        (inputText == "" || (value.state == "Unlocked" && value.name.toLowerCase().includes(inputText))) && 
-        selectedStates.includes(value.state) && 
-        (value.state!="Unlocked" || selectedShines.includes(value.shine)) && 
-        (value.state!="Unlocked" || selectedRegions.includes(dex.mons[value.name + value.form].region)) && 
-        (value.state!="Unlocked" || (selectedTypes.includes(dex.mons[value.name + value.form].type1) || 
-        selectedTypes.includes(dex.mons[value.name + value.form].type2))) ? 
-          newCards.push(
-            <div onClick={() => {setSelectedMon(value)}}>
-                <MonCard mon={value}></MonCard>
-            </div>
-          ) : <></>
-        }
-      setSelectedMon(trainerData.mons[trainerData.team[0]])
-    }, 500)
+    //Loop through each mon and if the filters match, create a card for them and add it to the display list.
+    for (let value of mons) {
+      (inputText == "" || (value.state == "Unlocked" && value.name.toLowerCase().includes(inputText))) && 
+      selectedStates.includes(value.state) && 
+      (value.state!="Unlocked" || selectedShines.includes(value.shine)) && 
+      (value.state!="Unlocked" || selectedRegions.includes(dex.mons[value.name + value.form].region)) && 
+      (value.state!="Unlocked" || (selectedTypes.includes(dex.mons[value.name + value.form].type1) || 
+      selectedTypes.includes(dex.mons[value.name + value.form].type2))) ? 
+        newCards.push(
+          <div onClick={() => {setSelectedMon(value)}}>
+              <MonCard mon={value}></MonCard>
+          </div>
+        ) : <></>
+    }
+    setSelectedMon(currTrainer.mons[currTrainer.team[0]])
 
     return newCards
   }
@@ -268,12 +260,14 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
               if (dex.mons[trainer.mons[key].name + trainer.mons[key].form].unlocker == mon.name + mon.form + mon.shine.toLowerCase()) {
                 trainer.mons[key].state = "Locked"
                 renderMons = true
+                setSelectedMon(currTrainer.mons[currTrainer.team[0]])
                 setCurrTrainer(currTrainer)
               }
             }
             else if (trainer.mons[key].name + trainer.mons[key].form == mon.name + mon.form) {
               trainer.mons[key].state = "Locked"
               renderMons = true
+              setSelectedMon(currTrainer.mons[currTrainer.team[0]])
               setCurrTrainer(currTrainer)
             }
           }
@@ -299,6 +293,7 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
     console.log(stat)
     console.log(trainer.mons[mon.name + mon.form + mon.shine])
     trainer.mons[mon.name + mon.form + mon.shine][stat] =  trainer.mons[mon.name + mon.form + mon.shine][stat] + 1
+    setSelectedMon(currTrainer.mons[currTrainer.team[0]])
 
     console.log(trainer.mons[mon.name + mon.form + mon.shine][stat])
 
