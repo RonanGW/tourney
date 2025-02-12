@@ -314,6 +314,8 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
   function changeTeam(trainer: trainer, mon: mon, slot: number):void {
     let key = (mon.name + mon.form + mon.shine.toLowerCase())
     slot < 0 ? trainer.team.splice(trainer.team.indexOf(key), 1) : trainer.team.length < 6 ? trainer.team.push(key) : trainer.team[slot] = key
+    renderMons = true
+    setCurrTrainer(trainer)
 
     const timeoutId = window.setTimeout(() => {
       const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
