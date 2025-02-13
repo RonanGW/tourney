@@ -93,7 +93,6 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
   const [cards, setCards] = useState(filterTrainerCards("none")); // Currently display "Cards"
   const [currTrainer, setCurrTrainer] = useState(inheritedTrainerData[0]["red"]); //Current trainer to display
   const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999}) //Current Mon to display inside trainer screen
-  const [loggedChanges, setLoggedChanges] = useState({})
   const [party, setParty] = useState([<></>]); //PartyButtons
   const [partySlotReplacers, setPartySlotReplacers] = useState(false) //Reveals hidden buttons if team is full
 
@@ -134,7 +133,6 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
       renderMons = true
       setInputText("")
       setCurrTrainer(tdata)
-      setCards(filterMonCards(tdata,""));
     });
   }
 
@@ -183,6 +181,7 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
   // Returns an array of Mon Cards to display using currently selected Filters
   function filterMonCards(trainer: any, sorted: string): JSX.Element[] {
     let newCards: JSX.Element[] = []; //Array to be filled with cards
+    
     let mons = Object.entries<any>(currTrainer.mons).map(x => x[1]); //Turns the passed trainers mons object into an array
       
     if (sorted == "lvlA") {
