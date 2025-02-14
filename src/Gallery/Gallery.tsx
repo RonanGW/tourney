@@ -85,12 +85,13 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
   ]
   
   const [inputText, setInputText] = useState(""); //Used to stored value for the search functions
+  const [sortType, setSortType] = useState("none")
   const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value)); //Actively displayed trainer & mon home regions
   const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value)); //Actively displayed trainer classes
   const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value)); //Actively displayed mon types
   const [selectedShines, setSelectedShines] = useState(shines.map((t) => t.value)); //Actively displayed mon shines
   const [selectedStates, setSelectedStates] = useState(["Unlocked","Available"]); // Actively displayed trainer & mon states
-  const [cards, setCards] = useState(filterTrainerCards("none")); // Currently display "Cards"
+  const [cards, setCards] = useState(filterTrainerCards()); // Currently display "Cards"
   const [currTrainer, setCurrTrainer] = useState(inheritedTrainerData[0]["red"]); //Current trainer to display
   const [selectedMon, setSelectedMon] = useState({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999}) //Current Mon to display inside trainer screen
   const [party, setParty] = useState([<></>]); //PartyButtons
@@ -102,14 +103,14 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
     // Update the document title using the browser API
 
     if (renderTrainers) {
-        setCards(filterTrainerCards("none"))
-        renderTrainers = false
+      renderTrainers = false
+        setCards(filterTrainerCards())
     }
     else if (renderMons) {
-      setCards(filterMonCards(currTrainer,""))
+      renderMons = false
+      setCards(filterMonCards())
       setParty(genPartyButtons)
       menu[1]("Gallery-Trainer"); //setMenu function for the menu state defined & passed by parent object
-      renderMons = false
     }
   });
 
@@ -119,10 +120,10 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
 
   // Reset's the display to the starting Gallery Screen
   function switchToMainScreen() {
+    renderTrainers = true
     menu[1]("Gallery"); //setMenu function for the menu state defined & passed by parent object
     setInputText("")
     setSelectedMon({name:"mon",form:"none",shine:"none",state:"blank",lvl:0,xp:0,hp:0,atk:0,spd:0,cost:999})
-    setCards(filterTrainerCards("none"));
   }
 
   // Resets the display to the selected trainer's details page
@@ -137,25 +138,25 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
   }
 
   // Returns an array of Trainer Cards to display using currently selected Filters
-  function filterTrainerCards(sorted: string): JSX.Element[] {
+  function filterTrainerCards(): JSX.Element[] {
     let newCards: JSX.Element[] = []; //Array to be filled with cards
     let tObjectsNoKeys: any[] = Object.entries(inheritedTrainerData[0]).map(x => x[1]) // Filters keys out of inheritedTrainerDataEntries to make data an array of objects instead an array of entries
 
     //Sorts Trainer Objects by BP to put trainers with the most BP at the top.
-    if (sorted == "BPA") {
+    if (sortType == "BPA") {
       tObjectsNoKeys = tObjectsNoKeys.sort((a:any,b:any) => b.BP - a.BP)
     }
-    else if (sorted == "NameA") {
+    else if (sortType == "NameA") {
       tObjectsNoKeys = tObjectsNoKeys.sort(function(a:any, b:any) {
         var textA = a.name.toUpperCase();
         var textB = b.name.toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     })
     }
-    else if (sorted == "BPD") {
+    else if (sortType == "BPD") {
       tObjectsNoKeys = tObjectsNoKeys.sort((a:any,b:any) => a.BP - a.BP)
     }
-    else if (sorted == "NameD") {
+    else if (sortType == "NameD") {
       tObjectsNoKeys = tObjectsNoKeys.sort(function(a:any, b:any) {
         var textA = a.name.toUpperCase();
         var textB = b.name.toUpperCase();
@@ -179,33 +180,33 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
   }
 
   // Returns an array of Mon Cards to display using currently selected Filters
-  function filterMonCards(trainer: any, sorted: string): JSX.Element[] {
+  function filterMonCards(): JSX.Element[] {
     let newCards: JSX.Element[] = []; //Array to be filled with cards
     
     let mons = Object.entries<any>(currTrainer.mons).map(x => x[1]); //Turns the passed trainers mons object into an array
       
-    if (sorted == "lvlA") {
+    if (sortType == "lvlA") {
       mons = mons.sort((a: any,b: any) => b.lvl - a.lvl)
     }
-    else if (sorted == "hpA") {
+    else if (sortType == "hpA") {
       mons = mons.sort((a: any,b: any) => b.hp - a.hp)
     }
-    else if (sorted == "atkA") {
+    else if (sortType == "atkA") {
       mons = mons.sort((a: any,b: any) => b.atk - a.atk)
     }
-    else if (sorted == "spdA") {
+    else if (sortType == "spdA") {
       mons = mons.sort((a: any,b: any) => b.spd - a.spd)
     }
-    else if (sorted == "lvlD") {
+    else if (sortType == "lvlD") {
       mons = mons.sort((a: any,b: any) => a.lvl - b.lvl)
     }
-    else if (sorted == "hpD") {
+    else if (sortType == "hpD") {
       mons = mons.sort((a: any,b: any) => a.hp - b.hp)
     }
-    else if (sorted == "atkD") {
+    else if (sortType == "atkD") {
       mons = mons.sort((a: any,b: any) => a.atk - b.atk)
     }
-    else if (sorted == "spdD") {
+    else if (sortType == "spdD") {
       mons = mons.sort((a: any,b: any) => a.spd - b.spd)
     }
 
@@ -398,20 +399,20 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
                 />
                 </div>
                 <div className='flexRow'>
-                  <button onClick={() => {setCards(filterMonCards(currTrainer,"lvlA"))}}>Sort by Lvl▼</button>
-                  <button onClick={() => {setCards(filterMonCards(currTrainer,"lvlD"))}}>Sort by Lvl▲</button>
+                  <button onClick={() => {renderMons=true;setSortType("lvlA")}}>Sort by Lvl▼</button>
+                  <button onClick={() => {renderMons=true;setSortType("lvlD")}}>Sort by Lvl▲</button>
                 </div>
                 <div className='flexRow'>
-                  <button onClick={() => {setCards(filterMonCards(currTrainer,"hpA"))}}>Sort by HP▼</button>
-                  <button onClick={() => {setCards(filterMonCards(currTrainer,"hpD"))}}>Sort by HP▲</button>
+                  <button onClick={() => {renderMons=true;setSortType("hpA")}}>Sort by HP▼</button>
+                  <button onClick={() => {renderMons=true;setSortType("hpD")}}>Sort by HP▲</button>
                 </div>
                 <div className='flexRow'>
-                  <button onClick={() => {setCards(filterMonCards(currTrainer,"atkA"))}}>Sort by Atk▼</button>
-                  <button onClick={() => {setCards(filterMonCards(currTrainer,"atkD"))}}>Sort by Atk▲</button>
+                  <button onClick={() => {renderMons=true;setSortType("atkA")}}>Sort by Atk▼</button>
+                  <button onClick={() => {renderMons=true;setSortType("atkD")}}>Sort by Atk▲</button>
                 </div>
                 <div className='flexRow'>
-                  <button onClick={() => {setCards(filterMonCards(currTrainer,"spdA"))}}>Sort by Spd▼</button>
-                  <button onClick={() => {setCards(filterMonCards(currTrainer,"spdD"))}}>Sort by Spd▲</button>
+                  <button onClick={() => {renderMons=true;setSortType("spdA")}}>Sort by Spd▼</button>
+                  <button onClick={() => {renderMons=true;setSortType("spdD")}}>Sort by Spd▲</button>
                 </div>
                 </div>
                   <div className='flexCol'>
@@ -535,12 +536,12 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
                 </div>
                 <div className='flexCol'>
                   <div className='flexRow'>
-                    <button onClick={() => {setCards(filterTrainerCards("BPA"))}}>Sort by BP▼</button>
-                    <button onClick={() => {setCards(filterTrainerCards("BPD"))}}>Sort by BP▲</button>
+                    <button onClick={() => {renderTrainers=true;setSortType("BPA")}}>Sort by BP▼</button>
+                    <button onClick={() => {renderTrainers=true;setSortType("BPD")}}>Sort by BP▲</button>
                   </div>
                   <div className='flexRow'>
-                    <button onClick={() => {setCards(filterTrainerCards("NameA"))}}>Sort A-Z▼</button>
-                    <button onClick={() => {setCards(filterTrainerCards("NameD"))}}>Sort A-Z▲</button>
+                    <button onClick={() => {renderTrainers=true;setSortType("NameA")}}>Sort A-Z▼</button>
+                    <button onClick={() => {renderTrainers=true;setSortType("NameD")}}>Sort A-Z▲</button>
                   </div>
                   </div>
                 </div>
