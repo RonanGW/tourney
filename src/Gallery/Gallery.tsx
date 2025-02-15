@@ -104,19 +104,15 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
 
     if (renderTrainers) {
       renderTrainers = false
-        setCards(filterTrainerCards())
+      setCards(filterTrainerCards())
+      setParty(genPartyButtons)
     }
     else if (renderMons) {
       renderMons = false
       setCards(filterMonCards())
-      setParty(genPartyButtons)
       menu[1]("Gallery-Trainer"); //setMenu function for the menu state defined & passed by parent object
     }
   });
-
-  let inputHandler = (e: any) => {
-    setInputText(e.target.value.toLowerCase());
-  };
 
   // Reset's the display to the starting Gallery Screen
   function switchToMainScreen() {
@@ -392,7 +388,7 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
               <div className='SearchBar'>
               <TextField
                   id="outlined-basic"
-                  onChange={(e) => {renderMons = true;inputHandler(e)}}
+                  onChange={(e) => {renderMons = true;setInputText(e.target.value.toLowerCase())}}
                   variant="outlined"
                   fullWidth
                   label="Search"
@@ -528,7 +524,7 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
                   className='SearchBar'>
               <TextField
                   id="outlined-basic"
-                  onChange={(e) => {renderTrainers = true;inputHandler(e)}}
+                  onChange={(e) => {renderTrainers = true;setInputText(e.target.value.toLowerCase())}}
                   variant="outlined"
                   fullWidth
                   label="Search"
