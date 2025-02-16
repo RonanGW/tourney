@@ -239,8 +239,8 @@ function Fight({menu, trainers}: Fight) {
                                                                     </div> : <></>}
                             </div>
                         </div>
-                        <div className={' fightCard fightCard-left fightCard-right'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
-                            <div  style={{display:"flex",justifyContent:"end"}} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}><img src={tImgURL} className='trainerImg'/>{loopTrainer.name}</div>
+                        <div className={' fightCard fightCard-left fightCard-right ' + loopActiveMonQueueState} style={{zIndex:"0",display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
+                            <div style={{display:"flex",justifyContent:"end"}} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}><img src={tImgURL} className='trainerImg'/>{loopTrainer.name}</div>
                             <Tooltip anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
                                 <div className='flexCol'>
                                     {loopActiveMon.name}
@@ -252,9 +252,9 @@ function Fight({menu, trainers}: Fight) {
                                 </div>
                             </Tooltip>
                             <div id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-right" : " fightCard-left")}>
-                                <img style={{zIndex:"2",position:"relative",top:"40px"}} src={mImgURL}/>
-                                <img style={{zIndex:"1",position:"relative"}} src={'./platforms/grass.png'}/>
-                                <div className='stat-shorthand'>
+                                <img style={{width:"160px",height:"160px",zIndex:"2",position:"absolute"}} src={mImgURL}/>
+                                <img style={{zIndex:"1",position:"relative",top:"120px",right:"10px"}} src={'./platforms/grass.png'}/>
+                                <div style={{zIndex:"2",position:"relative",top:"120px"}} className='stat-shorthand'>
                                     {"L"+loopActiveMon.lvl + ": "}
                                     <div className='healthbar-container'>
                                         <div className="healthbar">
