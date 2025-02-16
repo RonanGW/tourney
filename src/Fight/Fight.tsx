@@ -240,7 +240,7 @@ function Fight({menu, trainers}: Fight) {
                             </div>
                         </div>
                         <div className={' fightCard fightCard-left fightCard-right'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
-                            <div className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}><img src={tImgURL} className='trainerImg'/>{loopTrainer.name}</div>
+                            <div  style={{display:"flex",justifyContent:"end"}} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}><img src={tImgURL} className='trainerImg'/>{loopTrainer.name}</div>
                             <Tooltip anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
                                 <div className='flexCol'>
                                     {loopActiveMon.name}
@@ -252,7 +252,8 @@ function Fight({menu, trainers}: Fight) {
                                 </div>
                             </Tooltip>
                             <div id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-right" : " fightCard-left")}>
-                                <img src={mImgURL}/>
+                                <img style={{zIndex:"2",position:"relative",top:"40px"}} src={mImgURL}/>
+                                <img style={{zIndex:"1",position:"relative"}} src={'./platforms/grass.png'}/>
                                 <div className='stat-shorthand'>
                                     {"L"+loopActiveMon.lvl + ": "}
                                     <div className='healthbar-container'>

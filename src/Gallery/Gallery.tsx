@@ -85,7 +85,8 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
   ]
   
   const [inputText, setInputText] = useState(""); //Used to stored value for the search functions
-  const [sortType, setSortType] = useState("none")
+  const [needSave, setNeedSave] = useState(false);
+  const [sortType, setSortType] = useState("none");
   const [selectedRegions, setSelectedRegions] = useState(regions.map((r) => r.value)); //Actively displayed trainer & mon home regions
   const [selectedClasses, setSelectedClasses] = useState(classes.map((c) => c.value)); //Actively displayed trainer classes
   const [selectedTypes, setSelectedTypes] = useState(types.map((t) => t.value)); //Actively displayed mon types
@@ -105,11 +106,11 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
     if (renderTrainers) {
       renderTrainers = false
       setCards(filterTrainerCards())
-      setParty(genPartyButtons)
     }
     else if (renderMons) {
       renderMons = false
       setCards(filterMonCards())
+      setParty(genPartyButtons)
       menu[1]("Gallery-Trainer"); //setMenu function for the menu state defined & passed by parent object
     }
   });
@@ -143,7 +144,7 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
       tObjectsNoKeys = tObjectsNoKeys.sort((a:any,b:any) => b.BP - a.BP)
     }
     else if (sortType == "NameA") {
-      tObjectsNoKeys = tObjectsNoKeys.sort(function(a:any, b:any) {
+      tObjectsNoKeys = tObjectsNoKeys.sort((a:any, b:any) => {
         var textA = a.name.toUpperCase();
         var textB = b.name.toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
@@ -268,55 +269,23 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
             }
           }
         }
-
-        //Save changes
-        const timeoutId = window.setTimeout(() => {
-          const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
-          FileSaver.saveAs(blob, trainer.name +".json");
-        }, 500)
-
-        //Save changes
-        const timeoutId2 = window.setTimeout(() => {
-          const blob = new Blob([JSON.stringify(inheritedTrainerData[0])], { type: 'application/json' });
-          FileSaver.saveAs(blob, "trainers.json");
-        }, 500)
-        
+        setNeedSave(true)
       }
   }
 
   function buffStat(trainer: trainer, mon: mon, stat: string) {
     inheritedTrainerData[0][trainer.name].BP = inheritedTrainerData[0][trainer.name].BP - 1
-    console.log(stat)
-    console.log(trainer.mons[mon.name + mon.form + mon.shine])
     trainer.mons[mon.name + mon.form + mon.shine][stat] =  trainer.mons[mon.name + mon.form + mon.shine][stat] + 1
+    setNeedSave(true)
     setSelectedMon(currTrainer.mons[currTrainer.team[0]])
-
-    console.log(trainer.mons[mon.name + mon.form + mon.shine][stat])
-
-
-    //Save changes
-    const timeoutId = window.setTimeout(() => {
-      const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
-      FileSaver.saveAs(blob, trainer.name +".json");
-    }, 500)
-
-    //Save changes
-    const timeoutId2 = window.setTimeout(() => {
-      const blob = new Blob([JSON.stringify(inheritedTrainerData[0])], { type: 'application/json' });
-      FileSaver.saveAs(blob, "trainers.json");
-    }, 500)
   }
 
   function changeTeam(trainer: trainer, mon: mon, slot: number):void {
     let key = (mon.name + mon.form + mon.shine.toLowerCase())
     slot < 0 ? trainer.team.splice(trainer.team.indexOf(key), 1) : trainer.team.length < 6 ? trainer.team.push(key) : trainer.team[slot] = key
     renderMons = true
+    setNeedSave(true)
     setCurrTrainer(trainer)
-
-    const timeoutId = window.setTimeout(() => {
-      const blob = new Blob([JSON.stringify(trainer)], { type: 'application/json' });
-      FileSaver.saveAs(blob, trainer.name +".json");
-    }, 500)
 
     setPartySlotReplacers(false)
   }
@@ -487,27 +456,6 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
             </div>
         </div>
   }
-  
-
-  //{<MultiSelect value={selectedStates} onChange={(e) => {renderMons = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
- // filter placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}
- //             {<MultiSelect value={selectedTypes} onChange={(e) => {renderMons = true;setSelectedTypes(e.value)}} options={types} optionLabel="name" display="chip"
- // filter placeholder="Type" maxSelectedLabels={selectedTypes.length} className="filter md:filter" />}
- //             {<MultiSelect value={selectedRegions} onChange={(e) => {renderMons = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
- // filter placeholder="Region" maxSelectedLabels={selectedRegions.length} className="filter md:filter" />}
- //             {<MultiSelect value={selectedShines} onChange={(e) => {renderMons = true;setSelectedShines(e.value)}} options={shines} optionLabel="name" display="chip"
- // filter placeholder="Shine" maxSelectedLabels={selectedShines.length} className="filter md:filter" />}
-
-
-
- // {<MultiSelect value={selectedStates} onChange={(e) => {renderTrainers = true;setSelectedStates(e.value)}} options={states} optionLabel="name" display="chip"
- // filter placeholder="States" maxSelectedLabels={selectedStates.length} className="filter md:filter" />}
- //             {<MultiSelect value={selectedRegions} onChange={(e) => {renderTrainers = true;setSelectedRegions(e.value)}} options={regions} optionLabel="name" display="chip"
-//  filter placeholder="Regions" maxSelectedLabels={selectedRegions.length} className="filter md:filter" />}
-////              {<MultiSelect value={selectedClasses} onChange={(e) => {renderTrainers = true;setSelectedClasses(e.value)}} options={classes} optionLabel="name" display="chip"
-//  filter placeholder="Classes" maxSelectedLabels={selectedClasses.length} className="filter md:filter" />}
-
-
 
   //Returns the Gallery object, which would allow users to view trainer details and make purchases 
   return (
@@ -598,7 +546,20 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
          menu[0] == "Gallery-Trainer" ? 
           <div>
             <div className="Gallery-header">
-              <button onClick={() => {switchToMainScreen()}}>Back to Gallery Main Screen</button>
+              <button onClick={() => {switchToMainScreen();
+                  if (needSave) {
+                  //Save changes
+                  const timeoutId = window.setTimeout(() => {
+                    const blob = new Blob([JSON.stringify(currTrainer)], { type: 'application/json' });
+                    FileSaver.saveAs(blob, currTrainer.name +".json");
+                  }, 500)
+                  //Save changes
+                  const timeoutId2 = window.setTimeout(() => {
+                    const blob = new Blob([JSON.stringify(inheritedTrainerData[0])], { type: 'application/json' });
+                    FileSaver.saveAs(blob, "trainers.json");
+                  }, 500)
+                  }
+              }}>Back to Gallery Main Screen</button>
             </div>
               {TrainerPage(currTrainer)}
           </div> :  
