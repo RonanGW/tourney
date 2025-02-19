@@ -22,9 +22,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/public/chars
-/public/SaveData/
-/public/icons/
-/public/dex.json
+/public
 /src/trainers.json
 /src/DevStorage

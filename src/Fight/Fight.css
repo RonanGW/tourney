@@ -14,6 +14,8 @@
 }
 
 .fightCard {
+  display: flex;
+  align-items: end;
   font-size: clamp(20px,1vw,24px);
   font-weight: 700;
   white-space: nowrap;
