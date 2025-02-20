@@ -15,7 +15,10 @@
 
 .fightCard {
   display: flex;
+  height: 190px;
+  overflow: hidden;
   align-items: end;
+  justify-content: end;
   font-size: clamp(20px,1vw,24px);
   font-weight: 700;
   white-space: nowrap;
