@@ -559,7 +559,7 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
                     FileSaver.saveAs(blob, "trainers.json");
                   }, 500)
                   }
-              }}>Back to Gallery Main Screen</button>
+              }}>{needSave ? "Save and Exit" : "Back to Gallery Main Screen"}</button>
             </div>
               {TrainerPage(currTrainer)}
           </div> :  
