@@ -360,7 +360,7 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
                   onChange={(e) => {renderMons = true;setInputText(e.target.value.toLowerCase())}}
                   variant="outlined"
                   fullWidth
-                  label="Search"
+                  label="Mon Name"
                 />
                 </div>
                 <div className='flexRow'>
@@ -475,7 +475,7 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
                   onChange={(e) => {renderTrainers = true;setInputText(e.target.value.toLowerCase())}}
                   variant="outlined"
                   fullWidth
-                  label="Search"
+                  label="Trainer Namme"
                 />
                 </div>
                 <div className='flexCol'>
