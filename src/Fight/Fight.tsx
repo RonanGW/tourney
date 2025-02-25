@@ -241,8 +241,8 @@ function Fight({menu, trainers}: Fight) {
                         </div>
                         <div className={' fightCard fightCard-left fightCard-right ' + loopActiveMonQueueState} style={{zIndex:"0",display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
                             <div style={{display:"flex",justifyContent:"end"}} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}><img src={tImgURL} className='trainerImg'/>{loopTrainer.name}</div>
-                            <Tooltip anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
-                                <div className='flexCol'>
+                            <Tooltip place="top" style={{position:"absolute",zIndex:"44444"}} anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
+                                <div style={{position:"relative",zIndex:"4"}} className='flexCol'>
                                     {loopActiveMon.name}
                                     <div className='flexRow'>
                                         <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + ".png"} className='typeImg'/>
@@ -251,10 +251,10 @@ function Fight({menu, trainers}: Fight) {
                                     </div>
                                 </div>
                             </Tooltip>
-                            <div id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-right" : " fightCard-left")}>
-                                <img style={{width:"160px",height:"160px",zIndex:"2",top:"72px",left:"10px",position:"relative"}} src={mImgURL}/>
-                                <img style={{zIndex:"1",position:"relative",top:"36px"}} src={'./platforms/'+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + '.png'}/>
-                                <div style={{zIndex:"2",position:"relative",top:"32px"}} className='stat-shorthand'>
+                            <div style={{zIndex:"1",position:"relative"}} id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-right" : " fightCard-left")}>
+                                <img style={{width:"160px",height:"160px",bottom:"64px",left:"20px",zIndex:"4",position:"absolute"}} src={mImgURL}/>
+                                <img style={{zIndex:"3"}} src={'./platforms/'+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + '.png'}/>
+                                <div style={{zIndex:"2"}} className='stat-shorthand'>
                                     {"L"+loopActiveMon.lvl + ": "}
                                     <div className='healthbar-container'>
                                         <div className="healthbar">
