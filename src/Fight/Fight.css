@@ -15,7 +15,7 @@
 
 .fightCard {
   display: flex;
-  height: 190px;
+  height: 225px;
   overflow: hidden;
   align-items: end;
   justify-content: end;
@@ -27,7 +27,7 @@
   color: black;
   border-radius: 5px;
   box-shadow: 10px 10px 10px rgba(255, 255, 255, 0.091);
-  padding-bottom: 30px;
+  padding-bottom: 5px;
 }
 
 

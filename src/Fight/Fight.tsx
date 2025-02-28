@@ -137,7 +137,7 @@ function Fight({menu, trainers}: Fight) {
     function combineLists(): JSX.Element {
         return (
             <div key={Math.random()} className='flexRow'
-                style={{justifyContent:"space-between",marginLeft:"10vw",marginRight:"10vw",height:"75vh"}}>
+                style={{justifyContent:"space-between",marginLeft:"10vw",marginRight:"10vw",height:"85vh"}}>
                 <div className='flexCol' style={{justifyContent:"space-between"}}>
                     {setTrainerCards(true)}
                 </div>
@@ -412,7 +412,7 @@ function Fight({menu, trainers}: Fight) {
      }
 
     return (
-    <div>
+    <>
         <div className="Fight-header">
             <button onClick={() => {menu[1]("Main-Menu")}}>Back Main Menu</button>
             {turnQueueDisplay()}
@@ -420,7 +420,7 @@ function Fight({menu, trainers}: Fight) {
         {isLoading ? (
         <p>Loading...</p> 
          ) : (fullCards)}
-    </div>
+    </>
     )
 }
 
