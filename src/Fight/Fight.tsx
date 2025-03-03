@@ -240,7 +240,10 @@ function Fight({menu, trainers}: Fight) {
                             </div>
                         </div>
                         <div className={' fightCard fightCard-left fightCard-right ' + loopActiveMonQueueState} style={{zIndex:"0",display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
-                            <div style={{display:"flex",justifyContent:"end",transform: left ? "scale(-1,1)":""}} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}><img src={tImgURL} className='trainerImg'/>{loopTrainer.name}</div>
+                            <div style={{display:"flex",justifyContent:"end"}} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}>
+                                <img style={{transform: left ? "scale(-1,1)":""}} src={tImgURL} className='trainerImg'/>
+                                {loopTrainer.name}
+                            </div>
                             <Tooltip place="top" style={{position:"absolute",zIndex:"44444",backgroundColor:"rgba(0, 0, 0, 0)"}} disableStyleInjection={'core'} anchorSelect={"#"+loopTrainer.name.replace(/\s+/g, '')}>
                                 <div style={{position:"relative",zIndex:"4", padding:"36px", border:"2px solid blue", backgroundColor:"#282c34",left: left ? "200px":"-200px"}} className='flexCol'>
                                     {loopActiveMon.name}
