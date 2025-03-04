@@ -255,7 +255,7 @@ function Fight({menu, trainers}: Fight) {
                                 </div>
                             </Tooltip>
                             <div style={{zIndex:"1",position:"relative"}} id={loopTrainer.name.replace(/\s+/g, '')} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-right" : " fightCard-left")}>
-                                <img style={{width:"160px",height:"160px",bottom:"64px",left:"20px",zIndex:"4",position:"absolute",transform: left ? "scale(-1,1)":""}} src={mImgURL}/>
+                                <img style={{width:"160px",height:"160px",bottom:"64px",left:"12px",zIndex:"4",position:"absolute",transform: left ? "scale(-1,1)":""}} src={mImgURL}/>
                                 <img style={{zIndex:"3"}} src={'./platforms/'+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + '.png'}/>
                                 <div style={{zIndex:"2"}} className='stat-shorthand'>
                                     {"L"+loopActiveMon.lvl + ": "}
