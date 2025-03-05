@@ -53,6 +53,12 @@
   height: fit-content
 }
 
+.monQueueCenter {
+  width:"100%";
+  display:"flex";
+  align-items:"center"
+}
+
 .queueCard {
   width: 96px;
   height: 96px;

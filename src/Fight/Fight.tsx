@@ -225,9 +225,9 @@ function Fight({menu, trainers}: Fight) {
 
 
                     trainers.push(
-                        <div className={'flexRow trainerBlock'} style={{display: "flex", flexDirection: left ? "row" : "row-reverse"}}>
+                        <div className={'flexRow trainerBlock'} style={{flexDirection: left ? "row" : "row-reverse"}}>
                         <div id={loopTrainer.name.replace(/\s+/g, '')} className={"monQueue " + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}>
-                            <div className='flexCol' style={{width:"100%",display:"flex",alignItems:"center"}}>
+                            <div className='flexCol monQueueCenter'>
                                 <div className='flexRow'>
                                     <img style={{transform: left ? "scale(-1,1)":""}} src={mImgURL}/>
                                 {currTrainers[tKey].team[currTrainers[tKey].attacker + 1] != null ? <img src={'./chars/mons/'+currTrainers[tKey].mons[currTrainers[tKey].team[currTrainers[tKey].attacker + 1]].name+'.png'}></img>:

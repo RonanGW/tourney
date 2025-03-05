@@ -475,7 +475,7 @@ function Gallery({menu, inheritedTrainerData}: Gallery) {
                   onChange={(e) => {renderTrainers = true;setInputText(e.target.value.toLowerCase())}}
                   variant="outlined"
                   fullWidth
-                  label="Trainer Namme"
+                  label="Trainer Name"
                 />
                 </div>
                 <div className='flexCol'>
