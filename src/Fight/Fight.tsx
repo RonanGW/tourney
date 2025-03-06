@@ -220,7 +220,7 @@ function Fight({menu, trainers}: Fight) {
                     }
                     else { //Trainer who is still in the tourney, but it is not their turn
                         loopActiveMonOnClick = () => {act(tKey)}
-                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].team[0]].type1,dex.mons[currTrainers[activeTrainers[0]].team[0]].type2,dex.mons[loopTrainer.team[0]].type1,dex.mons[loopTrainer.team[0]].type2) > 1 ? <div className='active circle'></div> : effective(dex.mons[currTrainers[activeTrainers[0]].team[0]].type1,dex.mons[currTrainers[activeTrainers[0]].team[0]].type2,dex.mons[loopTrainer.team[0]].type1,dex.mons[loopTrainer.team[0]].type2) < 1 ? <div className='defeated circle'></div> : <></>
+                        loopActiveMonEffectiveness = effective(dex.mons[currTrainers[activeTrainers[0]].team[0]].type1,dex.mons[currTrainers[activeTrainers[0]].team[0]].type2,dex.mons[loopTrainer.team[0]].type1,dex.mons[loopTrainer.team[0]].type2) > 1 ? <div className='active circle'>-</div> : effective(dex.mons[currTrainers[activeTrainers[0]].team[0]].type1,dex.mons[currTrainers[activeTrainers[0]].team[0]].type2,dex.mons[loopTrainer.team[0]].type1,dex.mons[loopTrainer.team[0]].type2) < 1 ? <div className='defeated circle'>-</div> : <></>
                     }
 
 
@@ -248,8 +248,10 @@ function Fight({menu, trainers}: Fight) {
                                 <div style={{position:"relative",zIndex:"4", padding:"36px", border:"2px solid blue", backgroundColor:"#282c34",left: left ? "200px":"-200px"}} className='flexCol'>
                                     {loopActiveMon.name}
                                     <div className='flexRow'>
-                                        <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + ".png"} className='typeImg'/>
-                                        {dex.mons[loopActiveMon.name +loopActiveMon.form].type2 != "" ? <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type2 + ".png"} className='typeImg'/>:<></>}
+                                        <div className='flexCol'>
+                                            <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type1 + ".png"} className='typeImg'/>
+                                            {dex.mons[loopActiveMon.name +loopActiveMon.form].type2 != "" ? <img src={"/icons/"+dex.mons[loopActiveMon.name + loopActiveMon.form].type2 + ".png"} className='typeImg'/>:<></>}
+                                        </div>
                                         {loopActiveMonEffectiveness}
                                     </div>
                                 </div>
