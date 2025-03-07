@@ -41,6 +41,11 @@
   border-bottom-right-radius: 20px;
 }
 
+.fightCard-trainerCol {
+  z-index:"0";
+  display: "flex";
+}
+
 .queue {
   display: flex;
   flex-direction: row-reverse;
@@ -57,6 +62,11 @@
   width:"100%";
   display:"flex";
   align-items:"center"
+}
+
+.monQueueButtons {
+  display:"flex";
+  align-items:"space-between"
 }
 
 .queueCard {

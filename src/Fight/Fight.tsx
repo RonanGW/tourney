@@ -180,7 +180,7 @@ function Fight({menu, trainers}: Fight) {
                     <></>
                     }
                 </div>
-                <div className='flexCol' style={{justifyContent:"space-between"}}>
+                <div className='flexCol' style={{justifyContent:"space-between", alignItems:"start"}}>
                     {setTrainerCards(false)}
                 </div>
             </div>
@@ -233,13 +233,13 @@ function Fight({menu, trainers}: Fight) {
                                 {currTrainers[tKey].team[currTrainers[tKey].attacker + 1] != null ? <img src={'./chars/mons/'+currTrainers[tKey].mons[currTrainers[tKey].team[currTrainers[tKey].attacker + 1]].name+'.png'}></img>:
                                 currTrainers[tKey].team.length > 2 ? <img src={'./chars/mons/'+currTrainers[tKey].mons[currTrainers[tKey].team[0]].name+'.png'}></img> : ""}
                                 </div>
-                                {loopActiveMonQueueState == "active" ? <div style={{display:"flex",alignItems:"space-between"}}>
+                                {loopActiveMonQueueState == "active" ? <div className='monQueueButtons'>
                                                                         {currTrainers[tKey].team.length > 2 ? <button onClick={() => {swapMon(tKey, false)}}>{"<"}</button> : <></>}
                                                                         {currTrainers[tKey].team.length > 1 ? <button onClick={() => {swapMon(tKey, true)}}>{">"}</button> : <></>}
                                                                     </div> : <></>}
                             </div>
                         </div>
-                        <div className={' fightCard fightCard-left fightCard-right ' + loopActiveMonQueueState} style={{zIndex:"0",display: "flex", flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
+                        <div className={' fightCard fightCard-left fightCard-right fightCard-trainer ' + loopActiveMonQueueState} style={{flexDirection: left ? "row" : "row-reverse"}} onClick={loopActiveMonOnClick}>
                             <div style={{display:"flex",justifyContent:"end"}} className={'flexCol ' + loopActiveMonQueueState + (left ? " fightCard-left" : " fightCard-right")}>
                                 <img style={{transform: left ? "scale(-1,1)":""}} src={tImgURL} className='trainerImg'/>
                                 {loopTrainer.name}
