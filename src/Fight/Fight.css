@@ -46,6 +46,11 @@
   display: "flex";
 }
 
+.fightCard-trainerContent {
+  display:"flex";
+  justify-content:"end"
+}
+
 .queue {
   display: flex;
   flex-direction: row-reverse;
