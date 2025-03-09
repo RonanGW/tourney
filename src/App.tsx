@@ -5,6 +5,7 @@ import Settings from './Settings/Settings'
 import "./index.css"
 import tdata from './trainers.json'
 import 'react-tooltip/dist/react-tooltip.css'
+import FightSelect from './Fight/FightSelect'
 
 //Primary Page (Main Loop). Critical States should originate from here so they are consistent
 function App() {
@@ -18,7 +19,10 @@ function App() {
       {menu == "Main-Menu" ? 
         <div className='App-content'>
           <button onClick={() => {setMenu("Fight")}}>
-            Start Tourney
+            Random Tourney
+          </button>
+          <button onClick={() => {setMenu("Fight-Select")}}>
+            Set Tourney
           </button>
           <button onClick={() => {setMenu("Gallery")}}>
             Gallery
@@ -32,6 +36,8 @@ function App() {
         </div>:
       menu == "Fight" ?
         <Fight menu={[menu,setMenu]} trainers={[trainers, setTrainers]}></Fight> :
+      menu == "Fight-Select" ?
+        <FightSelect menu={[menu,setMenu]} trainers={[trainers, setTrainers]}></FightSelect> :
       menu == "Gallery" || menu == "Gallery-Trainer" ?
         <Gallery menu={[menu,setMenu]} inheritedTrainerData={[trainers, setTrainers]}></Gallery> :
       menu == "Settings" ?
