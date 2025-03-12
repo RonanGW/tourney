@@ -30,8 +30,15 @@ function FightSelect({menu, trainers}: FightSelect) {
   //Collect all regions for filters
   const tNames = [...new Set([...new Set((Object.entries<trainer>(trainers[0])).map(item => item[0]))].map(item => {return {value: item, label: item}}))];
   console.log(tNames)
-  const [t1, setT1] = useState(currTrainers[Object.keys(currTrainers)[0]])
-  const [t2, setT2] = useState(currTrainers[Object.keys(currTrainers)[1]])
+  const [selTrainers, setSelTrainers] = useState([currTrainers[Object.keys(currTrainers)[0]],
+                                                  currTrainers[Object.keys(currTrainers)[1]],
+                                                  currTrainers[Object.keys(currTrainers)[2]],
+                                                  currTrainers[Object.keys(currTrainers)[3]],
+                                                  currTrainers[Object.keys(currTrainers)[4]],
+                                                  currTrainers[Object.keys(currTrainers)[5]],
+                                                  currTrainers[Object.keys(currTrainers)[6]],
+                                                  currTrainers[Object.keys(currTrainers)[7]]
+                                                ])
   return (
   <>
   <div className='filter-wrap'><Select 
@@ -44,10 +51,10 @@ function FightSelect({menu, trainers}: FightSelect) {
                            dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
                          }}
                   classNamePrefix="multiselect" 
-                  defaultValue={{value: t1.name,label: t1.name}}
+                  defaultValue={{value: selTrainers[0].name,label: selTrainers[0].name}}
                   closeMenuOnSelect={false} 
                   placeholder="States" 
-                  onChange={(e) => {console.log(t1)}} 
+                  onChange={(e) => {console.log(selTrainers[0])}} 
                   options={tNames}/>
                 </div>
   <div className='filter-wrap'><Select 
@@ -60,10 +67,10 @@ function FightSelect({menu, trainers}: FightSelect) {
               dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
             }}
     classNamePrefix="multiselect" 
-    defaultValue={{value: t2.name,label: t2.name}}
+    defaultValue={{value: selTrainers[1].name,label: selTrainers[1].name}}
     closeMenuOnSelect={false} 
     placeholder="States" 
-    onChange={(e) => {console.log(t2)}} 
+    onChange={(e) => {console.log(selTrainers[1])}} 
     options={tNames}/>
   </div>
   <button onClick={() => {menu[1]("Fight")}}>
