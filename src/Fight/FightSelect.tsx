@@ -39,40 +39,37 @@ function FightSelect({menu, trainers}: FightSelect) {
                                                   currTrainers[Object.keys(currTrainers)[6]],
                                                   currTrainers[Object.keys(currTrainers)[7]]
                                                 ])
+
+  function genSelButtons(): JSX.Element[] { 
+  let selButtons: JSX.Element[] = []
+
+  for (let i = 0; i < selTrainers.length; i++) {
+    selButtons.push(
+      <div className='filter-wrap'><Select 
+        styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
+                control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
+                                                  "&:hover": {overflow:"scroll",scrollbarWidth: "thin",paddingRight:"0px",paddingBottom:"0px"}
+                                                  }),
+                indicatorsContainer: (baseStyles, state) => ({...baseStyles,display: "flex",alignSelf: "flex-start",top:"0",position:"sticky"}),
+                clearIndicator: (baseStyles, state) => ({...baseStyles,color:'black'}),
+                dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
+              }}
+        classNamePrefix="multiselect" 
+        defaultValue={{value: selTrainers[i].name,label: selTrainers[i].name}}
+        closeMenuOnSelect={false} 
+        placeholder="States" 
+        onChange={(e) => {console.log(selTrainers[i])}} 
+        options={tNames}/>
+      </div>
+    )
+  }
+
+  return selButtons
+  }
+
   return (
   <>
-  <div className='filter-wrap'><Select 
-                  styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-                           control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
-                                                            "&:hover": {overflow:"scroll",scrollbarWidth: "thin",paddingRight:"0px",paddingBottom:"0px"}
-                                                            }),
-                           indicatorsContainer: (baseStyles, state) => ({...baseStyles,display: "flex",alignSelf: "flex-start",top:"0",position:"sticky"}),
-                           clearIndicator: (baseStyles, state) => ({...baseStyles,color:'black'}),
-                           dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
-                         }}
-                  classNamePrefix="multiselect" 
-                  defaultValue={{value: selTrainers[0].name,label: selTrainers[0].name}}
-                  closeMenuOnSelect={false} 
-                  placeholder="States" 
-                  onChange={(e) => {console.log(selTrainers[0])}} 
-                  options={tNames}/>
-                </div>
-  <div className='filter-wrap'><Select 
-    styles={{multiValue: (baseStyles, state) => ({...baseStyles,backgroundColor:'#77D5D5',}),
-              control: (baseStyles, state) => ({...baseStyles,backgroundColor:'#cdeaea',border: "solid thick blue",width:"15vw",height:"10vh",overflow:"hidden",scrollbarColor: "#C5D3F5 #4D6AAD",paddingRight:"10px",paddingBottom:"10px",
-                                              "&:hover": {overflow:"scroll",scrollbarWidth: "thin",paddingRight:"0px",paddingBottom:"0px"}
-                                              }),
-              indicatorsContainer: (baseStyles, state) => ({...baseStyles,display: "flex",alignSelf: "flex-start",top:"0",position:"sticky"}),
-              clearIndicator: (baseStyles, state) => ({...baseStyles,color:'black'}),
-              dropdownIndicator: (baseStyles, state) => ({...baseStyles,color:'black',})
-            }}
-    classNamePrefix="multiselect" 
-    defaultValue={{value: selTrainers[1].name,label: selTrainers[1].name}}
-    closeMenuOnSelect={false} 
-    placeholder="States" 
-    onChange={(e) => {console.log(selTrainers[1])}} 
-    options={tNames}/>
-  </div>
+  {genSelButtons()}
   <button onClick={() => {menu[1]("Fight")}}>
     
     Start Tourney
