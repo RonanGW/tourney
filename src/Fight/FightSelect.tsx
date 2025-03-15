@@ -73,7 +73,8 @@ function FightSelect({menu, trainers}: FightSelect) {
 
   return (
   <>
-  <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons()}</div>
+  <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(3,4)}</div>
+  <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(0,4)}</div>
   <button onClick={() => {menu[1]("Fight")}}>
     
     Start Tourney
