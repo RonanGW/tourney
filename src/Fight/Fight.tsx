@@ -45,10 +45,7 @@ fetch('/dex.json').then(response => {return response.json()}).then(tmp => dex = 
 //Returns the content of the Fight Menu
 function Fight({menu, trainers}: Fight) {
     const [isLoading, setIsLoading] = useState(true); //Loading state to prevent errors while data is being generated.
-    const [currTrainers, setCurrTrainers] = useState(Object.fromEntries((((Object.entries<trainer>(trainers[0])) //Filtered duplicate of trainer data modified to indicate the modifiable nature of this menu and onlly include 8 random selections
-                                                                        .filter((t) => t[1].state == "Unlocked"))
-                                                                        .sort(() => 0.5 - Math.random()))
-                                                                        .slice(0, 8)))
+    const [currTrainers, setCurrTrainers] = useState(trainers[0])
     const [activeTrainers, setActiveTrainers] = useState<string[]>(shuffleArray(Object.keys(currTrainers))) //Array of Keys of the trainers still able to fight
     const [fullCards, setFullCards] = useState(combineLists) //The content to render
 

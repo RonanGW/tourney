@@ -94,7 +94,6 @@ function FightSelect({menu, trainers}: FightSelect) {
   <>
   {selButtons}
   <button onClick={() => {menu[1]("Fight")}}>
-    
     Start Tourney
   </button>
   </>

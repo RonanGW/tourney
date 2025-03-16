@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Fight from './Fight/Fight'
+import FightRandomizer from './Fight/FightRandomizer'
 import Gallery from './Gallery/Gallery'
 import Settings from './Settings/Settings'
 import "./index.css"
@@ -35,7 +35,7 @@ function App() {
           </button>
         </div>:
       menu == "Fight" ?
-        <Fight menu={[menu,setMenu]} trainers={[trainers, setTrainers]}></Fight> :
+        <FightRandomizer menu={[menu,setMenu]} trainers={[trainers, setTrainers]}></FightRandomizer> :
       menu == "Fight-Select" ?
         <FightSelect menu={[menu,setMenu]} trainers={[trainers, setTrainers]}></FightSelect> :
       menu == "Gallery" || menu == "Gallery-Trainer" ?
