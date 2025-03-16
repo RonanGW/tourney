@@ -23,6 +23,8 @@ interface trainer {
   mons: any //Object containing all mon data for this trainer
   };
 
+let toRender = false
+
 function FightSelect({menu, trainers}: FightSelect) {
   const [currTrainers, setCurrTrainers] = useState(Object.fromEntries((((Object.entries<trainer>(trainers[0])) //Filtered duplicate of trainer data modified to indicate the modifiable nature of this menu and onlly include 8 random selections
                                                                       .filter((t) => t[1].state == "Unlocked"))
@@ -30,7 +32,6 @@ function FightSelect({menu, trainers}: FightSelect) {
                                                                       .slice(0, 8)))
   //Collect all regions for filters
   const tNames = [...new Set([...new Set((Object.entries<trainer>(trainers[0])).map(item => item[0]))].map(item => {return {value: item, label: item}}))];
-  console.log(tNames)
   const [selTrainers, setSelTrainers] = useState([currTrainers[Object.keys(currTrainers)[0]],
                                                   currTrainers[Object.keys(currTrainers)[1]],
                                                   currTrainers[Object.keys(currTrainers)[2]],
@@ -40,6 +41,22 @@ function FightSelect({menu, trainers}: FightSelect) {
                                                   currTrainers[Object.keys(currTrainers)[6]],
                                                   currTrainers[Object.keys(currTrainers)[7]]
                                                 ])
+  const [selButtons,setSelButtons] = useState(<>
+                                                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(3,4)}</div>
+                                                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(0,4)}</div>
+                                              </>)
+  
+  useEffect(() => {
+  
+          if (toRender) {
+              //console.log(currTrainers)
+              setSelButtons(<>
+                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(3,4)}</div>
+                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(0,4)}</div>
+              </>)
+              toRender = false
+          }
+      });
 
   function genSelButtons(): JSX.Element[] { 
   let selButtons: JSX.Element[] = []
@@ -60,7 +77,7 @@ function FightSelect({menu, trainers}: FightSelect) {
         defaultValue={{value: selTrainers[i].name,label: selTrainers[i].name}}
         closeMenuOnSelect={false} 
         placeholder="States" 
-        onChange={(e) => {console.log(selTrainers[i])}} 
+        onChange={(e) => {let tmp = selTrainers; e != null ? tmp[i] = trainers[0][e.value] : console.log("");toRender = true;setSelTrainers(tmp);console.log(selTrainers)}}
         options={tNames}/>
       </div>
       <CharCard trainer={selTrainers[i]}/>
@@ -73,8 +90,7 @@ function FightSelect({menu, trainers}: FightSelect) {
 
   return (
   <>
-  <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(3,4)}</div>
-  <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(0,4)}</div>
+  {selButtons}
   <button onClick={() => {menu[1]("Fight")}}>
     
     Start Tourney
