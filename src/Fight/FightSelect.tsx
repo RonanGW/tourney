@@ -45,6 +45,7 @@ function FightSelect({menu, trainers}: FightSelect) {
                                                 <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(3,4)}</div>
                                                 <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(0,4)}</div>
                                               </>)
+  const [extraRenderer,setExtraRenderer] = useState(0)
   
   useEffect(() => {
   
@@ -54,6 +55,7 @@ function FightSelect({menu, trainers}: FightSelect) {
                 <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(3,4)}</div>
                 <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(0,4)}</div>
               </>)
+              console.log(selTrainers)
               toRender = false
           }
       });
@@ -77,7 +79,7 @@ function FightSelect({menu, trainers}: FightSelect) {
         defaultValue={{value: selTrainers[i].name,label: selTrainers[i].name}}
         closeMenuOnSelect={false} 
         placeholder="States" 
-        onChange={(e) => {let tmp = selTrainers; e != null ? tmp[i] = trainers[0][e.value] : console.log("");toRender = true;setSelTrainers(tmp);console.log(selTrainers)}}
+        onChange={(e) => {let tmp = selTrainers; e != null ? tmp[i] = trainers[0][e.value] : console.log("");setSelTrainers(tmp);toRender = true;setExtraRenderer(Math.random())}}
         options={tNames}/>
       </div>
       <CharCard trainer={selTrainers[i]}/>
