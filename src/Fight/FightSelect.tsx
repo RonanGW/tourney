@@ -42,7 +42,7 @@ function FightSelect({menu, trainers}: FightSelect) {
                                                   currTrainers[Object.keys(currTrainers)[7]]
                                                 ])
   const [selButtons,setSelButtons] = useState(<>
-                                                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(3,4)}</div>
+                                                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(4,4)}</div>
                                                 <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(0,4)}</div>
                                               </>)
   const [extraRenderer,setExtraRenderer] = useState(0)
@@ -50,12 +50,12 @@ function FightSelect({menu, trainers}: FightSelect) {
   useEffect(() => {
   
           if (toRender) {
-              //console.log(currTrainers)
+              console.log(currTrainers)
               setSelButtons(<>
-                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(3,4)}</div>
+                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(4,4)}</div>
                 <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(0,4)}</div>
               </>)
-              console.log(selTrainers)
+              //console.log(selTrainers)
               toRender = false
           }
       });
@@ -64,6 +64,7 @@ function FightSelect({menu, trainers}: FightSelect) {
   let selButtons: JSX.Element[] = []
 
   for (let i = 0; i < selTrainers.length; i++) {
+     console.log(selTrainers[i].name)
     selButtons.push(
       <div>
       <div className='filter-wrap'><Select 
@@ -86,6 +87,7 @@ function FightSelect({menu, trainers}: FightSelect) {
       </div>
     )
   }
+  console.log("---------------")
 
   return selButtons
   }
