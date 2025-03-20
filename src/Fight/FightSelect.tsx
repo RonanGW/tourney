@@ -41,19 +41,21 @@ function FightSelect({menu, trainers}: FightSelect) {
                                                   currTrainers[Object.keys(currTrainers)[6]],
                                                   currTrainers[Object.keys(currTrainers)[7]]
                                                 ])
-  const [selButtons,setSelButtons] = useState(<>
-                                                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(4,4)}</div>
-                                                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(0,4)}</div>
-                                              </>)
+  const [selButtons,setSelButtons] = useState(() => {let selButtonDivList = genSelButtons();
+                                                return <>
+                                                <div style={{display:"flex", flexWrap:"wrap"}}>{selButtonDivList.splice(4,4)}</div>
+                                                <div style={{display:"flex", flexWrap:"wrap"}}>{selButtonDivList.splice(0,4)}</div>
+                                              </>})
   const [extraRenderer,setExtraRenderer] = useState(0)
   
   useEffect(() => {
   
           if (toRender) {
               console.log(currTrainers)
+              let selButtonDivList = genSelButtons()
               setSelButtons(<>
-                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(4,4)}</div>
-                <div style={{display:"flex", flexWrap:"wrap"}}>{genSelButtons().splice(0,4)}</div>
+                <div style={{display:"flex", flexWrap:"wrap"}}>{selButtonDivList.splice(4,4)}</div>
+                <div style={{display:"flex", flexWrap:"wrap"}}>{selButtonDivList.splice(0,4)}</div>
               </>)
               //console.log(selTrainers)
               toRender = false
