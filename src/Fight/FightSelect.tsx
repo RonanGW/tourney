@@ -31,7 +31,7 @@ function FightSelect({menu, trainers}: FightSelect) {
                                                                       .sort(() => 0.5 - Math.random()))
                                                                       .slice(0, 8)))
   //Collect all regions for filters
-  const tNames = [...new Set([...new Set((Object.entries<trainer>(trainers[0])).map(item => item[0]))].map(item => {return {value: item, label: item}}))];
+  let tNames = [...new Set([...new Set((Object.entries<trainer>(trainers[0])).map(item => item[0]))].map(item => {return {value: item, label: item}}))];
   const [selTrainers, setSelTrainers] = useState([currTrainers[Object.keys(currTrainers)[0]],
                                                   currTrainers[Object.keys(currTrainers)[1]],
                                                   currTrainers[Object.keys(currTrainers)[2]],
@@ -65,8 +65,13 @@ function FightSelect({menu, trainers}: FightSelect) {
   function genSelButtons(): JSX.Element[] { 
   let selButtons: JSX.Element[] = []
 
+  let updatedTNames = tNames
   for (let i = 0; i < selTrainers.length; i++) {
-     console.log(selTrainers[i].name)
+    updatedTNames = updatedTNames.filter((e) => {if (e.value != selTrainers[i].name) {return e}})
+  }
+  tNames = updatedTNames
+
+  for (let i = 0; i < selTrainers.length; i++) {
     selButtons.push(
       <div>
       <div className='filter-wrap'><Select 
@@ -89,7 +94,6 @@ function FightSelect({menu, trainers}: FightSelect) {
       </div>
     )
   }
-  console.log("---------------")
 
   return selButtons
   }
